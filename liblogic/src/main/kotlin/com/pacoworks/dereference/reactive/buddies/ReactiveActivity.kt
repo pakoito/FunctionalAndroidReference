@@ -3,7 +3,7 @@ package com.pacoworks.dereference.reactive.buddies
 import com.jakewharton.rxrelay.BehaviorRelay
 import com.pacoworks.dereference.reactive.ActivityLifecycle
 import com.pacoworks.dereference.reactive.ActivityResult
-import com.pacoworks.dereference.reactive.Ignore
+import com.pacoworks.dereference.reactive.None
 import com.pacoworks.dereference.reactive.PermissionResult
 
 class ReactiveActivity {
@@ -14,7 +14,7 @@ class ReactiveActivity {
 
     val permissionResultRelay = BehaviorRelay.create<PermissionResult>()
 
-    val onBackRelay = BehaviorRelay.create<Ignore>()
+    val onBackRelay = BehaviorRelay.create<None>()
 
     private fun call(lifecycle: ActivityLifecycle) = lifecycleRelay.call(lifecycle)
 
@@ -36,7 +36,7 @@ class ReactiveActivity {
 
     fun onActivityResult(result: ActivityResult) = activityResultRelay.call(result)
 
-    fun onBackPressed() = onBackRelay.call(Ignore.VOID)
+    fun onBackPressed() = onBackRelay.call(None.VOID)
 
     fun createBuddy() = object : ActivityReactiveBuddy {
         override fun lifecycle() = lifecycleRelay.asObservable()

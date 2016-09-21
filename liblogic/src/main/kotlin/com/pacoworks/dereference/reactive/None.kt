@@ -1,5 +1,5 @@
 package com.pacoworks.dereference.reactive
 
-enum class Ignore {
+enum class None {
     VOID
 }

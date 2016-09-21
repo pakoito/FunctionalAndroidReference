@@ -2,4 +2,6 @@ package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.BehaviorRelay
 
-val title: BehaviorRelay<String> = BehaviorRelay.create<String>("Hello Paco")
+class HomeState(
+        val counter: BehaviorRelay<Int> = BehaviorRelay.create(1)
+)

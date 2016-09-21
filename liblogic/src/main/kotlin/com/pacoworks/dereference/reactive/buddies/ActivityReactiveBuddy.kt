@@ -2,7 +2,7 @@ package com.pacoworks.dereference.reactive.buddies
 
 import com.pacoworks.dereference.reactive.ActivityLifecycle
 import com.pacoworks.dereference.reactive.ActivityResult
-import com.pacoworks.dereference.reactive.Ignore
+import com.pacoworks.dereference.reactive.None
 import com.pacoworks.dereference.reactive.PermissionResult
 import rx.Observable
 
@@ -13,5 +13,5 @@ interface ActivityReactiveBuddy {
 
     fun permissionResult(): Observable<PermissionResult>
 
-    fun back(): Observable<Ignore>
+    fun back(): Observable<None>
 }

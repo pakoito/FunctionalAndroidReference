@@ -5,10 +5,13 @@ import com.pacoworks.rxsealedunions.generic.GenericUnions
 
 typealias Screen = Union0<Home>
 
+enum class Direction {
+    BACK, FORWARD
+}
+
 val SCREEN_FACTORY: Union0.Factory<Home> = GenericUnions.nulletFactory<Home>()
 
 sealed class Screens(open val id: String = "")
-data class None(override val id: String = ""): Screens(id)
 
 data class Home(override val id: String = ""): Screens(id)
 

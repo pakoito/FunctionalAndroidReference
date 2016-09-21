@@ -20,8 +20,6 @@ import java.util.Set;
 import io.palaima.debugdrawer.DebugDrawer;
 import io.palaima.debugdrawer.commons.BuildModule;
 import io.palaima.debugdrawer.commons.DeviceModule;
-import io.palaima.debugdrawer.commons.NetworkModule;
-import io.palaima.debugdrawer.commons.SettingsModule;
 import io.palaima.debugdrawer.okhttp3.OkHttp3Module;
 import io.palaima.debugdrawer.timber.TimberModule;
 
@@ -44,18 +42,15 @@ public class MainActivity extends AppCompatActivity {
                         new TimberModule(),
                         new OkHttp3Module(injector.getHttpClient()),
                         new DeviceModule(this),
-                        new BuildModule(this),
-                        new NetworkModule(this),
-                        new SettingsModule(this)
+                        new BuildModule(this)
                 ).build();
         ViewGroup container = (ViewGroup) findViewById(R.id.activity_main);
         Router router = Conductor.attachRouter(this, container, savedInstanceState);
         if (savedInstanceState == null) {
             reactiveActivity.onEnter();
-        } else {
-            reactiveActivity.onCreate();
         }
-        Navigator navigator = new MainNavigator(router);
+        reactiveActivity.onCreate();
+        Navigator navigator = new MainNavigator(router, this);
         MainOrchestrator.start(injector.getState(), navigator, reactiveActivity.createBuddy());
     }
 
