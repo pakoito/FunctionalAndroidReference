@@ -9,13 +9,13 @@ fun start(view: HomeView, state: HomeState) {
 }
 
 private fun bindHomeInteractor(view: HomeView, state: HomeState) {
-    view.createBinder<Int>().call(state.counter, { view.setTitle(it.toString())})
+    view.createBinder<Int>().call(state.counter, { view.setTitle(it.toString()) })
 }
 
 private fun subscribeHomeInteractor(view: HomeView, state: HomeState) =
         startClicks(view, state)
 
-fun startClicks(view: HomeView, state: HomeState): Subscription =
+private fun startClicks(view: HomeView, state: HomeState): Subscription =
         doFM(
                 { view.clicks() },
                 { state.counter.first().map { it + 1 } }
