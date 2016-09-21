@@ -18,9 +18,10 @@ package com.pacoworks.dereference.core.ui
 
 import com.jakewharton.rxrelay.BehaviorRelay
 import com.pacoworks.dereference.core.reactive.ConductorLifecycle
+import rx.Observable
 import rx.Subscription
 
-fun <T> bind(lifecycleObservable: rx.Observable<ConductorLifecycle>, mainThreadScheduler: rx.Scheduler, state: BehaviorRelay<T>, doView: (T) -> Unit): Subscription =
+fun <T> bind(lifecycleObservable: Observable<ConductorLifecycle>, mainThreadScheduler: rx.Scheduler, state: BehaviorRelay<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ConductorLifecycle.Attach }
                 .takeUntil { it == ConductorLifecycle.Detach }
