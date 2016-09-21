@@ -1,10 +1,11 @@
-package com.pacoworks.dereference.features
+package com.pacoworks.dereference.features.global
 
-import com.pacoworks.dereference.core.ui.Direction
-import com.pacoworks.dereference.core.ui.createHome
-import com.pacoworks.dereference.core.ui.Navigator
 import com.pacoworks.dereference.core.reactive.ActivityLifecycle
 import com.pacoworks.dereference.core.reactive.buddies.ActivityReactiveBuddy
+import com.pacoworks.dereference.core.ui.Direction
+import com.pacoworks.dereference.core.ui.Navigator
+import com.pacoworks.dereference.core.ui.createHome
+import org.javatuples.Pair
 import rx.Scheduler
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -31,8 +32,8 @@ private fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator:
                     navigator.goBack()
                             .join(
                                     // Traverse the stack
-                                    { org.javatuples.Pair.with(it, Direction.BACK) },
+                                    { Pair.with(it, Direction.BACK) },
                                     // Restart app
-                                    { org.javatuples.Pair.with(createHome(), Direction.FORWARD) }
+                                    { Pair.with(createHome(), Direction.FORWARD) }
                             )
                 }.subscribe(state.navigation)
