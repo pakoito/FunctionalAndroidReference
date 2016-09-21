@@ -4,14 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
 
+import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Router;
+import com.pacoworks.dereference.features.Navigator;
 import com.pacoworks.dereference.reactive.ActivityResult;
 import com.pacoworks.dereference.reactive.PermissionResult;
-import com.pacoworks.dereference.reactive.ReactiveActivity;
+import com.pacoworks.dereference.reactive.buddies.ReactiveActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import io.palaima.debugdrawer.DebugDrawer;
+import io.palaima.debugdrawer.commons.BuildModule;
+import io.palaima.debugdrawer.commons.DeviceModule;
+import io.palaima.debugdrawer.commons.NetworkModule;
+import io.palaima.debugdrawer.commons.SettingsModule;
+import io.palaima.debugdrawer.okhttp3.OkHttp3Module;
+import io.palaima.debugdrawer.timber.TimberModule;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -20,34 +32,58 @@ public class MainActivity extends AppCompatActivity {
 
     private final ReactiveActivity reactiveActivity = new ReactiveActivity();
 
+    private DebugDrawer debugDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        reactiveActivity.onCreate();
+        final Injector injector = DereferenceApplication.get(this).getInjector();
+        debugDrawer = new DebugDrawer.Builder(this)
+                .modules(
+                        new TimberModule(),
+                        new OkHttp3Module(injector.getHttpClient()),
+                        new DeviceModule(this),
+                        new BuildModule(this),
+                        new NetworkModule(this),
+                        new SettingsModule(this)
+                ).build();
+        ViewGroup container = (ViewGroup) findViewById(R.id.activity_main);
+        Router router = Conductor.attachRouter(this, container, savedInstanceState);
+        if (savedInstanceState == null) {
+            reactiveActivity.onEnter();
+        } else {
+            reactiveActivity.onCreate();
+        }
+        Navigator navigator = new MainNavigator(router);
+        MainOrchestrator.start(injector.getState(), navigator, reactiveActivity.createBuddy());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        debugDrawer.onStart();
         reactiveActivity.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        debugDrawer.onResume();
         reactiveActivity.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        debugDrawer.onPause();
         reactiveActivity.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        debugDrawer.onStop();
         reactiveActivity.onStop();
     }
 
@@ -99,5 +135,10 @@ public class MainActivity extends AppCompatActivity {
                 reactiveActivity.getPermissionResultRelay().call(new PermissionResult.Failure(requestCode, permissions[i]));
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        reactiveActivity.onBackPressed();
     }
 }
