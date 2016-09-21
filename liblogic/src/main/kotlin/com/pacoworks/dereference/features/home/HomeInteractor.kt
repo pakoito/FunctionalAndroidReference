@@ -3,7 +3,7 @@ package com.pacoworks.dereference.features.home
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import rx.Subscription
 
-fun start(view: HomeView, state: HomeState) {
+fun startHomeInteractor(view: HomeView, state: HomeState) {
     subscribeHomeInteractor(view, state)
     bindHomeInteractor(view, state)
 }

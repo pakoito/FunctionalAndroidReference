@@ -20,7 +20,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     public HomeScreen() {
         super();
-        HomeInteractorKt.start(this, new HomeState());
+        HomeInteractorKt.startHomeInteractor(this, new HomeState());
     }
 
     @NonNull

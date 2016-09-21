@@ -31,9 +31,9 @@ private fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator:
                 .map {
                     navigator.goBack()
                             .join(
-                                    // Traverse the stack
+                                    /* If back to screen, just forwards it */
                                     { Pair.with(it, Direction.BACK) },
-                                    // Restart app
+                                    /* If back to exit app, reset to initial state */
                                     { Pair.with(createHome(), Direction.FORWARD) }
                             )
                 }.subscribe(state.navigation)
