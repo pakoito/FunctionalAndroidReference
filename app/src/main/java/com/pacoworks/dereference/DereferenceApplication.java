@@ -13,11 +13,6 @@ public class DereferenceApplication extends Application {
         injector = new Injector(this);
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
-
     public static DereferenceApplication get(Context context){
         return (DereferenceApplication) context.getApplicationContext();
     }

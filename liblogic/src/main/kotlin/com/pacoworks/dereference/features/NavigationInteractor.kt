@@ -13,6 +13,8 @@ fun subscribeNavigation(state: AppState, navigator: Navigator, activityReactiveB
 
 private fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, state: AppState, mainThreadScheduler: Scheduler) =
         state.navigation
+                /* Skip the first value to avoid re-pushing the current value after rotation */
+                .skip(1)
                 .filter { it.value1 == Direction.FORWARD }
                 .map { it.value0 }
                 .observeOn(mainThreadScheduler)

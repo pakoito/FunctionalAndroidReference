@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.pacoworks.dereference.features.Navigator;
+import com.pacoworks.dereference.features.home.HomeScreen;
 import com.pacoworks.dereference.reactive.ActivityResult;
 import com.pacoworks.dereference.reactive.PermissionResult;
 import com.pacoworks.dereference.reactive.buddies.ReactiveActivity;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Router router = Conductor.attachRouter(this, container, savedInstanceState);
         if (savedInstanceState == null) {
             reactiveActivity.onEnter();
+            router.pushController(RouterTransaction.with(new HomeScreen()));
         }
         reactiveActivity.onCreate();
         Navigator navigator = new MainNavigator(router, this);
