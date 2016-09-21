@@ -19,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import rx.functions.Func1;
 
 public class MainNavigator implements Navigator {
+    private static final Union1.Factory<Union0<Home>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
+
     private final Router router;
 
     private final Activity activity;
@@ -43,14 +45,12 @@ public class MainNavigator implements Navigator {
             final RouterTransaction routerTransaction = router.getBackstack().get(backstackSize - 1);
             final Controller controller = routerTransaction.controller();
             router.popCurrentController();
-            return FACTORY.first(getScreenFromController(controller));
+            return BACK_RESULT_FACTORY.first(getScreenFromController(controller));
         } else {
             activity.finish();
-            return FACTORY.none();
+            return BACK_RESULT_FACTORY.none();
         }
     }
-
-    public static final Union1.Factory<Union0<Home>> FACTORY = GenericUnions.singletFactory();
 
     private Controller getControllerFromScreen(Union0<Home> screenUnion) {
         return screenUnion.join(new Func1<Home, Controller>() {
