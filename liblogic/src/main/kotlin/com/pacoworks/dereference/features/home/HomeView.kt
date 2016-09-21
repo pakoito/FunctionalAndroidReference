@@ -17,11 +17,15 @@
 package com.pacoworks.dereference.features.home
 
 import com.pacoworks.dereference.core.reactive.None
-import com.pacoworks.dereference.core.ui.BaseView
+import com.pacoworks.dereference.core.ui.BoundView
 import rx.Observable
 
-interface HomeView: BaseView {
-    fun setTitle(title: String)
+interface HomeView: HomeViewInput, HomeViewOutput
 
+interface HomeViewInput : BoundView {
+    fun setTitle(title: String)
+}
+
+interface HomeViewOutput {
     fun clicks(): Observable<None>
 }

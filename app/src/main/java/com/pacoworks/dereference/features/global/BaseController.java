@@ -28,7 +28,7 @@ import com.jakewharton.rxrelay.BehaviorRelay;
 import com.pacoworks.dereference.core.reactive.ConductorLifecycle;
 import com.pacoworks.dereference.core.reactive.buddies.ControllerReactiveBuddy;
 import com.pacoworks.dereference.core.reactive.buddies.ReactiveController;
-import com.pacoworks.dereference.core.ui.BaseView;
+import com.pacoworks.dereference.core.ui.BoundView;
 import com.pacoworks.dereference.core.ui.ControllerBinderKt;
 import com.pacoworks.rxpartialapplication.RxPartialAction;
 
@@ -39,7 +39,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action2;
 import rx.functions.Action3;
 
-public abstract class BaseController extends Controller implements BaseView {
+public abstract class BaseController extends Controller implements BoundView {
     ReactiveController reactiveController = new ReactiveController();
 
     public BaseController() {

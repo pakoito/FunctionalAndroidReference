@@ -22,16 +22,11 @@ import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import rx.Observable
 import rx.Subscription
 
-fun startHomeInteractor(view: HomeView, state: HomeState) {
-    subscribeHomeInteractor(view, state)
-    bindHomeInteractor(view, state)
-}
-
-private fun bindHomeInteractor(view: HomeView, state: HomeState) {
+fun bindHomeInteractor(view: HomeViewInput, state: HomeState) {
     view.createBinder<Int>().call(state.counter, { view.setTitle(it.toString()) })
 }
 
-private fun subscribeHomeInteractor(view: HomeView, state: HomeState) =
+fun subscribeHomeInteractor(view: HomeViewOutput, state: HomeState) =
         startClicks(view.clicks(), state.counter)
 
 private fun startClicks(clicks: Observable<None>, counterState: BehaviorRelay<Int>): Subscription =
