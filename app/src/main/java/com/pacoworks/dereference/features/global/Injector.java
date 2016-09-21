@@ -1,9 +1,8 @@
-package com.pacoworks.dereference;
+package com.pacoworks.dereference.features.global;
 
 import android.app.Application;
 
 import com.codemonkeylabs.fpslibrary.TinyDancer;
-import com.pacoworks.dereference.features.global.AppState;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;

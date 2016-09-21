@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jakewharton.rxrelay.PublishRelay;
-import com.pacoworks.dereference.BaseController;
+import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.core.reactive.None;
 
 import org.jetbrains.annotations.NotNull;

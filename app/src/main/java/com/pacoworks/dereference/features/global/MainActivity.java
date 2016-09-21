@@ -1,4 +1,4 @@
-package com.pacoworks.dereference;
+package com.pacoworks.dereference.features.global;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.core.reactive.ActivityResult;
 import com.pacoworks.dereference.core.reactive.PermissionResult;
 import com.pacoworks.dereference.core.reactive.buddies.ReactiveActivity;

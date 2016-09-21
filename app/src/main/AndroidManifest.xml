@@ -13,13 +13,13 @@
 
     <application
         tools:replace="android:allowBackup"
-        android:name=".DereferenceApplication"
+        android:name=".features.global.DereferenceApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".features.global.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

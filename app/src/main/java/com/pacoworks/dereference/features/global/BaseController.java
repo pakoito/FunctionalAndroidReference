@@ -1,4 +1,4 @@
-package com.pacoworks.dereference;
+package com.pacoworks.dereference.features.global;
 
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
