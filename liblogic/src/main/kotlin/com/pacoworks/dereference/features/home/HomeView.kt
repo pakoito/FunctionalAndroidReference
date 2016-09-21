@@ -1,7 +1,7 @@
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.reactive.BaseView
-import com.pacoworks.dereference.reactive.None
+import com.pacoworks.dereference.core.reactive.None
+import com.pacoworks.dereference.core.ui.BaseView
 import rx.Observable
 
 interface HomeView: BaseView {

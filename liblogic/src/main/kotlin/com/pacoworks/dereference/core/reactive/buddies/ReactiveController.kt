@@ -1,7 +1,7 @@
-package com.pacoworks.dereference.reactive.buddies
+package com.pacoworks.dereference.core.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.reactive.ConductorLifecycle
+import com.pacoworks.dereference.core.reactive.ConductorLifecycle
 
 class ReactiveController {
 

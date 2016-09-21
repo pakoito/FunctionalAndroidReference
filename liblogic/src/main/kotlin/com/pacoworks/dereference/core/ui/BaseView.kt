@@ -1,4 +1,4 @@
-package com.pacoworks.dereference.reactive
+package com.pacoworks.dereference.core.ui
 
 import com.jakewharton.rxrelay.BehaviorRelay
 import rx.functions.Action2

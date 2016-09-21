@@ -1,9 +1,9 @@
 package com.pacoworks.dereference;
 
+import com.pacoworks.dereference.core.reactive.buddies.ActivityReactiveBuddy;
+import com.pacoworks.dereference.core.ui.Navigator;
 import com.pacoworks.dereference.features.AppState;
 import com.pacoworks.dereference.features.NavigationInteractorKt;
-import com.pacoworks.dereference.features.Navigator;
-import com.pacoworks.dereference.reactive.buddies.ActivityReactiveBuddy;
 
 import rx.android.schedulers.AndroidSchedulers;
 

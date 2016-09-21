@@ -1,5 +1,3 @@
-@file:JvmName("HomeInteractor")
-
 package com.pacoworks.dereference.features.home
 
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM

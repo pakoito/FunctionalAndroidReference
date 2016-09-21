@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
-import com.pacoworks.dereference.features.Navigator;
+import com.pacoworks.dereference.core.reactive.ActivityResult;
+import com.pacoworks.dereference.core.reactive.PermissionResult;
+import com.pacoworks.dereference.core.reactive.buddies.ReactiveActivity;
+import com.pacoworks.dereference.core.ui.Navigator;
 import com.pacoworks.dereference.features.home.HomeScreen;
-import com.pacoworks.dereference.reactive.ActivityResult;
-import com.pacoworks.dereference.reactive.PermissionResult;
-import com.pacoworks.dereference.reactive.buddies.ReactiveActivity;
 
 import java.util.HashMap;
 import java.util.Map;

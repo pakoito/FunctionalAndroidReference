@@ -1,7 +1,8 @@
 package com.pacoworks.dereference.features
 
-import com.pacoworks.dereference.reactive.ActivityLifecycle
-import com.pacoworks.dereference.reactive.buddies.ActivityReactiveBuddy
+import com.pacoworks.dereference.core.ui.Navigator
+import com.pacoworks.dereference.core.reactive.ActivityLifecycle
+import com.pacoworks.dereference.core.reactive.buddies.ActivityReactiveBuddy
 import rx.Scheduler
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription

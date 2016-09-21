@@ -1,4 +1,4 @@
-package com.pacoworks.dereference.reactive
+package com.pacoworks.dereference.core.reactive
 
 enum class ActivityLifecycle {
     Enter, Create, Start, Resume, Pause, Stop, Destroy, Exit

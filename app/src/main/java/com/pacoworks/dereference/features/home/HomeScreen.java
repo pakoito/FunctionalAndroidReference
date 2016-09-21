@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.BaseController;
-import com.pacoworks.dereference.reactive.None;
+import com.pacoworks.dereference.core.reactive.None;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +20,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     public HomeScreen() {
         super();
-        HomeInteractor.start(this, new HomeState());
+        HomeInteractorKt.start(this, new HomeState());
     }
 
     @NonNull

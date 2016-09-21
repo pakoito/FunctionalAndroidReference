@@ -1,4 +1,4 @@
-package com.pacoworks.dereference.reactive
+package com.pacoworks.dereference.core.reactive
 
 sealed class ActivityResult(val requestCode: Int) {
     data class SuccessWithData(private val reqCode: Int, val data : Map<String, Any>) : ActivityResult(reqCode)
