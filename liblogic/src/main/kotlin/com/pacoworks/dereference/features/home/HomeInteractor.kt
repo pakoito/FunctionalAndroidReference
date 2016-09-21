@@ -31,6 +31,7 @@ fun subscribeHomeInteractor(view: HomeViewOutput, state: HomeState) =
 
 private fun startClicks(clicks: Observable<None>, counterState: BehaviorRelay<Int>): Subscription =
         doFM(
-                { clicks },
-                { counterState.first().map { it + 1 } }
+                { counterState },
+                { clicks.first() },
+                { state, click -> Observable.just(state + 1) }
         ).subscribe(counterState)
