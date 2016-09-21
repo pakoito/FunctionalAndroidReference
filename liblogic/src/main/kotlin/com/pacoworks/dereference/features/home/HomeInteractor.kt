@@ -16,7 +16,10 @@
 
 package com.pacoworks.dereference.features.home
 
+import com.jakewharton.rxrelay.BehaviorRelay
+import com.pacoworks.dereference.core.reactive.None
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
+import rx.Observable
 import rx.Subscription
 
 fun startHomeInteractor(view: HomeView, state: HomeState) {
@@ -29,10 +32,10 @@ private fun bindHomeInteractor(view: HomeView, state: HomeState) {
 }
 
 private fun subscribeHomeInteractor(view: HomeView, state: HomeState) =
-        startClicks(view, state)
+        startClicks(view.clicks(), state.counter)
 
-private fun startClicks(view: HomeView, state: HomeState): Subscription =
+private fun startClicks(clicks: Observable<None>, counterState: BehaviorRelay<Int>): Subscription =
         doFM(
-                { view.clicks() },
-                { state.counter.first().map { it + 1 } }
-        ).subscribe(state.counter)
+                { clicks },
+                { counterState.first().map { it + 1 } }
+        ).subscribe(counterState)
