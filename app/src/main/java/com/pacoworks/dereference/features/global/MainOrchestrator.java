@@ -6,6 +6,9 @@ import com.pacoworks.dereference.core.ui.Navigator;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainOrchestrator {
+    private MainOrchestrator() {
+        // No instances
+    }
 
     public static void start(AppState state, Navigator navigator, ActivityReactiveBuddy activityReactiveBuddy) {
         NavigationInteractorKt.subscribeNavigation(state, navigator, activityReactiveBuddy, AndroidSchedulers.mainThread());

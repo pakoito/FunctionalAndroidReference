@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         Router router = Conductor.attachRouter(this, container, savedInstanceState);
         if (savedInstanceState == null) {
             reactiveActivity.onEnter();
+            /* Push initial state manually */
             router.pushController(RouterTransaction.with(new HomeScreen()));
         }
         reactiveActivity.onCreate();
