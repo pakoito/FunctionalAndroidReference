@@ -17,11 +17,12 @@
 package com.pacoworks.dereference.network
 
 import com.pacoworks.dereference.model.github.RepositoryDto
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
-import retrofit.RxJavaCallAdapterFactory
-import retrofit.http.GET
-import retrofit.http.Path
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Path
 import rx.Observable
 
 interface GithubApi {
@@ -29,12 +30,10 @@ interface GithubApi {
     fun listRepos(@Path("user") user: String): Observable<List<RepositoryDto>>
 }
 
-private val RETROFIT_INSTANCE =
+fun createGithubApi(okHttpClient: OkHttpClient): GithubApi =
         Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-fun createGithubApi(): GithubApi =
-        RETROFIT_INSTANCE.create(GithubApi::class.java)
+                .build().create(GithubApi::class.java)

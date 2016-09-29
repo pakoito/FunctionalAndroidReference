@@ -19,15 +19,15 @@ package com.pacoworks.dereference.features.home.services
 import com.pacoworks.dereference.features.home.model.Toon
 import com.pacoworks.dereference.features.home.model.Transaction
 import com.pacoworks.dereference.model.agot.ToonDto
-import com.pacoworks.dereference.network.createAgotApi
+import com.pacoworks.dereference.network.AgotApi
 import com.pacoworks.rxcomprehensions.RxComprehensions
 import rx.Notification
 import rx.Observable
 
-fun requestCharacterInfo(user: String): Observable<Transaction> =
+fun requestCharacterInfo(user: String, agotApi: AgotApi): Observable<Transaction> =
         RxComprehensions.doFM(
                 {
-                    createAgotApi().getCharacterInfo(user)
+                    agotApi.getCharacterInfo(user)
                             .materialize()
                             .filter { it.kind != Notification.Kind.OnCompleted }
                 },

@@ -17,11 +17,12 @@
 package com.pacoworks.dereference.network
 
 import com.pacoworks.dereference.model.agot.ToonDto
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
-import retrofit.RxJavaCallAdapterFactory
-import retrofit.http.GET
-import retrofit.http.Path
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Path
 import rx.Observable
 
 interface AgotApi {
@@ -29,12 +30,10 @@ interface AgotApi {
     fun getCharacterInfo(@Path("id") id: String): Observable<ToonDto>
 }
 
-private val RETROFIT_INSTANCE =
+fun createAgotApi(okHttpClient: OkHttpClient): AgotApi =
         Retrofit.Builder()
                 .baseUrl("http://anapioficeandfire.com/api/")
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-fun createAgotApi(): AgotApi =
-        RETROFIT_INSTANCE.create(AgotApi::class.java)
+                .build().create(AgotApi::class.java)

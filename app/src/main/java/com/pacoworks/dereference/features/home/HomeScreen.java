@@ -27,8 +27,10 @@ import android.widget.Toast;
 
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.features.global.BaseController;
+import com.pacoworks.dereference.features.global.DereferenceApplication;
 import com.pacoworks.dereference.features.home.model.Transaction;
 import com.pacoworks.dereference.features.home.services.HomeAgotServiceKt;
+import com.pacoworks.dereference.network.AgotApiKt;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +48,10 @@ public class HomeScreen extends BaseController implements HomeView {
         HomeInteractorKt.subscribeHomeInteractor(this, state, new Function1<String, Observable<Transaction>>() {
             @Override
             public Observable<Transaction> invoke(String user) {
-                return HomeAgotServiceKt.requestCharacterInfo(user);
+                return HomeAgotServiceKt
+                        .requestCharacterInfo(
+                                user,
+                                AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()));
             }
         });
     }
