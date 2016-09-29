@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.architecture.functional
+package com.pacoworks.dereference.core.functional
 
 sealed class Result<out T> {
     data class Success<out T>(val value: T): Result<T>()

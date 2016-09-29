@@ -17,7 +17,7 @@
 package com.pacoworks.dereference.architecture.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.architecture.functional.None
+import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
 import com.pacoworks.dereference.architecture.reactive.ActivityResult
 import com.pacoworks.dereference.architecture.reactive.PermissionResult

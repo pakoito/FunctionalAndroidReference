@@ -16,7 +16,7 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.architecture.functional.None
+import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.architecture.ui.BoundView
 import com.pacoworks.dereference.features.home.model.Repository
 import rx.Observable

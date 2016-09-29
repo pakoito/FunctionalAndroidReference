@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jakewharton.rxrelay.PublishRelay;
-import com.pacoworks.dereference.architecture.functional.None;
+import com.pacoworks.dereference.core.functional.None;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.home.model.Repository;
 import com.pacoworks.dereference.features.home.model.Transaction;
