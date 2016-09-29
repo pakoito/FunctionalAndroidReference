@@ -16,7 +16,7 @@
 
 package com.pacoworks.dereference.network
 
-import com.pacoworks.dereference.model.github.RepositoryDto
+import com.pacoworks.dereference.model.agot.ToonDto
 import retrofit.GsonConverterFactory
 import retrofit.Retrofit
 import retrofit.RxJavaCallAdapterFactory
@@ -24,17 +24,17 @@ import retrofit.http.GET
 import retrofit.http.Path
 import rx.Observable
 
-interface GithubApi {
-    @GET("users/{user}/repos")
-    fun listRepos(@Path("user") user: String): Observable<List<RepositoryDto>>
+interface AgotApi {
+    @GET("characters/{id}/")
+    fun getCharacterInfo(@Path("id") id: String): Observable<ToonDto>
 }
 
 private val RETROFIT_INSTANCE =
         Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
+                .baseUrl("http://anapioficeandfire.com/api/")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-fun createGithubApi(): GithubApi =
-        RETROFIT_INSTANCE.create(GithubApi::class.java)
+fun createAgotApi(): AgotApi =
+        RETROFIT_INSTANCE.create(AgotApi::class.java)

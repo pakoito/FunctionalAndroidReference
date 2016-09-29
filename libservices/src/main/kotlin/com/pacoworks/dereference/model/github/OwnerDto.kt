@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.model
+package com.pacoworks.dereference.model.github
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
