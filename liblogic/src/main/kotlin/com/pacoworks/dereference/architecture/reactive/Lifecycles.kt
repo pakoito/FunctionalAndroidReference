@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.functional
+package com.pacoworks.dereference.architecture.reactive
 
-enum class None {
-    VOID
+enum class ActivityLifecycle {
+    Enter, Create, Start, Resume, Pause, Stop, Destroy, Exit
+}
+
+enum class ConductorLifecycle {
+    Enter, Create, Attach, Detach, Destroy, Exit
 }

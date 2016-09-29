@@ -16,7 +16,7 @@
 
 package com.pacoworks.dereference.features.home.services
 
-import com.pacoworks.dereference.core.functional.Result
+import com.pacoworks.dereference.architecture.functional.Result
 import com.pacoworks.dereference.features.home.model.Repository
 import com.pacoworks.dereference.features.home.model.Transaction
 import com.pacoworks.dereference.model.RepositoryDto

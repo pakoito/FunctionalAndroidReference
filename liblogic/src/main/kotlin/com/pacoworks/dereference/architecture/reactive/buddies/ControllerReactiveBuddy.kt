@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.ui
+package com.pacoworks.dereference.architecture.reactive.buddies
 
-import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.core.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 import rx.Observable
-import rx.Subscription
 
-fun <T> bind(lifecycleObservable: Observable<ConductorLifecycle>, mainThreadScheduler: rx.Scheduler, state: BehaviorRelay<T>, doView: (T) -> Unit): Subscription =
-        lifecycleObservable
-                .filter { it == ConductorLifecycle.Attach }
-                .takeUntil { it == ConductorLifecycle.Detach }
-                .flatMap { state }
-                .observeOn(mainThreadScheduler)
-                .subscribe(doView)
+interface ControllerReactiveBuddy {
+    fun lifecycle(): Observable<ConductorLifecycle>
+}
+

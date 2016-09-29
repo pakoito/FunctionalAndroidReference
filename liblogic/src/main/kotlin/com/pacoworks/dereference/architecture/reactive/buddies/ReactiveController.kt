@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.reactive.buddies
+package com.pacoworks.dereference.architecture.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.core.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 
 class ReactiveController {
 

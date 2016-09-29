@@ -16,11 +16,11 @@
 
 package com.pacoworks.dereference.features.global
 
-import com.pacoworks.dereference.core.reactive.ActivityLifecycle
-import com.pacoworks.dereference.core.reactive.buddies.ActivityReactiveBuddy
-import com.pacoworks.dereference.core.ui.Direction
-import com.pacoworks.dereference.core.ui.Navigator
-import com.pacoworks.dereference.core.ui.createHome
+import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
+import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy
+import com.pacoworks.dereference.architecture.ui.Direction
+import com.pacoworks.dereference.architecture.ui.Navigator
+import com.pacoworks.dereference.architecture.ui.createHome
 import org.javatuples.Pair
 import rx.Scheduler
 import rx.Subscription

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.functional
+package com.pacoworks.dereference.architecture.reactive
 
-sealed class Result<out T> {
-    data class Success<out T>(val value: T): Result<T>()
-    object Failure: Result<Nothing>()
+sealed class PermissionResult(open val requestCode: Int, open val permission: String) {
+    data class Success(override val requestCode: Int, override val permission: String) : PermissionResult(requestCode, permission)
+    data class Failure(override val requestCode: Int, override val permission: String) : PermissionResult(requestCode, permission)
 }

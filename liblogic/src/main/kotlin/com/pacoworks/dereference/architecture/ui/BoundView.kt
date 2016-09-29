@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.ui
+package com.pacoworks.dereference.architecture.ui
 
-import com.pacoworks.rxsealedunions.Union0
-import com.pacoworks.rxsealedunions.generic.GenericUnions
+import com.jakewharton.rxrelay.BehaviorRelay
+import rx.functions.Action2
 
-typealias Screen = Union0<Home>
-
-enum class Direction {
-    BACK, FORWARD
+interface BoundView {
+    fun <T> createBinder(): Action2<BehaviorRelay<T>, (T) -> Unit>
 }
-
-val SCREEN_FACTORY: Union0.Factory<Home> = GenericUnions.nulletFactory<Home>()
-
-sealed class Screens(open val id: String = "")
-
-data class Home(override val id: String = ""): Screens(id)
-
-fun createHome(): Union0<Home> = SCREEN_FACTORY.first(Home())

@@ -25,11 +25,11 @@ import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Controller;
 import com.jakewharton.rxrelay.BehaviorRelay;
-import com.pacoworks.dereference.core.reactive.ConductorLifecycle;
-import com.pacoworks.dereference.core.reactive.buddies.ControllerReactiveBuddy;
-import com.pacoworks.dereference.core.reactive.buddies.ReactiveController;
-import com.pacoworks.dereference.core.ui.BoundView;
-import com.pacoworks.dereference.core.ui.ControllerBinderKt;
+import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle;
+import com.pacoworks.dereference.architecture.reactive.buddies.ControllerReactiveBuddy;
+import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveController;
+import com.pacoworks.dereference.architecture.ui.BoundView;
+import com.pacoworks.dereference.architecture.ui.ControllerBinderKt;
 import com.pacoworks.rxpartialapplication.RxPartialAction;
 
 import kotlin.Unit;

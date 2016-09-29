@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.reactive.buddies
+package com.pacoworks.dereference.architecture.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.core.functional.None
-import com.pacoworks.dereference.core.reactive.ActivityLifecycle
-import com.pacoworks.dereference.core.reactive.ActivityResult
-import com.pacoworks.dereference.core.reactive.PermissionResult
+import com.pacoworks.dereference.architecture.functional.None
+import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
+import com.pacoworks.dereference.architecture.reactive.ActivityResult
+import com.pacoworks.dereference.architecture.reactive.PermissionResult
 
 class ReactiveActivity {
 

@@ -17,7 +17,7 @@
 package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.core.functional.None
+import com.pacoworks.dereference.architecture.functional.None
 import com.pacoworks.dereference.features.home.model.Transaction
 import com.pacoworks.dereference.features.home.model.Transaction.*
 import rx.Observable

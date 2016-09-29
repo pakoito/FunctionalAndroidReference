@@ -26,10 +26,10 @@ import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.pacoworks.dereference.R;
-import com.pacoworks.dereference.core.reactive.ActivityResult;
-import com.pacoworks.dereference.core.reactive.PermissionResult;
-import com.pacoworks.dereference.core.reactive.buddies.ReactiveActivity;
-import com.pacoworks.dereference.core.ui.Navigator;
+import com.pacoworks.dereference.architecture.reactive.ActivityResult;
+import com.pacoworks.dereference.architecture.reactive.PermissionResult;
+import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveActivity;
+import com.pacoworks.dereference.architecture.ui.Navigator;
 import com.pacoworks.dereference.features.home.HomeScreen;
 
 import java.util.HashMap;

@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.ui
+package com.pacoworks.dereference.architecture.functional
 
-import com.pacoworks.rxsealedunions.Union1
-
-interface Navigator {
-    fun goTo(screen: Screen)
-
-    fun goBack(): Union1<Screen>
+enum class None {
+    VOID
 }

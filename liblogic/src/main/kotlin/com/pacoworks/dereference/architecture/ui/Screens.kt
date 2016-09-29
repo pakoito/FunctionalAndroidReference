@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.reactive.buddies
+package com.pacoworks.dereference.architecture.ui
 
-import com.pacoworks.dereference.core.functional.None
-import com.pacoworks.dereference.core.reactive.ActivityLifecycle
-import com.pacoworks.dereference.core.reactive.ActivityResult
-import com.pacoworks.dereference.core.reactive.PermissionResult
-import rx.Observable
+import com.pacoworks.rxsealedunions.Union0
+import com.pacoworks.rxsealedunions.generic.GenericUnions
 
-interface ActivityReactiveBuddy {
-    fun lifecycle(): Observable<ActivityLifecycle>
+typealias Screen = Union0<Home>
 
-    fun activityResult(): Observable<ActivityResult>
-
-    fun permissionResult(): Observable<PermissionResult>
-
-    fun back(): Observable<None>
+enum class Direction {
+    BACK, FORWARD
 }
+
+val SCREEN_FACTORY: Union0.Factory<Home> = GenericUnions.nulletFactory<Home>()
+
+sealed class Screens(open val id: String = "")
+
+data class Home(override val id: String = ""): Screens(id)
+
+fun createHome(): Union0<Home> = SCREEN_FACTORY.first(Home())

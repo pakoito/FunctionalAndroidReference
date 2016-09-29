@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.reactive
+package com.pacoworks.dereference.architecture.functional
 
-sealed class ActivityResult(open val requestCode: Int) {
-    data class SuccessWithData(override val requestCode: Int, val data : Map<String, Any>) : ActivityResult(requestCode)
-    data class FailureWithData(override val requestCode: Int, val data : Map<String, Any>) : ActivityResult(requestCode)
-    data class Success(override val requestCode: Int) : ActivityResult(requestCode)
-    data class Failure(override val requestCode: Int) : ActivityResult(requestCode)
+sealed class Result<out T> {
+    data class Success<out T>(val value: T): Result<T>()
+    object Failure: Result<Nothing>()
 }
