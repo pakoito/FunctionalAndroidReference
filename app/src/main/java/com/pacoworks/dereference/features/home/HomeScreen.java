@@ -82,8 +82,8 @@ public class HomeScreen extends BaseController implements HomeView {
     }
 
     @Override
-    public void setLoading() {
-        setTitle("Loading");
+    public void setLoading(@NotNull String user) {
+        setTitle("Loading " + user);
         getView().setEnabled(false);
     }
 

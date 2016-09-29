@@ -23,7 +23,7 @@ import rx.Observable
 interface HomeView: HomeViewInput, HomeViewOutput
 
 interface HomeViewInput : BoundView {
-    fun setLoading()
+    fun setLoading(user: String)
 
     fun showError(reason: String)
 

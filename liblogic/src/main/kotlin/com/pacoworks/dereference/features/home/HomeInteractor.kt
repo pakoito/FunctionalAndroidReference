@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 fun bindHomeInteractor(view: HomeViewInput, state: HomeState) {
     view.createBinder<Transaction>().call(state.transaction, {
         when (it) {
-            is Loading -> view.setLoading()
+            is Loading -> view.setLoading(it.user.name)
             is Failure -> view.showError(it.reason)
             is WaitingForRetry -> view.setWaiting(it.seconds)
             is Success -> view.showRepos(it.repositories)
