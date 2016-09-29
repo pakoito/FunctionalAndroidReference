@@ -1,10 +1,9 @@
-package com.pacoworks.dereference;
 
-import com.pacoworks.dereference.features.None;
+package com.pacoworks.dereference;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -15,6 +14,5 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
-        assertEquals(new None(), new None());
     }
 }
