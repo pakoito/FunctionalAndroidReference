@@ -38,11 +38,11 @@ import rx.Observable;
 public class HomeScreen extends BaseController implements HomeView {
 
     private PublishRelay<String> userPublishRelay = PublishRelay.create();
+    private final HomeState state;
 
     public HomeScreen() {
         super();
-        final HomeState state = new HomeState();
-        HomeInteractorKt.bindHomeInteractor(this, state);
+        state = new HomeState();
         HomeInteractorKt.subscribeHomeInteractor(this, state, new Function1<String, Observable<Transaction>>() {
             @Override
             public Observable<Transaction> invoke(String user) {
@@ -72,6 +72,11 @@ public class HomeScreen extends BaseController implements HomeView {
             }
         });
         return textView;
+    }
+
+    @Override
+    protected void attachBinders() {
+        HomeInteractorKt.bindHomeInteractor(this, state);
     }
 
     public void setTitle(@NonNull String title) {

@@ -67,8 +67,11 @@ public abstract class BaseController extends Controller implements BoundView {
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
+        attachBinders();
         reactiveController.onAttach();
     }
+
+    protected abstract void attachBinders();
 
     @Override
     protected void onDetach(@NonNull View view) {
