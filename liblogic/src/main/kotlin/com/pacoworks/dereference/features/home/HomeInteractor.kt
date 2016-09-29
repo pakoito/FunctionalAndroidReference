@@ -76,7 +76,8 @@ private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<T
                 { transaction.filter { it is Success }.first() },
                 /* If the user hasn't changed since the previous reload */
                 { currentUser, trans ->
-                    user.first().filter { it != currentUser }.map { Loading(it) }
+                    /* Skip the current value. New version will arrive later. */
+                    user.skip(1).first().filter { it != currentUser }.map { Loading(it) }
                 }
         )
                 .subscribe(transaction)
