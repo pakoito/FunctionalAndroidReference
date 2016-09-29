@@ -46,11 +46,14 @@ dependencies {
     compile 'com.bluelinelabs:conductor-support:2.0.1'
 
     // Business logic
+    compile project(':libcore')
     compile project (':liblogic')
+    compile project (':libservices')
+    compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
+
+    // Logging
     compile 'com.jakewharton.timber:timber:4.3.1'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
 
     // Debug
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'

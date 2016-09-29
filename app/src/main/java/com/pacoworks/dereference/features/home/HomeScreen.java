@@ -23,11 +23,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jakewharton.rxrelay.PublishRelay;
+import com.pacoworks.dereference.core.functional.None;
 import com.pacoworks.dereference.features.global.BaseController;
-import com.pacoworks.dereference.core.reactive.None;
+import com.pacoworks.dereference.features.home.model.Repository;
+import com.pacoworks.dereference.features.home.model.Transaction;
+import com.pacoworks.dereference.features.home.services.HomeNetworkServiceKt;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
+import kotlin.jvm.functions.Function1;
 import rx.Observable;
 
 public class HomeScreen extends BaseController implements HomeView {
@@ -38,7 +44,12 @@ public class HomeScreen extends BaseController implements HomeView {
         super();
         final HomeState state = new HomeState();
         HomeInteractorKt.bindHomeInteractor(this, state);
-        HomeInteractorKt.subscribeHomeInteractor(this, state);
+        HomeInteractorKt.subscribeHomeInteractor(this, state, new Function1<String, Observable<Transaction>>() {
+            @Override
+            public Observable<Transaction> invoke(String user) {
+                return HomeNetworkServiceKt.requestRepositoriesForUser(user);
+            }
+        });
     }
 
     @NonNull
@@ -64,5 +75,30 @@ public class HomeScreen extends BaseController implements HomeView {
     @Override
     public Observable<None> clicks() {
         return mClicksPRelay.asObservable();
+    }
+
+    @Override
+    public void setEmpty() {
+
+    }
+
+    @Override
+    public void setLoading() {
+
+    }
+
+    @Override
+    public void showError(@NotNull String reason) {
+
+    }
+
+    @Override
+    public void setWaiting(int seconds) {
+
+    }
+
+    @Override
+    public void showRepos(@NotNull List<Repository> repositories) {
+
     }
 }

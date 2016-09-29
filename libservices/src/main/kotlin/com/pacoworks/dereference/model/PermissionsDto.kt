@@ -14,4 +14,19 @@
  * limitations under the License.
  */
 
-include ':app', ':liblogic', ':libservices', ':libcore'
+package com.pacoworks.dereference.model
+
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+data class PermissionsDto(
+        @SerializedName("admin")
+        @Expose
+        var admin: Boolean = false,
+        @SerializedName("push")
+        @Expose
+        var push: Boolean = false,
+        @SerializedName("pull")
+        @Expose
+        var pull: Boolean = false
+)
