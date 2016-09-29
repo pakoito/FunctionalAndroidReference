@@ -97,14 +97,10 @@ public abstract class BaseController extends Controller implements BoundView {
                 ControllerBinderKt.bind(lifecycle, AndroidSchedulers.mainThread(), state, view);
             }
 
-        }, reactiveController.createBuddy().lifecycle());
+        }, createBuddy().lifecycle());
     }
 
     protected ControllerReactiveBuddy createBuddy() {
         return reactiveController.createBuddy();
-    }
-
-    protected MainActivity getCastedActivity() {
-        return (MainActivity) getActivity();
     }
 }
