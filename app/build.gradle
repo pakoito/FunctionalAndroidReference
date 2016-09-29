@@ -44,11 +44,16 @@ dependencies {
     // UI
     compile 'com.bluelinelabs:conductor:2.0.1'
     compile 'com.bluelinelabs:conductor-support:2.0.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 
     // Business logic
     compile project(':libcore')
-    compile project (':liblogic')
-    compile project (':libservices')
+    compile project(':liblogic')
+    compile project(':libservices')
     compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
 
