@@ -17,9 +17,10 @@
 package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.features.home.model.Transaction
 import com.pacoworks.dereference.features.home.model.Transaction.*
+import com.pacoworks.dereference.features.home.model.UserInput
+import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -37,29 +38,51 @@ fun bindHomeInteractor(view: HomeViewInput, state: HomeState) {
 }
 
 fun subscribeHomeInteractor(view: HomeViewOutput, state: HomeState, services: (String) -> Observable<Transaction>) =
-        CompositeSubscription(handleLoad(state.transaction, services),
-                handleReload(view.clicks(), state.transaction), handleRetryAfterError(state.transaction))
+        CompositeSubscription(
+                handleUserChanges(view, state.user),
+                handleLoad(state.transaction, services),
+                handleReload(state.user, state.transaction),
+                handleRetryAfterError(state.user, state.transaction))
+
+fun handleUserChanges(view: HomeViewOutput, user: BehaviorRelay<UserInput>): Subscription =
+        view.enterUser()
+                .debounce(1, TimeUnit.SECONDS)
+                .flatMap {
+                    if (it.length > 3) {
+                        Observable.just(UserInput(it))
+                    } else {
+                        Observable.empty()
+                    }
+                }
+                .subscribe(user)
 
 private fun handleLoad(transaction: BehaviorRelay<Transaction>, services: (String) -> Observable<Transaction>): Subscription =
-        transaction.filter { it is Loading }
-                .switchMap { services.invoke("pakoito") }
+        transaction.ofType(Loading::class.java)
+                .switchMap { services.invoke(it.user.name) }
                 .subscribe(transaction)
 
-private fun handleReload(clicks: Observable<None>, transaction: BehaviorRelay<Transaction>): Subscription =
-        transaction.filter { it is Success }
-                .flatMap { clicks.first() }
-                .map { Loading }
+private fun handleReload(user: Observable<UserInput>, transaction: BehaviorRelay<Transaction>): Subscription =
+        doFM(
+                { user },
+                { transaction.filter { it is Success }.first() },
+                /* If the user hasn't changed since the previous reload */
+                { currentUser, trans ->
+                    user.first().filter { it != currentUser }
+                }
+        )
+                .map { Loading(it) }
                 .subscribe(transaction)
 
-private fun handleRetryAfterError(transaction: BehaviorRelay<Transaction>): Subscription =
+private fun handleRetryAfterError(user: Observable<UserInput>, transaction: BehaviorRelay<Transaction>): Subscription =
         transaction
                 .filter { it is Failure }
                 .flatMap {
                     Observable.interval(1, TimeUnit.SECONDS)
                             .startWith(0)
-                            .map { WaitingForRetry((countdown - it).toInt()) as Transaction}
-                            .take(countdown)
-                            .concatWith(Observable.just(Loading))
+                            .map { WaitingForRetry((countdown - it).toInt()) as Transaction }
+                            /* Countdown plus initial value plus zero */
+                            .take(countdown + 2)
+                            .concatWith(user.first().map { Loading(it) })
                 }
                 .subscribe(transaction)
 

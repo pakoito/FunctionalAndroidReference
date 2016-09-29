@@ -17,13 +17,15 @@
 package com.pacoworks.dereference.features.home;
 
 import android.support.annotation.NonNull;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jakewharton.rxrelay.PublishRelay;
-import com.pacoworks.dereference.core.functional.None;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.home.model.Repository;
 import com.pacoworks.dereference.features.home.model.Transaction;
@@ -38,7 +40,7 @@ import rx.Observable;
 
 public class HomeScreen extends BaseController implements HomeView {
 
-    private final PublishRelay<None> mClicksPRelay = PublishRelay.create();
+    private PublishRelay<String> userPublishRelay = PublishRelay.create();
 
     public HomeScreen() {
         super();
@@ -55,50 +57,60 @@ public class HomeScreen extends BaseController implements HomeView {
     @NonNull
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        final TextView textView = new TextView(container.getContext());
-        textView.setText("slsgsagasfgasfgk\nfjghlkasjfhgkljashgaakljhskljghsk\nljghksjhg");
-        textView.setOnClickListener(new View.OnClickListener() {
+        final EditText textView = new EditText(container.getContext());
+        textView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                mClicksPRelay.call(None.VOID);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                userPublishRelay.call(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
         return textView;
     }
 
-    @Override
     public void setTitle(@NonNull String title) {
         getActivity().setTitle(title);
     }
 
-    @NotNull
-    @Override
-    public Observable<None> clicks() {
-        return mClicksPRelay.asObservable();
-    }
-
-    @Override
-    public void setEmpty() {
-
-    }
-
     @Override
     public void setLoading() {
-
+        setTitle("Loading");
+        getView().setEnabled(false);
     }
 
     @Override
     public void showError(@NotNull String reason) {
+        setTitle("Error");
+        Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+        getView().setEnabled(false);
 
     }
 
     @Override
     public void setWaiting(int seconds) {
-
+        setTitle("Reloading in " + seconds);
+        getView().setEnabled(false);
     }
 
     @Override
     public void showRepos(@NotNull List<Repository> repositories) {
+        setTitle("Success");
+        getView().setEnabled(true);
 
+    }
+
+    @NotNull
+    @Override
+    public Observable<String> enterUser() {
+        return userPublishRelay;
     }
 }

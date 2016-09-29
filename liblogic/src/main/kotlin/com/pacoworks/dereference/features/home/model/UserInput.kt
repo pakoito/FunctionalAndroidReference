@@ -16,9 +16,4 @@
 
 package com.pacoworks.dereference.features.home.model
 
-sealed class Transaction {
-    data class Loading(val user: UserInput) : Transaction()
-    data class Success(val repositories: List<Repository>) : Transaction()
-    data class Failure(val reason: String) : Transaction()
-    data class WaitingForRetry(val seconds: Int) : Transaction()
-}
+data class UserInput(val name: String)

@@ -16,7 +16,6 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.architecture.ui.BoundView
 import com.pacoworks.dereference.features.home.model.Repository
 import rx.Observable
@@ -24,10 +23,6 @@ import rx.Observable
 interface HomeView: HomeViewInput, HomeViewOutput
 
 interface HomeViewInput : BoundView {
-    fun setTitle(title: String)
-
-    fun setEmpty()
-
     fun setLoading()
 
     fun showError(reason: String)
@@ -38,5 +33,5 @@ interface HomeViewInput : BoundView {
 }
 
 interface HomeViewOutput {
-    fun clicks(): Observable<None>
+    fun enterUser(): Observable<String>
 }

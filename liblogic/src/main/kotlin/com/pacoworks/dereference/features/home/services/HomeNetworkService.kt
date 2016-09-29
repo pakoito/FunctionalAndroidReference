@@ -27,11 +27,21 @@ import rx.Observable
 
 fun requestRepositoriesForUser(user: String): Observable<Transaction> =
         RxComprehensions.doFM(
-                { createGithubApi().listRepos(user).materialize() },
+                {
+                    createGithubApi().listRepos(user)
+                            .materialize()
+                            .filter { it.kind != Notification.Kind.OnCompleted }
+                },
                 { result: Notification<List<RepositoryDto>> ->
                     Observable.just(when (result.kind) {
                         Notification.Kind.OnNext -> validate(result.value)
-                        Notification.Kind.OnError -> Transaction.Failure(result.throwable.message!!)
+                        Notification.Kind.OnError ->
+                            Transaction.Failure(
+                                    if (result.throwable?.message == null) {
+                                        ""
+                                    } else {
+                                        result.throwable.message!!
+                                    })
                         else -> Transaction.Failure("Completed without results")
                     })
                 }
@@ -39,13 +49,15 @@ fun requestRepositoriesForUser(user: String): Observable<Transaction> =
 
 private fun validate(value: List<RepositoryDto>): Transaction =
         Observable.from(value)
-                .collect({ Result.Success(mutableListOf<Repository>()) }, {
-                    accumulator: Result<MutableList<Repository>>, value ->
-                    when (accumulator) {
-                        is Result.Failure -> accumulator
-                        is Result.Success -> convert(accumulator.value, value)
-                    }
-                })
+                .collect(
+                        { Result.Success(mutableListOf<Repository>()) },
+                        {
+                            accumulator: Result<MutableList<Repository>>, value ->
+                            when (accumulator) {
+                                is Result.Failure -> accumulator
+                                is Result.Success -> convert(accumulator.value, value)
+                            }
+                        })
                 .map { result: Result<MutableList<Repository>> ->
                     when (result) {
                         is Result.Failure -> Transaction.Failure("Repositories could not be validated")
