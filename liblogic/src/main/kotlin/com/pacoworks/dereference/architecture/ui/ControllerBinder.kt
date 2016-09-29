@@ -24,7 +24,7 @@ import rx.Subscription
 fun <T> bind(lifecycleObservable: Observable<ConductorLifecycle>, mainThreadScheduler: rx.Scheduler, state: BehaviorRelay<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ConductorLifecycle.Attach }
-                .takeUntil { it == ConductorLifecycle.Detach }
                 .flatMap { state }
+                .takeUntil(lifecycleObservable.filter { it == ConductorLifecycle.Detach })
                 .observeOn(mainThreadScheduler)
                 .subscribe(doView)
