@@ -37,13 +37,12 @@ private fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: 
                 .skip(1)
                 .filter { it.value1 == Direction.FORWARD }
                 .map { it.value0 }
-                .observeOn(mainThreadScheduler)
                 .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
+                .observeOn(mainThreadScheduler)
                 .subscribe { navigator.goTo(it) }
 
 private fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, state: AppState): Subscription =
         activityReactiveBuddy.back()
-                .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
                 .map {
                     navigator.goBack()
                             .join(
@@ -52,4 +51,6 @@ private fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator:
                                     /* If back to exit app, reset to initial state */
                                     { Pair.with(createHome(), Direction.FORWARD) }
                             )
-                }.subscribe(state.navigation)
+                }
+                .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
+                .subscribe(state.navigation)
