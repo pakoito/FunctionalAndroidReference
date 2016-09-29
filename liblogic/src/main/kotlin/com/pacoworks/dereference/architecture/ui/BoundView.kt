@@ -16,9 +16,8 @@
 
 package com.pacoworks.dereference.architecture.ui
 
-import com.jakewharton.rxrelay.BehaviorRelay
 import rx.functions.Action2
 
 interface BoundView {
-    fun <T> createBinder(): Action2<BehaviorRelay<T>, (T) -> Unit>
+    fun <T> createBinder(): Action2<StateHolder<T>, (T) -> Unit>
 }

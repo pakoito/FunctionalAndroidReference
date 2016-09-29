@@ -27,13 +27,10 @@ import android.widget.Toast;
 
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.features.global.BaseController;
-import com.pacoworks.dereference.features.home.model.Repository;
 import com.pacoworks.dereference.features.home.model.Transaction;
-import com.pacoworks.dereference.features.home.services.HomeNetworkServiceKt;
+import com.pacoworks.dereference.features.home.services.HomeAgotServiceKt;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import kotlin.jvm.functions.Function1;
 import rx.Observable;
@@ -49,7 +46,7 @@ public class HomeScreen extends BaseController implements HomeView {
         HomeInteractorKt.subscribeHomeInteractor(this, state, new Function1<String, Observable<Transaction>>() {
             @Override
             public Observable<Transaction> invoke(String user) {
-                return HomeNetworkServiceKt.requestRepositoriesForUser(user);
+                return HomeAgotServiceKt.requestCharacterInfo(user);
             }
         });
     }
@@ -92,7 +89,6 @@ public class HomeScreen extends BaseController implements HomeView {
         setTitle("Error");
         Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
         getView().setEnabled(false);
-
     }
 
     @Override
@@ -102,10 +98,9 @@ public class HomeScreen extends BaseController implements HomeView {
     }
 
     @Override
-    public void showRepos(@NotNull List<Repository> repositories) {
-        setTitle("Success");
+    public void showRepos(@NotNull String value) {
+        setTitle("Hello " + value);
         getView().setEnabled(true);
-
     }
 
     @NotNull

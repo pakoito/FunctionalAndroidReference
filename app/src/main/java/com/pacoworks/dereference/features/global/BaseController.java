@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Controller;
-import com.jakewharton.rxrelay.BehaviorRelay;
+import com.jakewharton.rxrelay.SerializedRelay;
 import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle;
 import com.pacoworks.dereference.architecture.reactive.buddies.ControllerReactiveBuddy;
 import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveController;
@@ -90,10 +90,10 @@ public abstract class BaseController extends Controller implements BoundView {
 
     @Override
     @NonNull
-    public <T> Action2<BehaviorRelay<T>, Function1<T, Unit>> createBinder() {
-        return RxPartialAction.apply(new Action3<Observable<ConductorLifecycle>, BehaviorRelay<T>, Function1<T, Unit>>() {
+    public <T> Action2<SerializedRelay<T, T>, Function1<T, Unit>> createBinder() {
+        return RxPartialAction.apply(new Action3<Observable<ConductorLifecycle>, SerializedRelay<T, T>, Function1<T, Unit>>() {
             @Override
-            public void call(Observable<ConductorLifecycle> lifecycle, BehaviorRelay<T> state, Function1<T, Unit> view) {
+            public void call(Observable<ConductorLifecycle> lifecycle, SerializedRelay<T, T> state, Function1<T, Unit> view) {
                 ControllerBinderKt.bind(lifecycle, AndroidSchedulers.mainThread(), state, view);
             }
 
