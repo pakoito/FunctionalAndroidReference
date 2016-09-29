@@ -14,29 +14,11 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home
+package com.pacoworks.dereference.features.home.model
 
-import com.pacoworks.dereference.core.functional.None
-import com.pacoworks.dereference.core.ui.BoundView
-import com.pacoworks.dereference.features.home.model.Repository
-import rx.Observable
-
-interface HomeView: HomeViewInput, HomeViewOutput
-
-interface HomeViewInput : BoundView {
-    fun setTitle(title: String)
-
-    fun setEmpty()
-
-    fun setLoading()
-
-    fun showError(reason: String)
-
-    fun setWaiting(seconds: Int)
-
-    fun showRepos(repositories: List<Repository>)
-}
-
-interface HomeViewOutput {
-    fun clicks(): Observable<None>
+sealed class Transaction {
+    object Loading : Transaction()
+    data class Success(val repositories: List<Repository>) : Transaction()
+    data class Failure(val reason: String) : Transaction()
+    data class WaitingForRetry(val seconds: Int) : Transaction()
 }

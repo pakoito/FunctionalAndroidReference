@@ -16,9 +16,9 @@
 
 package com.pacoworks.dereference.core.reactive.buddies
 
+import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.core.reactive.ActivityLifecycle
 import com.pacoworks.dereference.core.reactive.ActivityResult
-import com.pacoworks.dereference.core.reactive.None
 import com.pacoworks.dereference.core.reactive.PermissionResult
 import rx.Observable
 

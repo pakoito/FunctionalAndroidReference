@@ -17,20 +17,20 @@
 package com.pacoworks.dereference.core.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
+import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.core.reactive.ActivityLifecycle
 import com.pacoworks.dereference.core.reactive.ActivityResult
-import com.pacoworks.dereference.core.reactive.None
 import com.pacoworks.dereference.core.reactive.PermissionResult
 
 class ReactiveActivity {
 
-    val lifecycleRelay = BehaviorRelay.create<ActivityLifecycle>()
+    val lifecycleRelay: BehaviorRelay<ActivityLifecycle> = BehaviorRelay.create<ActivityLifecycle>()
 
-    val activityResultRelay = BehaviorRelay.create<ActivityResult>()
+    val activityResultRelay: BehaviorRelay<ActivityResult> = BehaviorRelay.create<ActivityResult>()
 
-    val permissionResultRelay = BehaviorRelay.create<PermissionResult>()
+    val permissionResultRelay: BehaviorRelay<PermissionResult> = BehaviorRelay.create<PermissionResult>()
 
-    val onBackRelay = BehaviorRelay.create<None>()
+    val onBackRelay: BehaviorRelay<None> = BehaviorRelay.create<None>()
 
     private fun call(lifecycle: ActivityLifecycle) = lifecycleRelay.call(lifecycle)
 

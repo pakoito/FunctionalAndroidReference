@@ -17,7 +17,8 @@
 package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.BehaviorRelay
+import com.pacoworks.dereference.features.home.model.Transaction
 
 class HomeState(
-        val counter: BehaviorRelay<Int> = BehaviorRelay.create(1)
+        val transaction: BehaviorRelay<Transaction> = BehaviorRelay.create(Transaction.Loading)
 )
