@@ -49,7 +49,7 @@ fun subscribeHomeInteractor(view: HomeViewOutput, state: HomeState, services: (S
 fun handleUserInput(view: HomeViewOutput, user: StateHolder<UserInput>): Subscription =
         view.enterUser()
                 .debounce(1, TimeUnit.SECONDS)
-                .flatMap {
+                .switchMap {
                     if (it.length > 0) {
                         Observable.just(UserInput(it))
                     } else {
