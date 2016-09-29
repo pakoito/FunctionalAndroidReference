@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.core.reactive
+package com.pacoworks.dereference.core.functional
 
 enum class None {
     VOID
