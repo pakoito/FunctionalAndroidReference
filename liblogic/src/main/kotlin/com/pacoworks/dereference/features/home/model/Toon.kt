@@ -14,23 +14,6 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home
+package com.pacoworks.dereference.features.home.model
 
-import com.pacoworks.dereference.architecture.ui.BoundView
-import rx.Observable
-
-interface HomeView: HomeViewInput, HomeViewOutput
-
-interface HomeViewInput : BoundView {
-    fun setLoading(user: String)
-
-    fun showError(reason: String)
-
-    fun setWaiting(seconds: Int)
-
-    fun showRepos(value: String)
-}
-
-interface HomeViewOutput {
-    fun enterUser(): Observable<String>
-}
+data class Toon(val name: String)

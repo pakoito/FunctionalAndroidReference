@@ -16,14 +16,7 @@
 
 package com.pacoworks.dereference.features.home.services
 
-import com.pacoworks.dereference.core.functional.Result
-import com.pacoworks.dereference.features.home.model.Repository
-import com.pacoworks.dereference.features.home.model.Transaction
-import com.pacoworks.dereference.model.RepositoryDto
-import com.pacoworks.dereference.network.createGithubApi
-import com.pacoworks.rxcomprehensions.RxComprehensions
-import rx.Notification
-import rx.Observable
+/*
 
 fun requestRepositoriesForUser(user: String): Observable<Transaction> =
         RxComprehensions.doFM(
@@ -70,4 +63,4 @@ private fun convert(elements: MutableList<Repository>, addition: RepositoryDto) 
             Result.Success(elements.add(Repository(addition.id, addition.fullName!!)))
         } else {
             Result.Failure
-        }
+        }*/

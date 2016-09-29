@@ -17,10 +17,11 @@
 package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.BehaviorRelay
+import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.features.home.model.Transaction
 import com.pacoworks.dereference.features.home.model.UserInput
 
 class HomeState(
-        val transaction: BehaviorRelay<Transaction> = BehaviorRelay.create(Transaction.Loading(UserInput("pakoito"))),
-        val user: BehaviorRelay<UserInput> = BehaviorRelay.create(UserInput("pakoito"))
+        val transaction: SerializedRelay<Transaction, Transaction> = SerializedRelay(BehaviorRelay.create<Transaction>(Transaction.Idle)),
+        val user: SerializedRelay<UserInput, UserInput> = SerializedRelay(BehaviorRelay.create())
 )

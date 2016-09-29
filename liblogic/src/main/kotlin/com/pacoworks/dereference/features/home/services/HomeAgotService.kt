@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) pakoito 2016
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.pacoworks.dereference.features.home.services
+
+import com.pacoworks.dereference.features.home.model.Toon
+import com.pacoworks.dereference.features.home.model.Transaction
+import com.pacoworks.dereference.model.agot.ToonDto
+import com.pacoworks.dereference.network.createAgotApi
+import com.pacoworks.rxcomprehensions.RxComprehensions
+import rx.Notification
+import rx.Observable
+
+fun requestCharacterInfo(user: String): Observable<Transaction> =
+        RxComprehensions.doFM(
+                {
+                    createAgotApi().getCharacterInfo(user)
+                            .materialize()
+                            .filter { it.kind != Notification.Kind.OnCompleted }
+                },
+                { result: Notification<ToonDto> ->
+                    Observable.just(when (result.kind) {
+                        Notification.Kind.OnNext -> validate(result.value)
+                        Notification.Kind.OnError ->
+                            Transaction.Failure(
+                                    if (result.throwable?.message == null) {
+                                        ""
+                                    } else {
+                                        result.throwable.message!!
+                                    })
+                        else -> Transaction.Failure("Completed without results")
+                    })
+                }
+        )
+
+private fun validate(value: ToonDto): Transaction =
+        value.name.let {
+            if (it == null) {
+                Transaction.Failure("Character could not be validated")
+            } else {
+                Transaction.Success(Toon(it))
+            }
+        }
