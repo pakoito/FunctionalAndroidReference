@@ -39,14 +39,14 @@ fun bindHomeInteractor(view: HomeViewInput, state: HomeState) {
 
 fun subscribeHomeInteractor(view: HomeViewOutput, state: HomeState, services: (String) -> Observable<Transaction>) =
         CompositeSubscription(
-                handleUserChanges(view, state.user),
+                handleUserInput(view, state.user),
                 handleStart(state.user, state.transaction),
                 handleLoad(state.transaction, services),
                 handleReload(state.user, state.transaction),
                 handleRetryAfterError(state.user, state.transaction)
         )
 
-fun handleUserChanges(view: HomeViewOutput, user: StateHolder<UserInput>): Subscription =
+fun handleUserInput(view: HomeViewOutput, user: StateHolder<UserInput>): Subscription =
         view.enterUser()
                 .debounce(1, TimeUnit.SECONDS)
                 .flatMap {
