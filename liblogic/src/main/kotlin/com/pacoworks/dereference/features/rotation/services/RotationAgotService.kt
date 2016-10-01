@@ -16,13 +16,14 @@
 
 package com.pacoworks.dereference.features.rotation.services
 
-import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.BookCharacter
+import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.model.agot.ToonDto
 import com.pacoworks.dereference.network.AgotApi
 import com.pacoworks.rxcomprehensions.RxComprehensions
 import rx.Notification
 import rx.Observable
+import java.util.concurrent.TimeUnit
 
 fun requestCharacterInfo(user: String, agotApi: AgotApi): Observable<Transaction> =
         RxComprehensions.doFM(
@@ -43,8 +44,9 @@ fun requestCharacterInfo(user: String, agotApi: AgotApi): Observable<Transaction
                                     })
                         else -> Transaction.Failure("Completed without results")
                     })
-                }
-        )
+                })
+                /* Add fake delay to better test rotation */
+                .delay(5, TimeUnit.SECONDS)
 
 private fun validate(value: ToonDto): Transaction =
         value.name.let {
