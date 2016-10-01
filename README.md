@@ -2,7 +2,7 @@
 
 FunctionalAndroidReference is a showcase project of Functional Reactive Programming on Android, using RxJava.
 
-It is not meant to be a canonical reference, but as an example of how far functional programming can be taken. It's also a collection of patterns and ideas about how to express business features and UX on a FRP paradigm.
+It is not meant to be a canonical reference, but as an example of how far functional programming can be taken. It's also a collection of patterns and ideas about how to express use cases, business features, and UX on a FRP paradigm.
 
 The project has multiple self-imposed limitations:
 
