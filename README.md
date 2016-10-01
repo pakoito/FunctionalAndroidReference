@@ -2,9 +2,9 @@
 
 FunctionalAndroidReference is a showcase project of Functional Reactive Programming on Android, using RxJava.
 
-It is not meant to be a canonical reference, but as an example of how far functional programming can be taken. It's also a collection of patterns and ideas about feature development.
+It is not meant to be a canonical reference, but as an example of how far functional programming can be taken. It's also a collection of patterns and ideas about how to express business features and UX on a FRP paradigm.
 
-The project has several self-imposed limitations:
+The project has multiple self-imposed limitations:
 
 ### Full separation between UI and business logic.
 
@@ -38,11 +38,15 @@ Helpers and common general types. No Android.
 
 Written in Kotlin, with no Android dependencies.
 
-### Pragmatically functional 
+### Pragmatically functional
 
 * liblogic and libservices must contain as few classes as pragmatically possible. Favour functions instead.
 
 * Every function must be written as an expression body.
+
+* Every function must be as pure as possible.
+
+* Every parameter in a function must be passed explicitly. No globals, no fields.
 
 * Use functional patterns like laziness or higher order functions, instead of classic OOP Gang of Four patterns.
 
@@ -50,11 +54,25 @@ Written in Kotlin, with no Android dependencies.
 
 The architecture is reminiscent of [Flux](https://facebook.github.io/flux/docs/overview.html), [Redux](http://redux.js.org/), or [Elm](https://guide.elm-lang.org/architecture/). This is no coincidence.
 
-Everything in the UI layer is either:
+Every method in the **UI layer** is either:
 
 * a stream/signal, represented by a method returning an `rx.Observable`.
 
-* a new UI state: new text value, new element on a RecyclerView, show a dialog...
+* a new UI state: new text value, new element on a RecyclerView, show a dialog... represented by a void/`Unit` method.
+
+Every function in the **business layer** is:
+
+* a `rx.Subscription` encompassing all the behaviour for one or many use cases.
+
+### Testable
+
+Every use case must be accompanied of a test suite covering its complete behaviour.
+
+### Moderately documented
+
+Every public function must be documented.
+
+Inlined comments only when intent isn't clear.
 
 ### No lifecycle
 
@@ -65,14 +83,6 @@ Separate the business logic from the Android lifecycle at the earliest layer pos
 Avoid DI frameworks like Dagger, and hand-roll injection instead.
 
 Avoid code generation outside Kotlin helpers.
-
-### Testable and moderately documented
-
-Every feature must be accompanied of a test suite explaining its full behaviour.
-
-Every public function must be documented.
-
-Inlined comments only when intent isn't clear.
 
 ##License
 
