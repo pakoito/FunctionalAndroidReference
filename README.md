@@ -48,7 +48,11 @@ Written in Kotlin, with no Android dependencies.
 
 * Every parameter in a function must be passed explicitly. No globals, no fields.
 
-* Use functional patterns like laziness or higher order functions, instead of classic OOP Gang of Four patterns.
+* No nullable types outside the UI and service layers.
+
+* Prefer encapsulating variables in closures rather than fields. If using fields, final fields will be mandated whenever possible.
+
+* Use functional patterns like unions, laziness, or higher order functions, instead of classic OOP Gang of Four patterns.
 
 ### Fully reactive
 
