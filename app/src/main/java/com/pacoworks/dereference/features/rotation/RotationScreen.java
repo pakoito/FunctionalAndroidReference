@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home;
+package com.pacoworks.dereference.features.rotation;
 
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -28,8 +28,8 @@ import android.widget.Toast;
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
-import com.pacoworks.dereference.features.home.model.Transaction;
-import com.pacoworks.dereference.features.home.services.HomeAgotServiceKt;
+import com.pacoworks.dereference.features.rotation.model.Transaction;
+import com.pacoworks.dereference.features.rotation.services.RotationAgotServiceKt;
 import com.pacoworks.dereference.network.AgotApiKt;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,18 +37,18 @@ import org.jetbrains.annotations.NotNull;
 import kotlin.jvm.functions.Function1;
 import rx.Observable;
 
-public class HomeScreen extends BaseController implements HomeView {
+public class RotationScreen extends BaseController implements RotationView {
 
     private PublishRelay<String> userPublishRelay = PublishRelay.create();
-    private final HomeState state;
+    private final RotationState state;
 
-    public HomeScreen() {
+    public RotationScreen() {
         super();
-        state = new HomeState();
-        HomeInteractorKt.subscribeHomeInteractor(this, state, new Function1<String, Observable<Transaction>>() {
+        state = new RotationState();
+        RotationInteractorKt.subscribeRotationInteractor(this, state, new Function1<String, Observable<Transaction>>() {
             @Override
             public Observable<Transaction> invoke(String user) {
-                return HomeAgotServiceKt
+                return RotationAgotServiceKt
                         .requestCharacterInfo(
                                 user,
                                 AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()));
@@ -60,6 +60,7 @@ public class HomeScreen extends BaseController implements HomeView {
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         final EditText textView = new EditText(container.getContext());
+        textView.setHint("Character Id [10-200]");
         textView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -81,7 +82,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     @Override
     protected void attachBinders() {
-        HomeInteractorKt.bindHomeInteractor(this, state);
+        RotationInteractorKt.bindRotationInteractor(this, state);
     }
 
     public void setTitle(@NonNull String title) {

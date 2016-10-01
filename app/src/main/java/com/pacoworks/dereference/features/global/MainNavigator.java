@@ -25,7 +25,7 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.pacoworks.dereference.architecture.ui.Navigator;
 import com.pacoworks.dereference.architecture.ui.Home;
 import com.pacoworks.dereference.architecture.ui.ScreensKt;
-import com.pacoworks.dereference.features.home.HomeScreen;
+import com.pacoworks.dereference.features.rotation.RotationScreen;
 import com.pacoworks.rxsealedunions.Union0;
 import com.pacoworks.rxsealedunions.Union1;
 import com.pacoworks.rxsealedunions.generic.GenericUnions;
@@ -72,7 +72,7 @@ public class MainNavigator implements Navigator {
         return screenUnion.join(new Func1<Home, Controller>() {
             @Override
             public Controller call(Home home) {
-                return new HomeScreen();
+                return new RotationScreen();
             }
         });
     }

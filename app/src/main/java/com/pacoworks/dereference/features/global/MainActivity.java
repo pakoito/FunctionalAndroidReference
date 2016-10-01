@@ -30,7 +30,7 @@ import com.pacoworks.dereference.architecture.reactive.ActivityResult;
 import com.pacoworks.dereference.architecture.reactive.PermissionResult;
 import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveActivity;
 import com.pacoworks.dereference.architecture.ui.Navigator;
-import com.pacoworks.dereference.features.home.HomeScreen;
+import com.pacoworks.dereference.features.rotation.RotationScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             reactiveActivity.onEnter();
             /* Push initial state manually */
-            router.pushController(RouterTransaction.with(new HomeScreen()));
+            router.pushController(RouterTransaction.with(new RotationScreen()));
         }
         reactiveActivity.onCreate();
         Navigator navigator = new MainNavigator(router, this);
