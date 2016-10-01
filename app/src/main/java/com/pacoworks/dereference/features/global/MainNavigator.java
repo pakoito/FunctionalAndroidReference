@@ -52,7 +52,7 @@ public class MainNavigator implements Navigator {
     public void goTo(@NotNull Union2<Home, Rotation> screenUnion) {
         Controller screen = getControllerFromScreen(screenUnion);
         router.pushController(RouterTransaction.with(screen)
-                .pushChangeHandler(new FadeChangeHandler(false))
+                .pushChangeHandler(new FadeChangeHandler())
                 .popChangeHandler(new FadeChangeHandler()));
     }
 
