@@ -27,9 +27,9 @@ import com.squareup.leakcanary.LeakCanary;
 import java.util.concurrent.TimeUnit;
 
 import io.palaima.debugdrawer.timber.data.LumberYard;
+import kotlin.jvm.functions.Function0;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import rx.functions.Func0;
 import timber.log.Timber;
 
 public class Injector {
@@ -45,9 +45,9 @@ public class Injector {
 
     private final OkHttpClient okHttpClient;
 
-    private final Lazy<AgotApi> agotApiLazy = new Lazy<>(new Func0<AgotApi>() {
+    private final Lazy<AgotApi> agotApiLazy = new Lazy<>(new Function0<AgotApi>() {
         @Override
-        public AgotApi call() {
+        public AgotApi invoke() {
             return AgotApiKt.createAgotApi(okHttpClient);
         }
     });

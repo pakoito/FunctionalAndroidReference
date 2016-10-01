@@ -40,9 +40,9 @@ import com.pacoworks.rxsealedunions.Union2;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import kotlin.jvm.functions.Function0;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class HomeScreen extends BaseController implements HomeView {
@@ -52,9 +52,9 @@ public class HomeScreen extends BaseController implements HomeView {
     public HomeScreen() {
         super();
         final Lazy<BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>>> navigationLazy =
-                new Lazy<>(new Func0<BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>>>() {
+                new Lazy<>(new Function0<BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>>>() {
                     @Override
-                    public BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>> call() {
+                    public BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>> invoke() {
                         return DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation();
                     }
                 });

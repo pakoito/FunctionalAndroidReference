@@ -16,9 +16,7 @@
 
 package com.pacoworks.dereference.core.functional
 
-import rx.functions.Func0
-
-class Lazy<out T>(private val creator: Func0<T>) {
+class Lazy<out T>(private val creator: () -> T) {
 
     @Volatile private var ref: T? = null
 
@@ -26,7 +24,7 @@ class Lazy<out T>(private val creator: Func0<T>) {
         if (null == ref) {
             synchronized(this@Lazy) {
                 if (null == ref) {
-                    ref = creator.call()
+                    ref = creator.invoke()
                 }
             }
         }
