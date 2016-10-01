@@ -8,7 +8,7 @@ The project has multiple self-imposed limitations:
 
 ### Full separation between UI and business logic.
 
-The project is split into several modules.
+The project is split into several modules. Every module has its own README file.
 
 #### app
 
