@@ -21,7 +21,7 @@ import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 
 class ReactiveController {
 
-    val lifecycleRelay = BehaviorRelay.create<ConductorLifecycle>()
+    val lifecycleRelay: BehaviorRelay<ConductorLifecycle> = BehaviorRelay.create<ConductorLifecycle>()
 
     private fun call(lifecycle: ConductorLifecycle) = lifecycleRelay.call(lifecycle)
 
