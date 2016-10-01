@@ -44,7 +44,7 @@ import rx.functions.Func1;
 
 public class HomeScreen extends BaseController implements HomeView {
 
-    final PublishRelay<HomeScreenSelection> screenSelectionPublishRelay = PublishRelay.create();
+    private final PublishRelay<HomeScreenSelection> screenSelectionPublishRelay = PublishRelay.create();
 
     public HomeScreen() {
         super();
