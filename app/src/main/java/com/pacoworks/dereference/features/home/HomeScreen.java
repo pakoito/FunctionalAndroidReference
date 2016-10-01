@@ -25,10 +25,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxrelay.BehaviorRelay;
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.architecture.ui.Direction;
 import com.pacoworks.dereference.architecture.ui.Home;
 import com.pacoworks.dereference.architecture.ui.Rotation;
+import com.pacoworks.dereference.core.functional.Lazy;
 import com.pacoworks.dereference.core.functional.Mapper;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
@@ -40,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class HomeScreen extends BaseController implements HomeView {
@@ -48,10 +51,17 @@ public class HomeScreen extends BaseController implements HomeView {
 
     public HomeScreen() {
         super();
+        final Lazy<BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>>> navigationLazy =
+                new Lazy<>(new Func0<BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>>>() {
+                    @Override
+                    public BehaviorRelay<Pair<Union2<Home, Rotation>, Direction>> call() {
+                        return DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation();
+                    }
+                });
         HomeInteractorKt.subscribeHomeInteractor(this, new Action1<Pair<Union2<Home, Rotation>, Direction>>() {
             @Override
             public void call(Pair<Union2<Home, Rotation>, Direction> navigation) {
-                DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation().call(navigation);
+                navigationLazy.get().call(navigation);
             }
         });
     }
