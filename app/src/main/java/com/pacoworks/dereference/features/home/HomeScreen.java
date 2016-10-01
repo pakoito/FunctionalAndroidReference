@@ -65,16 +65,16 @@ public class HomeScreen extends BaseController implements HomeView {
         return elements;
     }
 
-    @Override
-    protected void attachBinders() {
-
-    }
-
     private View createButton(Context context, PublishRelay<HomeScreenSelection> screenSelectionPublishRelay, String name, Func1<? super Object, HomeScreenSelection> func0) {
         TextView txv = new TextView(context);
         txv.setText(name);
         RxView.clicks(txv).map(func0).subscribe(screenSelectionPublishRelay);
         return txv;
+    }
+
+    @Override
+    protected void attachBinders() {
+
     }
 
     @NotNull
