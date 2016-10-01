@@ -16,4 +16,8 @@
 
 package com.pacoworks.dereference.features.home.model
 
-data class Repository(val id: Long, val name: String)
+sealed class HomeScreenSelection {
+    object List: HomeScreenSelection()
+    object MediaPlayer: HomeScreenSelection()
+    object Rotation: HomeScreenSelection()
+}

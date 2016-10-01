@@ -16,19 +16,23 @@
 
 package com.pacoworks.dereference.architecture.ui
 
-import com.pacoworks.rxsealedunions.Union0
+import com.pacoworks.rxsealedunions.Union2
 import com.pacoworks.rxsealedunions.generic.GenericUnions
 
-typealias Screen = Union0<Home>
+typealias Screen = Union2<Home, Rotation>
 
 enum class Direction {
     BACK, FORWARD
 }
 
-val SCREEN_FACTORY: Union0.Factory<Home> = GenericUnions.nulletFactory<Home>()
+private val SCREEN_FACTORY: Union2.Factory<Home, Rotation> = GenericUnions.doubletFactory()
 
 sealed class Screens(open val id: String = "")
 
 data class Home(override val id: String = ""): Screens(id)
 
-fun createHome(): Union0<Home> = SCREEN_FACTORY.first(Home())
+data class Rotation(override val id: String = ""): Screens(id)
+
+fun createHome(): Screen = SCREEN_FACTORY.first(Home())
+
+fun createRotation(): Screen = SCREEN_FACTORY.second(Rotation())

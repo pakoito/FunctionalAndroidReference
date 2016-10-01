@@ -16,83 +16,21 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.architecture.ui.StateHolder
-import com.pacoworks.dereference.features.home.model.Transaction
-import com.pacoworks.dereference.features.home.model.Transaction.*
-import com.pacoworks.dereference.features.home.model.UserInput
-import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
+import com.pacoworks.dereference.architecture.ui.Direction
+import com.pacoworks.dereference.architecture.ui.Screen
+import com.pacoworks.dereference.architecture.ui.createRotation
+import com.pacoworks.dereference.features.home.model.HomeScreenSelection
+import org.javatuples.Pair
 import rx.Observable
 import rx.Subscription
-import rx.subscriptions.CompositeSubscription
-import java.util.concurrent.TimeUnit
+import rx.functions.Action1
 
-fun bindHomeInteractor(view: HomeViewInput, state: HomeState) {
-    view.createBinder<Transaction>().call(state.transaction, {
-        when (it) {
-            is Loading -> view.setLoading(it.user.name)
-            is Failure -> view.showError(it.reason)
-            is WaitingForRetry -> view.setWaiting(it.seconds)
-            is Success -> view.showRepos(it.charInfo.name)
-        }
-    })
-}
-
-fun subscribeHomeInteractor(view: HomeViewOutput, state: HomeState, services: (String) -> Observable<Transaction>) =
-        CompositeSubscription(
-                handleUserInput(view, state.user),
-                handleStart(state.user, state.transaction),
-                handleLoad(state.transaction, services),
-                handleReload(state.user, state.transaction),
-                handleRetryAfterError(state.user, state.transaction)
-        )
-
-fun handleUserInput(view: HomeViewOutput, user: StateHolder<UserInput>): Subscription =
-        view.enterUser()
-                .debounce(1, TimeUnit.SECONDS)
-                .switchMap {
-                    if (it.length > 0) {
-                        Observable.just(UserInput(it))
-                    } else {
-                        Observable.empty()
-                    }
-                }
-                .subscribe(user)
-
-private fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
-        transaction.ofType(Idle::class.java)
-                .first()
-                .switchMap { user.first().map { Loading(it) } }
-                .subscribe(transaction)
-
-private fun handleLoad(transaction: StateHolder<Transaction>, services: (String) -> Observable<Transaction>): Subscription =
-        transaction.ofType(Loading::class.java)
-                .filter { it.user.name != "" }
-                .switchMap { services.invoke(it.user.name) }
-                .subscribe(transaction)
-
-private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
-        doFM(
-                { user },
-                { transaction.filter { it is Success }.first() },
-                /* If the user hasn't changed since the previous reload */
-                { currentUser, trans ->
-                    /* Skip the current value. New version will arrive later. */
-                    user.skip(1).first().filter { it != currentUser }.map { Loading(it) }
-                }
-        )
-                .subscribe(transaction)
-
-private fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
-        transaction
-                .filter { it is Failure }
+fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Action1<Pair<Screen, Direction>>): Subscription =
+        view.buttonClick()
                 .flatMap {
-                    Observable.interval(1, TimeUnit.SECONDS)
-                            .startWith(0)
-                            .map { WaitingForRetry((countdown - it).toInt()) as Transaction }
-                            /* Countdown plus initial value plus zero */
-                            .take(countdown + 2)
-                            .concatWith(user.first().map { Loading(it) })
-                }
-                .subscribe(transaction)
+                    when (it) {
+                        is HomeScreenSelection.Rotation -> Observable.just(Pair.with(createRotation(), Direction.FORWARD))
+                        else -> Observable.empty<Pair<Screen, Direction>>()
+                    }
 
-private const val countdown = 5
+                }.subscribe(navigation)

@@ -1,3 +1,5 @@
+@file:JvmName("Mapper")
+
 /*
  * Copyright (c) pakoito 2016
  *
@@ -14,12 +16,10 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home.model
+package com.pacoworks.dereference.core.functional
 
-sealed class Transaction {
-    object Idle : Transaction()
-    data class Loading(val user: UserInput) : Transaction()
-    data class Success(val charInfo: Toon) : Transaction()
-    data class Failure(val reason: String) : Transaction()
-    data class WaitingForRetry(val seconds: Int) : Transaction()
+import rx.functions.Func1
+
+fun <T> just(element: T): Func1<in Any, T> {
+    return Func1 { element }
 }

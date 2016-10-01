@@ -14,6 +14,22 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home.model
+package com.pacoworks.dereference.core.functional
 
-data class Toon(val name: String)
+import rx.functions.Func0
+
+class Lazy<out T>(private val creator: Func0<T>) {
+
+    @Volatile private var ref: T? = null
+
+    fun get(): T {
+        if (null == ref) {
+            synchronized(this@Lazy) {
+                if (null == ref) {
+                    ref = creator.call()
+                }
+            }
+        }
+        return ref!!
+    }
+}

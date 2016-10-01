@@ -19,6 +19,9 @@ package com.pacoworks.dereference.features.global;
 import android.app.Application;
 
 import com.codemonkeylabs.fpslibrary.TinyDancer;
+import com.pacoworks.dereference.core.functional.Lazy;
+import com.pacoworks.dereference.network.AgotApi;
+import com.pacoworks.dereference.network.AgotApiKt;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;
@@ -26,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 import io.palaima.debugdrawer.timber.data.LumberYard;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import rx.functions.Func0;
 import timber.log.Timber;
 
 public class Injector {
@@ -40,6 +44,13 @@ public class Injector {
     private final AppState state = new AppState();
 
     private final OkHttpClient okHttpClient;
+
+    private final Lazy<AgotApi> agotApiLazy = new Lazy<>(new Func0<AgotApi>() {
+        @Override
+        public AgotApi call() {
+            return AgotApiKt.createAgotApi(okHttpClient);
+        }
+    });
 
     public Injector(Application application) {
         okHttpClient = new OkHttpClient.Builder()
@@ -71,5 +82,9 @@ public class Injector {
 
     public OkHttpClient getHttpClient() {
         return okHttpClient;
+    }
+
+    public AgotApi getAgotApi() {
+        return agotApiLazy.get();
     }
 }

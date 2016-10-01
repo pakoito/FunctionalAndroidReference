@@ -16,10 +16,12 @@
 
 package com.pacoworks.dereference.features.global
 
+import com.jakewharton.rxrelay.BehaviorRelay
 import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
 import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy
 import com.pacoworks.dereference.architecture.ui.Direction
 import com.pacoworks.dereference.architecture.ui.Navigator
+import com.pacoworks.dereference.architecture.ui.Screen
 import com.pacoworks.dereference.architecture.ui.createHome
 import org.javatuples.Pair
 import rx.Scheduler
@@ -28,11 +30,11 @@ import rx.subscriptions.CompositeSubscription
 
 fun subscribeNavigation(state: AppState, navigator: Navigator, activityReactiveBuddy: ActivityReactiveBuddy, mainThreadScheduler: Scheduler): Subscription =
         CompositeSubscription(
-                pushScreen(activityReactiveBuddy, navigator, state, mainThreadScheduler),
+                pushScreen(activityReactiveBuddy, navigator, state.navigation, mainThreadScheduler),
                 backPressed(activityReactiveBuddy, navigator, state))
 
-private fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, state: AppState, mainThreadScheduler: Scheduler) =
-        state.navigation
+private fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, navigation: BehaviorRelay<Pair<Screen, Direction>>, mainThreadScheduler: Scheduler) =
+        navigation
                 /* Skip the first value to avoid re-pushing the current value after rotation */
                 .skip(1)
                 .filter { it.value1 == Direction.FORWARD }

@@ -17,20 +17,14 @@
 package com.pacoworks.dereference.features.home
 
 import com.pacoworks.dereference.architecture.ui.BoundView
+import com.pacoworks.dereference.features.home.model.HomeScreenSelection
 import rx.Observable
 
 interface HomeView: HomeViewInput, HomeViewOutput
 
 interface HomeViewInput : BoundView {
-    fun setLoading(user: String)
-
-    fun showError(reason: String)
-
-    fun setWaiting(seconds: Int)
-
-    fun showRepos(value: String)
 }
 
 interface HomeViewOutput {
-    fun enterUser(): Observable<String>
+    fun buttonClick(): Observable<HomeScreenSelection>
 }
