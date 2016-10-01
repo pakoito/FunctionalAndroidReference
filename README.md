@@ -1,0 +1,83 @@
+# FunctionalAndroidReference
+
+FunctionalAndroidReference is a showcase project of Functional Reactive Programming on Android, using RxJava.
+
+It is not meant to be a canonical reference, but as an example of how far functional programming can be taken. It's also a collection of patterns and ideas about feature development.
+
+The project has several self-imposed limitations:
+
+### Full separation between UI and business logic.
+
+The project is split into several modules.
+
+#### app
+
+The UI layer is written purely in Java 7 with Android dependencies.
+
+It depends on all modules below.
+
+#### liblogic
+
+The business logic that controls the views. It doesn't contain any Android dependency.
+
+It is written in Kotlin for convenience, but it could be rewritten in Java 7 with ease, although it will be a bit verbose without lambdas (see [retrolambda](https://github.com/orfjackal/retrolambda)).
+
+It depends on the modules below.
+
+#### libservices
+
+Any network services, POJOs, and communications that aren't in the Android framework. Again, it's not dependent on any Android.
+
+Written in Kotlin too.
+
+It depends on the module below.
+
+#### libcore
+
+Helpers and common general types. No Android.
+
+Written in Kotlin, with no Android dependencies.
+
+### Pragmatically functional 
+
+* liblogic and libservices must contain as few classes as pragmatically possible. Favour functions instead.
+
+* Every function must be written as an expression body.
+
+* Use functional patterns like laziness or higher order functions, instead of classic OOP Gang of Four patterns.
+
+### Fully reactive
+
+The architecture is reminiscent of [Flux](https://facebook.github.io/flux/docs/overview.html), [Redux](http://redux.js.org/), or [Elm](https://guide.elm-lang.org/architecture/). This is no coincidence.
+
+Everything in the UI layer is either:
+
+* a stream/signal, represented by a method returning an `rx.Observable`.
+
+* a new UI state: new text value, new element on a RecyclerView, show a dialog...
+
+### No lifecycle
+
+Separate the business logic from the Android lifecycle at the earliest layer possible.
+
+### No magic
+
+Avoid DI frameworks like Dagger, and hand-roll injection instead.
+
+Avoid code generation outside Kotlin helpers.
+
+### Testable and moderately documented
+
+Every feature must be accompanied of a test suite explaining its full behaviour.
+
+Every public function must be documented.
+
+Inlined comments only when intent isn't clear.
+
+##License
+
+Copyright (c) pakoito 2016
+
+The Apache Software License, Version 2.0
+
+See LICENSE.md
