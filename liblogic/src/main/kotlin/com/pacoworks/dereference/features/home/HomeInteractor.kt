@@ -24,6 +24,5 @@ import rx.functions.Action1
 
 fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Action1<Pair<Screen, Direction>>): Subscription =
         view.buttonClick()
-                .map {
-                    Pair.with(it, Direction.FORWARD)
-                }.subscribe(navigation)
+                .map { Pair.with(it, Direction.FORWARD) }
+                .subscribe(navigation)

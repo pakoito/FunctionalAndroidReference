@@ -50,16 +50,14 @@ fun handleSelect(selected: StateHolder<Set<String>>, listClicks: Observable<Pair
 
 private fun handleDragAndDrop(state: ListExampleState, viewOutput: ListExampleOutputView): Subscription =
         doFM(
-        {
-            viewOutput.dragAndDropMoves()
-        },
-        { swap ->
-            state.elements
-                    .first()
-                    .map {
-                        it.toMutableList()
-                                .apply { Collections.swap(this, swap.value0, swap.value1) }
-                                .toList()
-                    }
-        }
-).subscribe(state.elements)
+                { viewOutput.dragAndDropMoves() },
+                { swap ->
+                    state.elements
+                            .first()
+                            .map {
+                                it.toMutableList()
+                                        .apply { Collections.swap(this, swap.value0, swap.value1) }
+                                        .toList()
+                            }
+                }
+        ).subscribe(state.elements)

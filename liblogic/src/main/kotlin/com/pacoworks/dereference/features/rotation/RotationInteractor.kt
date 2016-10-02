@@ -82,8 +82,7 @@ private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<T
                     /* Skip the current value. New version will arrive later. */
                     user.skip(1).first().filter { it != currentUser }.map { Loading(it) }
                 }
-        )
-                .subscribe(transaction)
+        ).subscribe(transaction)
 
 private fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
         transaction
