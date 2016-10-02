@@ -16,24 +16,37 @@
 
 package com.pacoworks.dereference.features.list;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ListExampleAdapter extends RecyclerView.Adapter<ListExampleVH> {
+import com.pacoworks.dereference.widgets.BaseRecyclerAdapter;
+
+import rx.functions.Func2;
+
+public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleVH> {
+
+    protected ListExampleAdapter() {
+        super(new Func2<String, String, Boolean>() {
+            @Override
+            public Boolean call(String s, String s2) {
+                return s.equals(s2);
+            }
+        });
+    }
+
     @Override
     public ListExampleVH onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ListExampleVH(parent.getContext());
     }
 
     @Override
-    public void onBindViewHolder(ListExampleVH holder, int position) {
-        final TextView itemView = (TextView) holder.itemView;
-        itemView.setText(position * 1000 + "");
+    public int getItemCount() {
+        return 1000;
     }
 
     @Override
-    public int getItemCount() {
-        return 1000;
+    protected void onBindViewHolder(ListExampleVH holder, int position, String element) {
+        final TextView itemView = (TextView) holder.itemView;
+        itemView.setText(position * 1000 + "");
     }
 }

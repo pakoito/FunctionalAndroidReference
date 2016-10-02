@@ -26,7 +26,12 @@ import android.view.ViewGroup;
 
 import com.pacoworks.dereference.features.global.BaseController;
 
-public class ListScreen extends BaseController {
+import org.javatuples.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import rx.Observable;
+
+public class ListScreen extends BaseController implements ListExampleView {
 
     private static final int SPAN_COUNT = 3;
 
@@ -43,4 +48,22 @@ public class ListScreen extends BaseController {
     protected void attachBinders() {
 
     }
+
+    @NonNull
+    @Override
+    public Observable<Pair<Integer, String>> listClicks() {
+        return getCastedAdapter().getClicks();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Pair<Integer, String>> listLongClicks() {
+        return getCastedAdapter().getLongClicks();
+    }
+
+    private ListExampleAdapter getCastedAdapter() {
+        return (ListExampleAdapter) ((RecyclerView) getView()).getAdapter();
+    }
+
+
 }

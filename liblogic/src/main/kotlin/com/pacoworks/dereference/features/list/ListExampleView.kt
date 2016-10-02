@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home
+package com.pacoworks.dereference.features.list
 
-import com.pacoworks.dereference.architecture.navigation.Screen
 import com.pacoworks.dereference.architecture.ui.BoundView
 import rx.Observable
 
-interface HomeView: HomeViewInput, HomeViewOutput
+interface ListExampleView : ListExampleInputView, ListExampleOutputView
 
-interface HomeViewInput : BoundView
+interface ListExampleInputView : BoundView
 
-interface HomeViewOutput {
-    fun buttonClick(): Observable<Screen>
+interface ListExampleOutputView {
+    fun listClicks(): Observable<org.javatuples.Pair<Int, String>>
+
+    fun listLongClicks(): Observable<org.javatuples.Pair<Int, String>>
 }
+
