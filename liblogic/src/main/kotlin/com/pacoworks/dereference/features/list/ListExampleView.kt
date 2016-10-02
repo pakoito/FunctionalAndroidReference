@@ -17,6 +17,7 @@
 package com.pacoworks.dereference.features.list
 
 import com.pacoworks.dereference.architecture.ui.BoundView
+import com.pacoworks.dereference.core.functional.None
 import org.javatuples.Pair
 import rx.Observable
 
@@ -34,6 +35,8 @@ interface ListExampleOutputView {
     fun listLongClicks(): Observable<Pair<Int, String>>
 
     fun dragAndDropMoves(): Observable<Pair<Int, Int>>
+
+    fun deleteClick(): Observable<None>
 
 }
 

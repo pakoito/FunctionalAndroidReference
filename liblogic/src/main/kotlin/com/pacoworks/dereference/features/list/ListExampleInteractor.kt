@@ -17,7 +17,10 @@
 package com.pacoworks.dereference.features.list
 
 import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
+import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
+import com.pacoworks.rxtuples.RxTuples
 import org.javatuples.Pair
 import rx.Observable
 import rx.Subscription
@@ -32,7 +35,8 @@ fun bindListExample(viewInput: ListExampleInputView, state: ListExampleState) {
 fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
                 handleDragAndDrop(state, viewOutput),
-                handleSelect(state.selected, viewOutput.listClicks()))
+                handleSelect(state.selected, viewOutput.listClicks()),
+                handleDelete(state.elements, state.selected, viewOutput.deleteClick()))
 
 fun handleSelect(selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
         doFM(
@@ -61,3 +65,15 @@ private fun handleDragAndDrop(state: ListExampleState, viewOutput: ListExampleOu
                             }
                 }
         ).subscribe(state.elements)
+
+fun handleDelete(elements: StateHolder<List<String>>, selected: StateHolder<Set<String>>, deleteClick: Observable<None>): Subscription =
+        doSM(
+                { Observable.combineLatest(elements, selected, RxTuples.toPair<List<String>, Set<String>>()) },
+                { deleteClick.first() },
+                { statePair, click ->
+                    Observable.from(statePair.value0).filter { !statePair.value1.contains(it) }.toList()
+                }
+        )
+                /* Double state update: selected to empty, elements to deletion */
+                .doOnNext { selected.call(setOf()) }
+                .subscribe(elements)

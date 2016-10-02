@@ -23,3 +23,6 @@ import rx.functions.Func1
 fun <T> just(element: T): Func1<in Any, T> {
     return Func1 { element }
 }
+
+fun <T, U> fmap(mapper: (T) -> U, action: (U) -> Unit): (T) -> Unit =
+        { action.invoke(mapper.invoke(it)) }

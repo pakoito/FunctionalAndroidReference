@@ -24,8 +24,13 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxrelay.PublishRelay;
+import com.pacoworks.dereference.R;
+import com.pacoworks.dereference.core.functional.Mapper;
+import com.pacoworks.dereference.core.functional.None;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper;
 
@@ -46,7 +51,11 @@ public class ListScreen extends BaseController implements ListExampleView {
 
     private final PublishRelay<Pair<Integer, Integer>> dragAndDropPRelay = PublishRelay.create();
 
+    private final PublishRelay<None> deletePRelay = PublishRelay.create();
+
     private final ListExampleState state;
+
+    private RecyclerView recyclerView;
 
     public ListScreen() {
         super();
@@ -57,7 +66,10 @@ public class ListScreen extends BaseController implements ListExampleView {
     @NonNull
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
-        final RecyclerView recyclerView = new RecyclerView(context);
+        final View inflate = inflater.inflate(R.layout.screen_list, container, false);
+        final TextView deleteButton = (TextView) inflate.findViewById(R.id.screen_list_delete);
+        RxView.clicks(deleteButton).map(Mapper.<None>just(None.VOID)).subscribe(deletePRelay);
+        recyclerView = (RecyclerView) inflate.findViewById(R.id.screen_list_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
         final ListExampleAdapter adapter = new ListExampleAdapter();
         adapter.getClicks().subscribe(clicksPRelay);
@@ -67,7 +79,7 @@ public class ListScreen extends BaseController implements ListExampleView {
         final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         callback.getDNDObservable().subscribe(dragAndDropPRelay);
         touchHelper.attachToRecyclerView(recyclerView);
-        return recyclerView;
+        return inflate;
     }
 
     @Override
@@ -104,6 +116,12 @@ public class ListScreen extends BaseController implements ListExampleView {
     }
 
     private ListExampleAdapter getCastedAdapter() {
-        return (ListExampleAdapter) ((RecyclerView) getView()).getAdapter();
+        return (ListExampleAdapter) recyclerView.getAdapter();
+    }
+
+    @NotNull
+    @Override
+    public Observable<None> deleteClick() {
+        return deletePRelay.asObservable();
     }
 }
