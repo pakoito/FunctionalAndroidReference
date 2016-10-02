@@ -25,6 +25,7 @@ interface ListExampleView : ListExampleInputView, ListExampleOutputView {
 
 interface ListExampleInputView : BoundView {
     fun updateElements(elements: List<String>)
+    fun updateSelected(selected: Set<String>)
 }
 
 interface ListExampleOutputView {

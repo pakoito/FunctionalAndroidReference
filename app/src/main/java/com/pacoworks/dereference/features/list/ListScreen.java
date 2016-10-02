@@ -33,6 +33,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 import rx.Observable;
 
@@ -95,6 +96,11 @@ public class ListScreen extends BaseController implements ListExampleView {
     @Override
     public void updateElements(@NotNull List<String> elements) {
         getCastedAdapter().swap(elements);
+    }
+
+    @Override
+    public void updateSelected(@NotNull Set<String> elements) {
+        getCastedAdapter().swapSelected(elements);
     }
 
     private ListExampleAdapter getCastedAdapter() {

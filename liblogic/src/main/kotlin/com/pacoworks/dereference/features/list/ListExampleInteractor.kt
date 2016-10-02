@@ -16,26 +16,50 @@
 
 package com.pacoworks.dereference.features.list
 
-import com.pacoworks.rxcomprehensions.RxComprehensions
+import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
+import org.javatuples.Pair
+import rx.Observable
 import rx.Subscription
+import rx.subscriptions.CompositeSubscription
 import java.util.*
 
 fun bindListExample(viewInput: ListExampleInputView, state: ListExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
+    viewInput.createBinder<Set<String>>().call(state.selected, viewInput::updateSelected)
 }
 
 fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: ListExampleState): Subscription =
-        RxComprehensions.doFM(
-                {
-                    viewOutput.dragAndDropMoves()
-                },
-                { swap ->
-                    state.elements
-                            .first()
-                            .map {
-                                it.toMutableList()
-                                        .apply { Collections.swap(this, swap.value0, swap.value1) }
-                                        .toList()
-                            }
+        CompositeSubscription(
+                handleDragAndDrop(state, viewOutput),
+                handleSelect(state.selected, viewOutput.listClicks()))
+
+fun handleSelect(selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
+        doFM(
+                { listClicks.map { it.value1 } },
+                { value ->
+                    selected.first().map {
+                        if (it.contains(value)) {
+                            it.minus(value)
+                        } else {
+                            it.plus(value)
+                        }
+                    }
                 }
-        ).subscribe(state.elements)
+        ).subscribe(selected)
+
+private fun handleDragAndDrop(state: ListExampleState, viewOutput: ListExampleOutputView): Subscription =
+        doFM(
+        {
+            viewOutput.dragAndDropMoves()
+        },
+        { swap ->
+            state.elements
+                    .first()
+                    .map {
+                        it.toMutableList()
+                                .apply { Collections.swap(this, swap.value0, swap.value1) }
+                                .toList()
+                    }
+        }
+).subscribe(state.elements)

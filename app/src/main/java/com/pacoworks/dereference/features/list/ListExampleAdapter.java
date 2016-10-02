@@ -16,14 +16,21 @@
 
 package com.pacoworks.dereference.features.list;
 
+import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pacoworks.dereference.widgets.BaseRecyclerAdapter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import rx.functions.Func2;
 
 public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleVH> {
+
+    private final Set<String> selected = new HashSet<>();
 
     protected ListExampleAdapter() {
         super(new Func2<String, String, Boolean>() {
@@ -42,6 +49,42 @@ public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleV
     @Override
     protected void onBindViewHolder(ListExampleVH holder, int position, String element) {
         final TextView itemView = (TextView) holder.itemView;
-        itemView.setText(position * 1000 + "");
+        itemView.setText(position * 1000 + "\n -> Selected: " + selected.contains(element));
+    }
+
+    public void swapSelected(final Set<String> newSelected) {
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(createSelectDiffCallback(newSelected), false);
+        selected.clear();
+        selected.addAll(newSelected);
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    @NonNull
+    private DiffUtil.Callback createSelectDiffCallback(final Set<String> newSelected) {
+        return new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return getItemCount();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return getItemCount();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                final String element = getPosition(oldItemPosition);
+                final String newElement = getPosition(newItemPosition);
+                return element.equals(newElement);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                final String element = getPosition(oldItemPosition);
+                final String newElement = getPosition(newItemPosition);
+                return element.equals(newElement) && selected.contains(newElement) == newSelected.contains(newElement);
+            }
+        };
     }
 }

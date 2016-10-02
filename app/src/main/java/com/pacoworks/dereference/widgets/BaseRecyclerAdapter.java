@@ -16,10 +16,9 @@
 
 package com.pacoworks.dereference.widgets;
 
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
-import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxrelay.PublishRelay;
@@ -53,7 +52,15 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
     }
 
     public void swap(final List<T> newValues) {
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(createElementsDiffCallback(newValues), true);
+        values.clear();
+        values.addAll(newValues);
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    @NonNull
+    private DiffUtil.Callback createElementsDiffCallback(final List<T> newValues) {
+        return new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
                 return values.size();
@@ -73,33 +80,7 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                 return values.get(oldItemPosition).equals(newValues.get(newItemPosition));
             }
-        }, true);
-        values.clear();
-        values.addAll(newValues);
-        diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
-            @Override
-            public void onInserted(int position, int count) {
-                Log.d("FUCK", "Insert: " + position + " - " + count);
-            }
-
-            @Override
-            public void onRemoved(int position, int count) {
-                Log.d("FUCK", "Remove: " + position + " - " + count);
-
-            }
-
-            @Override
-            public void onMoved(int fromPosition, int toPosition) {
-                Log.d("FUCK", "Move: " + fromPosition + " - " + toPosition);
-            }
-
-            @Override
-            public void onChanged(int position, int count, Object payload) {
-                Log.d("FUCK", "Change: " + position + " - " + count + " - " + payload.toString());
-            }
-        });
-        diffResult.dispatchUpdatesTo(this);
-        Log.d("FUCK", values.toString());
+        };
     }
 
     @Override
@@ -121,6 +102,10 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
     }
 
     protected abstract void onBindViewHolder(U holder, int position, T element);
+
+    protected T getPosition(int position) {
+        return values.get(position);
+    }
 
     public Observable<Pair<Integer, T>> getClicks() {
         return clicksRelay.asObservable();

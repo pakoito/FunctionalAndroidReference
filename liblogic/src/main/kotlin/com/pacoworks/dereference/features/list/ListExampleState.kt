@@ -23,5 +23,6 @@ import rx.Observable
 
 
 data class ListExampleState(
-        val elements: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(Observable.range(0, 5).map { it.toString() }.toList().toBlocking().first()))
+        val elements: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(Observable.range(0, 5).map { it.toString() }.toList().toBlocking().first())),
+        val selected: StateHolder<Set<String>> = SerializedRelay(BehaviorRelay.create<Set<String>>(setOf()))
 )
