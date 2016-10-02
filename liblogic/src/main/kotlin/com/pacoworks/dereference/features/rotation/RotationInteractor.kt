@@ -16,6 +16,7 @@
 
 package com.pacoworks.dereference.features.rotation
 
+import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.Transaction.*
@@ -39,13 +40,13 @@ fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     })
 }
 
-fun subscribeRotationInteractor(view: RotationViewOutput, state: RotationState, services: TransactionRequest) =
+fun subscribeRotationInteractor(lifecycle: Observable<ConductorLifecycle>, view: RotationViewOutput, state: RotationState, services: (String) -> Observable<Transaction>) =
         CompositeSubscription(
                 handleUserInput(view, state.user),
                 handleStart(state.user, state.transaction),
                 handleLoad(state.transaction, services),
                 handleReload(state.user, state.transaction),
-                handleRetryAfterError(state.user, state.transaction)
+                handleRetryAfterError(state.user, state.transaction, lifecycle)
         )
 
 fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Subscription =
@@ -84,7 +85,7 @@ private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<T
         )
                 .subscribe(transaction)
 
-private fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
+private fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
         transaction
                 .filter { it is Failure }
                 .flatMap {
@@ -96,6 +97,7 @@ private fun handleRetryAfterError(user: Observable<UserInput>, transaction: Stat
                             /* The type checker assumes WaitingForRetry otherwise */
                             .map { it as Transaction }
                             .concatWith(user.first().map { Loading(it) })
+                            .takeUntil(lifecycle.filter { it == ConductorLifecycle.Exit })
                 }
                 .subscribe(transaction)
 

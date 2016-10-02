@@ -45,7 +45,7 @@ public class RotationScreen extends BaseController implements RotationView {
     public RotationScreen() {
         super();
         state = new RotationState();
-        RotationInteractorKt.subscribeRotationInteractor(this, state, new Function1<String, Observable<Transaction>>() {
+        RotationInteractorKt.subscribeRotationInteractor(createBuddy().lifecycle(), this, state, new Function1<String, Observable<Transaction>>() {
             @Override
             public Observable<Transaction> invoke(String user) {
                 return RotationAgotServiceKt
