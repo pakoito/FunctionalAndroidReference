@@ -21,11 +21,18 @@
               android:orientation="vertical">
 
     <TextView
+        android:id="@+id/screen_list_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Add"/>
+
+    <TextView
         android:id="@+id/screen_list_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DELETE"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:text="Delete"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/screen_list_recycler"

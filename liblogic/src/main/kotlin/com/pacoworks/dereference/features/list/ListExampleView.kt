@@ -36,6 +36,8 @@ interface ListExampleOutputView {
 
     fun dragAndDropMoves(): Observable<Pair<Int, Int>>
 
+    fun addClick(): Observable<None>
+
     fun deleteClick(): Observable<None>
 
 }

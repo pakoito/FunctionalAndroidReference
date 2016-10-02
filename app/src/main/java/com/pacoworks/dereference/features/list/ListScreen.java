@@ -51,6 +51,8 @@ public class ListScreen extends BaseController implements ListExampleView {
 
     private final PublishRelay<Pair<Integer, Integer>> dragAndDropPRelay = PublishRelay.create();
 
+    private final PublishRelay<None> addPRelay = PublishRelay.create();
+
     private final PublishRelay<None> deletePRelay = PublishRelay.create();
 
     private final ListExampleState state;
@@ -67,6 +69,8 @@ public class ListScreen extends BaseController implements ListExampleView {
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         final View inflate = inflater.inflate(R.layout.screen_list, container, false);
+        final TextView addButton = (TextView) inflate.findViewById(R.id.screen_list_add);
+        RxView.clicks(addButton).map(Mapper.<None>just(None.VOID)).subscribe(addPRelay);
         final TextView deleteButton = (TextView) inflate.findViewById(R.id.screen_list_delete);
         RxView.clicks(deleteButton).map(Mapper.<None>just(None.VOID)).subscribe(deletePRelay);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.screen_list_recycler);
@@ -117,6 +121,12 @@ public class ListScreen extends BaseController implements ListExampleView {
 
     private ListExampleAdapter getCastedAdapter() {
         return (ListExampleAdapter) recyclerView.getAdapter();
+    }
+
+    @NotNull
+    @Override
+    public Observable<None> addClick() {
+        return addPRelay.asObservable();
     }
 
     @NotNull

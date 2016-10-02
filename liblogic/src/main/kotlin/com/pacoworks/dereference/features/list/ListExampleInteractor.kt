@@ -36,6 +36,7 @@ fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: Lis
         CompositeSubscription(
                 handleDragAndDrop(state, viewOutput),
                 handleSelect(state.selected, viewOutput.listClicks()),
+                handleAdd(state.elements, viewOutput.addClick()),
                 handleDelete(state.elements, state.selected, viewOutput.deleteClick()))
 
 fun handleSelect(selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
@@ -66,14 +67,25 @@ private fun handleDragAndDrop(state: ListExampleState, viewOutput: ListExampleOu
                 }
         ).subscribe(state.elements)
 
-fun handleDelete(elements: StateHolder<List<String>>, selected: StateHolder<Set<String>>, deleteClick: Observable<None>): Subscription =
+fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<None>): Subscription =
         doSM(
-                { Observable.combineLatest(elements, selected, RxTuples.toPair<List<String>, Set<String>>()) },
+                { elementsState },
+                { addClick.first() },
+                { elements, click ->
+                    /* Insert random number at end of the list */
+                    Observable.just(elements.plus((Random().nextInt() + elements.size).toString()))
+                }
+        )
+                .subscribe(elementsState)
+
+fun handleDelete(elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>, deleteClick: Observable<None>): Subscription =
+        doSM(
+                { Observable.combineLatest(elementsState, selected, RxTuples.toPair<List<String>, Set<String>>()) },
                 { deleteClick.first() },
                 { statePair, click ->
                     Observable.from(statePair.value0).filter { !statePair.value1.contains(it) }.toList()
                 }
         )
-                /* Double state update: selected to empty, elements to deletion */
+                /* Double state update: selected to empty, elements after deletion */
                 .doOnNext { selected.call(setOf()) }
-                .subscribe(elements)
+                .subscribe(elementsState)
