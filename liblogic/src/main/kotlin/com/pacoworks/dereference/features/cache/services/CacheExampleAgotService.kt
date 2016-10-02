@@ -18,8 +18,8 @@ package com.pacoworks.dereference.features.cache.services
 
 import com.pacoworks.dereference.features.cache.model.AgotCharacter
 import com.pacoworks.dereference.features.cache.model.createKnownCharacter
+import com.pacoworks.dereference.features.cache.model.createUnknownIncorrectCharacter
 import com.pacoworks.dereference.features.cache.model.createUnknownNetworkErrorCharacter
-import com.pacoworks.dereference.features.cache.model.createUnknownUnavailableCharacter
 import com.pacoworks.dereference.network.AgotApi
 import rx.Observable
 import rx.Scheduler
@@ -29,13 +29,13 @@ import java.util.concurrent.TimeUnit
 fun characterInfo(id: String, agotApi: AgotApi, scheduler: Scheduler): Observable<AgotCharacter> =
         agotApi.getCharacterInfo(id)
                 .subscribeOn(scheduler)
-                .flatMap {
-                    it.name.let { name ->
+                .flatMap { character ->
+                    character.name.let { name ->
                         Observable.just(
                                 if (name != null) {
-                                    createKnownCharacter(id, name, it.titles)
+                                    createKnownCharacter(id, name, character.titles)
                                 } else {
-                                    createUnknownUnavailableCharacter(id)
+                                    createUnknownIncorrectCharacter(id)
                                 })
                     }
                 }

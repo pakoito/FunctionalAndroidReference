@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.R;
+import com.pacoworks.dereference.features.cache.model.IncorrectInfo;
 import com.pacoworks.dereference.features.cache.model.KnownAgotCharacter;
 import com.pacoworks.dereference.features.cache.model.NetworkError;
 import com.pacoworks.dereference.features.cache.model.Unavailable;
@@ -105,17 +106,23 @@ public class CacheView extends BaseController implements CacheExampleView {
             public void call(UnknownAgotCharacter unknownAgotCharacter) {
                 text.setText(unknownAgotCharacter.getId() +
                         " not found because " +
-                        unknownAgotCharacter.getReason().join(new Func1<Unavailable, String>() {
-                            @Override
-                            public String call(Unavailable unavailable) {
-                                return "it hasn't been fetched yet.";
-                            }
-                        }, new Func1<NetworkError, String>() {
-                            @Override
-                            public String call(NetworkError networkError) {
-                                return "there was a network problem.";
-                            }
-                        }));
+                        unknownAgotCharacter.getReason()
+                                .join(new Func1<Unavailable, String>() {
+                                    @Override
+                                    public String call(Unavailable unavailable) {
+                                        return "it hasn't been fetched yet.";
+                                    }
+                                }, new Func1<NetworkError, String>() {
+                                    @Override
+                                    public String call(NetworkError networkError) {
+                                        return "there was a network problem.";
+                                    }
+                                }, new Func1<IncorrectInfo, String>() {
+                                    @Override
+                                    public String call(IncorrectInfo incorrectInfo) {
+                                        return " the character response was malformed.";
+                                    }
+                                }));
 
             }
         }, new Action1<KnownAgotCharacter>() {
