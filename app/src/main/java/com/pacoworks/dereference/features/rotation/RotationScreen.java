@@ -92,7 +92,9 @@ public class RotationScreen extends BaseController implements RotationView {
     @Override
     public void setLoading(@NotNull String user) {
         setTitle("Loading " + user);
-        getView().setEnabled(false);
+        final EditText view = (EditText) getView();
+        view.setEnabled(false);
+        view.setText("");
     }
 
     @Override
