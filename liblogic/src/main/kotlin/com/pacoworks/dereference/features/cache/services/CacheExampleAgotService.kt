@@ -39,7 +39,6 @@ fun characterInfo(id: String, agotApi: AgotApi, scheduler: Scheduler): Observabl
                                 })
                     }
                 }
-                .doOnError { System.out.println("FUCK: " + it.message) }
                 .onErrorResumeNext(Observable.just<AgotCharacter>(createUnknownNetworkErrorCharacter(id)))
                 /* Delay for testing purposes */
                 .delay(2, TimeUnit.SECONDS)
