@@ -16,23 +16,12 @@
 
 package com.pacoworks.dereference.features.list
 
-import com.pacoworks.dereference.architecture.ui.BoundView
-import org.javatuples.Pair
+import com.jakewharton.rxrelay.BehaviorRelay
+import com.jakewharton.rxrelay.SerializedRelay
+import com.pacoworks.dereference.architecture.ui.StateHolder
 import rx.Observable
 
-interface ListExampleView : ListExampleInputView, ListExampleOutputView {
-}
 
-interface ListExampleInputView : BoundView {
-    fun updateElements(elements: List<String>)
-}
-
-interface ListExampleOutputView {
-    fun listClicks(): Observable<Pair<Int, String>>
-
-    fun listLongClicks(): Observable<Pair<Int, String>>
-
-    fun dragAndDropMoves(): Observable<Pair<Int, Int>>
-
-}
-
+data class ListExampleState(
+        val elements: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(Observable.range(0, 5).map { it.toString() }.toList().toBlocking().first()))
+)

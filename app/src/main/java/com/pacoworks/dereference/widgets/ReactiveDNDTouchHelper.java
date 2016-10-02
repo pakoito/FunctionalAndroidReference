@@ -37,15 +37,6 @@ public class ReactiveDNDTouchHelper extends ItemTouchHelper.Callback {
 
     private final PublishRelay<Integer> moveEndRelay = PublishRelay.create();
 
-    private final Observable<Pair<Integer, Integer>> dragAndDropObservable =
-            moveStartRelay
-                    .switchMap(new Func1<Integer, Observable<Pair<Integer, Integer>>>() {
-                        @Override
-                        public Observable<Pair<Integer, Integer>> call(Integer integer) {
-                            return movesRelay.takeUntil(moveEndRelay);
-                        }
-                    });
-
     @Override
     public boolean isLongPressDragEnabled() {
         return true;
@@ -57,9 +48,14 @@ public class ReactiveDNDTouchHelper extends ItemTouchHelper.Callback {
     }
 
     public Observable<Pair<Integer, Integer>> getDNDObservable() {
-        return dragAndDropObservable;
+        return moveStartRelay
+                .switchMap(new Func1<Integer, Observable<Pair<Integer, Integer>>>() {
+                    @Override
+                    public Observable<Pair<Integer, Integer>> call(Integer integer) {
+                        return movesRelay.takeUntil(moveEndRelay);
+                    }
+                });
     }
-
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {

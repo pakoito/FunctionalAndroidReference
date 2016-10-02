@@ -17,7 +17,9 @@
 package com.pacoworks.dereference.widgets;
 
 import android.support.v7.util.DiffUtil;
+import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxrelay.PublishRelay;
@@ -30,8 +32,6 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
-
-import static android.R.attr.value;
 
 public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<U> {
 
@@ -61,7 +61,7 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
 
             @Override
             public int getNewListSize() {
-                return values.size() + 1;
+                return newValues.size();
             }
 
             @Override
@@ -71,12 +71,35 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                return values.get(oldItemPosition).equals(value);
+                return values.get(oldItemPosition).equals(newValues.get(newItemPosition));
             }
         }, true);
         values.clear();
         values.addAll(newValues);
+        diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
+            @Override
+            public void onInserted(int position, int count) {
+                Log.d("FUCK", "Insert: " + position + " - " + count);
+            }
+
+            @Override
+            public void onRemoved(int position, int count) {
+                Log.d("FUCK", "Remove: " + position + " - " + count);
+
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                Log.d("FUCK", "Move: " + fromPosition + " - " + toPosition);
+            }
+
+            @Override
+            public void onChanged(int position, int count, Object payload) {
+                Log.d("FUCK", "Change: " + position + " - " + count + " - " + payload.toString());
+            }
+        });
         diffResult.dispatchUpdatesTo(this);
+        Log.d("FUCK", values.toString());
     }
 
     @Override

@@ -26,7 +26,7 @@ public class ListExampleVH extends RecyclerView.ViewHolder implements ReactiveDN
     public ListExampleVH(Context context) {
         super(new TextView(context));
         TextView txv = (TextView) itemView;
-        txv.setPadding(0, 20, 0, 20);
+        txv.setPadding(100, 100, 100, 100);
     }
 
     @Override

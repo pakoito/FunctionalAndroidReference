@@ -32,18 +32,26 @@ import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import rx.Observable;
-import rx.functions.Func1;
 
 public class ListScreen extends BaseController implements ListExampleView {
-
     private static final int SPAN_COUNT = 3;
 
-    final PublishRelay<Pair<Integer, String>> clicksPRelay = PublishRelay.create();
+    private final PublishRelay<Pair<Integer, String>> clicksPRelay = PublishRelay.create();
 
-    final PublishRelay<Pair<Integer, String>> longClicksPRelay = PublishRelay.create();
+    private final PublishRelay<Pair<Integer, String>> longClicksPRelay = PublishRelay.create();
 
-    final PublishRelay<Pair<Integer, Integer>> dragAndDropPRelay = PublishRelay.create();
+    private final PublishRelay<Pair<Integer, Integer>> dragAndDropPRelay = PublishRelay.create();
+
+    private final ListExampleState state;
+
+    public ListScreen() {
+        super();
+        state = new ListExampleState();
+        ListExampleInteractorKt.subscribeListExampleInteractor(this, state);
+    }
 
     @NonNull
     @Override
@@ -51,12 +59,6 @@ public class ListScreen extends BaseController implements ListExampleView {
         final RecyclerView recyclerView = new RecyclerView(context);
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
         final ListExampleAdapter adapter = new ListExampleAdapter();
-        adapter.swap(Observable.range(0, 1000).map(new Func1<Integer, String>() {
-            @Override
-            public String call(Integer integer) {
-                return integer.toString();
-            }
-        }).toList().toBlocking().first());
         adapter.getClicks().subscribe(clicksPRelay);
         adapter.getLongClicks().subscribe(longClicksPRelay);
         recyclerView.setAdapter(adapter);
@@ -69,7 +71,7 @@ public class ListScreen extends BaseController implements ListExampleView {
 
     @Override
     protected void attachBinders() {
-
+        ListExampleInteractorKt.bindListExample(this, state);
     }
 
     @NotNull
@@ -88,5 +90,14 @@ public class ListScreen extends BaseController implements ListExampleView {
     @Override
     public Observable<Pair<Integer, Integer>> dragAndDropMoves() {
         return dragAndDropPRelay.asObservable();
+    }
+
+    @Override
+    public void updateElements(@NotNull List<String> elements) {
+        getCastedAdapter().swap(elements);
+    }
+
+    private ListExampleAdapter getCastedAdapter() {
+        return (ListExampleAdapter) ((RecyclerView) getView()).getAdapter();
     }
 }
