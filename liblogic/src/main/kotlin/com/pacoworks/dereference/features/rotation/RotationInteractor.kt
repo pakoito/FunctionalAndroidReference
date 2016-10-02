@@ -86,11 +86,13 @@ private fun handleRetryAfterError(user: Observable<UserInput>, transaction: Stat
         transaction
                 .filter { it is Failure }
                 .flatMap {
-                    Observable.interval(1, TimeUnit.SECONDS)
+                    Observable.interval(0, 1, TimeUnit.SECONDS)
                             .startWith(0)
-                            .map { WaitingForRetry((countdown - it).toInt()) as Transaction }
-                            /* Countdown plus initial value plus zero */
-                            .take(countdown + 2)
+                            .map { WaitingForRetry((countdown - it).toInt()) }
+                            /* Take until value is 0 */
+                            .takeUntil { it.seconds <= 0 }
+                            /* The type checker assumes WaitingForRetry otherwise */
+                            .map { it as Transaction }
                             .concatWith(user.first().map { Loading(it) })
                 }
                 .subscribe(transaction)
