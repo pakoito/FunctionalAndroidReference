@@ -16,16 +16,16 @@
 
 package com.pacoworks.dereference.architecture.navigation
 
-import com.pacoworks.rxsealedunions.Union3
+import com.pacoworks.rxsealedunions.Union4
 import com.pacoworks.rxsealedunions.generic.GenericUnions
 
-typealias Screen = Union3<Home, RotationExample, ListExample>
+typealias Screen = Union4<Home, RotationExample, ListExample, CacheExample>
 
 enum class Direction {
     BACK, FORWARD
 }
 
-private val SCREEN_FACTORY: Union3.Factory<Home, RotationExample, ListExample> = GenericUnions.tripletFactory()
+private val SCREEN_FACTORY: Union4.Factory<Home, RotationExample, ListExample, CacheExample> = GenericUnions.quartetFactory()
 
 sealed class Screens(open val id: String = "")
 
@@ -35,8 +35,12 @@ data class RotationExample(override val id: String = ""): Screens(id)
 
 data class ListExample(override val id: String = ""): Screens(id)
 
+data class CacheExample(override val id: String = ""): Screens(id)
+
 fun createHome(): Screen = SCREEN_FACTORY.first(Home())
 
 fun createRotation(): Screen = SCREEN_FACTORY.second(RotationExample())
 
 fun createList(): Screen = SCREEN_FACTORY.third(ListExample())
+
+fun createCache(): Screen = SCREEN_FACTORY.fourth(CacheExample())

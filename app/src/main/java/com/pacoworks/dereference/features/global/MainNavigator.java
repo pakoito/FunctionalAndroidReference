@@ -22,16 +22,18 @@ import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
+import com.pacoworks.dereference.architecture.navigation.CacheExample;
 import com.pacoworks.dereference.architecture.navigation.Home;
-import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.architecture.navigation.ListExample;
+import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.architecture.navigation.RotationExample;
 import com.pacoworks.dereference.architecture.navigation.ScreensKt;
+import com.pacoworks.dereference.features.cache.CacheView;
 import com.pacoworks.dereference.features.home.HomeScreen;
 import com.pacoworks.dereference.features.list.ListScreen;
 import com.pacoworks.dereference.features.rotation.RotationScreen;
 import com.pacoworks.rxsealedunions.Union1;
-import com.pacoworks.rxsealedunions.Union3;
+import com.pacoworks.rxsealedunions.Union4;
 import com.pacoworks.rxsealedunions.generic.GenericUnions;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import rx.functions.Func1;
 
 public class MainNavigator implements Navigator {
-    private static final Union1.Factory<Union3<Home, RotationExample, ListExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
+    private static final Union1.Factory<Union4<Home, RotationExample, ListExample, CacheExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
 
     private final Router router;
 
@@ -51,7 +53,7 @@ public class MainNavigator implements Navigator {
     }
 
     @Override
-    public void goTo(@NotNull Union3<Home, RotationExample, ListExample> screenUnion) {
+    public void goTo(@NotNull Union4<Home, RotationExample, ListExample, CacheExample> screenUnion) {
         Controller screen = getControllerFromScreen(screenUnion);
         router.pushController(RouterTransaction.with(screen)
                 .pushChangeHandler(new FadeChangeHandler())
@@ -59,7 +61,7 @@ public class MainNavigator implements Navigator {
     }
 
     @Override
-    public Union1<Union3<Home, RotationExample, ListExample>> goBack() {
+    public Union1<Union4<Home, RotationExample, ListExample, CacheExample>> goBack() {
         final int backstackSize = router.getBackstackSize();
         if (backstackSize > 1) {
             final RouterTransaction routerTransaction = router.getBackstack().get(backstackSize - 1);
@@ -72,7 +74,7 @@ public class MainNavigator implements Navigator {
         }
     }
 
-    private Controller getControllerFromScreen(Union3<Home, RotationExample, ListExample> screenUnion) {
+    private Controller getControllerFromScreen(Union4<Home, RotationExample, ListExample, CacheExample> screenUnion) {
         return screenUnion.join(new Func1<Home, Controller>() {
             @Override
             public Controller call(Home home) {
@@ -88,10 +90,15 @@ public class MainNavigator implements Navigator {
             public Controller call(ListExample listExample) {
                 return new ListScreen();
             }
+        }, new Func1<CacheExample, Controller>() {
+            @Override
+            public Controller call(CacheExample cacheExample) {
+                return new CacheView();
+            }
         });
     }
 
-    private Union3<Home, RotationExample, ListExample> getScreenFromController(Controller controller) {
+    private Union4<Home, RotationExample, ListExample, CacheExample> getScreenFromController(Controller controller) {
         return ScreensKt.createHome();
     }
 }

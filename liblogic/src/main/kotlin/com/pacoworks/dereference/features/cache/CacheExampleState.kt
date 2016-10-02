@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) pakoito 2016
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.pacoworks.dereference.features.cache
+
+import com.jakewharton.rxrelay.BehaviorRelay
+import com.jakewharton.rxrelay.SerializedRelay
+import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.features.cache.model.AgotCharacter
+import com.pacoworks.dereference.features.cache.model.createUnknownUnavailableCharacter
+import rx.Observable
+
+typealias AgotCharacterCache = Map<String, AgotCharacter>
+
+data class CacheExampleState(
+        val ids: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(CHARACTER_IDS)),
+        val currentId: StateHolder<String> = SerializedRelay(BehaviorRelay.create<String>(initialId)),
+        val characterCache: StateHolder<AgotCharacterCache> = SerializedRelay(BehaviorRelay.create<AgotCharacterCache>(CHARACTERS)),
+        val currentCharacter: StateHolder<AgotCharacter> = SerializedRelay(BehaviorRelay.create<AgotCharacter>(initialCharacter))
+)
+
+private val CHARACTERS: AgotCharacterCache = Observable.range(30, 100).map { createUnknownUnavailableCharacter(it.toString()) }.toMap { it.join({ it.id }, { it.id }) }.toBlocking().first()
+
+private val CHARACTER_IDS: List<String> = Observable.range(30, 100).map { it.toString() }.toList().toBlocking().first().toList()
+
+private val initialId: String = CHARACTER_IDS[0]
+
+private val initialCharacter: AgotCharacter = CHARACTERS[initialId]!!

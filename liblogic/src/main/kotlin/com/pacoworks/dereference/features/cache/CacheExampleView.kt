@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.rotation
+package com.pacoworks.dereference.features.cache
 
 import com.pacoworks.dereference.architecture.ui.BoundView
+import com.pacoworks.dereference.features.cache.model.AgotCharacter
 import rx.Observable
 
-interface RotationView: RotationViewInput, RotationViewOutput
-
-interface RotationViewInput : BoundView {
-    fun setLoading(user: String): Unit
-
-    fun showError(reason: String): Unit
-
-    fun setWaiting(seconds: Int): Unit
-
-    fun showRepos(value: String): Unit
+interface CacheExampleView: CacheExampleInputView, CacheExampleOutputView {
 }
 
-interface RotationViewOutput {
-    fun enterUser(): Observable<String>
+interface CacheExampleInputView: BoundView {
+    fun showCharacterInfo(info: AgotCharacter): Unit
+
+    fun filterList(ids: List<String>): Unit
+
+    fun currentFilter(id: String): Unit
+}
+
+interface CacheExampleOutputView {
+    fun filter(): Observable<String>
 }
