@@ -49,7 +49,7 @@ public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleV
     @Override
     protected void onBindViewHolder(ListExampleVH holder, int position, String element) {
         final TextView itemView = (TextView) holder.itemView;
-        itemView.setText(position * 1000 + "\n -> Selected: " + selected.contains(element));
+        itemView.setText(element + "\n -> Selected: " + selected.contains(element));
     }
 
     public void swapSelected(final Set<String> newSelected) {
