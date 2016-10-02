@@ -26,6 +26,8 @@ import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import java.util.concurrent.TimeUnit
 
+typealias TransactionRequest = (String) -> Observable<Transaction>
+
 fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     view.createBinder<Transaction>().call(state.transaction, {
         when (it) {
@@ -37,7 +39,7 @@ fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     })
 }
 
-fun subscribeRotationInteractor(view: RotationViewOutput, state: RotationState, services: (String) -> Observable<Transaction>) =
+fun subscribeRotationInteractor(view: RotationViewOutput, state: RotationState, services: TransactionRequest) =
         CompositeSubscription(
                 handleUserInput(view, state.user),
                 handleStart(state.user, state.transaction),
@@ -64,7 +66,7 @@ private fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Tr
                 .switchMap { user.first().map { Loading(it) } }
                 .subscribe(transaction)
 
-private fun handleLoad(transaction: StateHolder<Transaction>, services: (String) -> Observable<Transaction>): Subscription =
+private fun handleLoad(transaction: StateHolder<Transaction>, services: TransactionRequest): Subscription =
         transaction.ofType(Loading::class.java)
                 .filter { it.user.name != "" }
                 .switchMap { services.invoke(it.user.name) }
