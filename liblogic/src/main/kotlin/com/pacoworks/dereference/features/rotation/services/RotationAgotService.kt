@@ -23,12 +23,14 @@ import com.pacoworks.dereference.network.AgotApi
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import rx.Notification
 import rx.Observable
+import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
-fun requestCharacterInfo(user: String, agotApi: AgotApi): Observable<Transaction> =
+fun requestCharacterInfo(user: String, agotApi: AgotApi, scheduler: Scheduler): Observable<Transaction> =
         doFM(
                 {
                     agotApi.getCharacterInfo(user)
+                            .subscribeOn(scheduler)
                             .materialize()
                             .filter { it.kind != Notification.Kind.OnCompleted }
                 },

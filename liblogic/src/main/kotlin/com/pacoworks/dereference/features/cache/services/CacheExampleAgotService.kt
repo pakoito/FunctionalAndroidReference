@@ -22,11 +22,13 @@ import com.pacoworks.dereference.features.cache.model.createUnknownNetworkErrorC
 import com.pacoworks.dereference.features.cache.model.createUnknownUnavailableCharacter
 import com.pacoworks.dereference.network.AgotApi
 import rx.Observable
+import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
 
-fun characterInfo(id: String, agotApi: AgotApi): Observable<AgotCharacter> =
+fun characterInfo(id: String, agotApi: AgotApi, scheduler: Scheduler): Observable<AgotCharacter> =
         agotApi.getCharacterInfo(id)
+                .subscribeOn(scheduler)
                 .flatMap {
                     it.name.let { name ->
                         Observable.just(
@@ -37,6 +39,7 @@ fun characterInfo(id: String, agotApi: AgotApi): Observable<AgotCharacter> =
                                 })
                     }
                 }
+                .doOnError { System.out.println("FUCK: " + it.message) }
                 .onErrorResumeNext(Observable.just<AgotCharacter>(createUnknownNetworkErrorCharacter(id)))
                 /* Delay on testing purposes */
                 .delay(5, TimeUnit.SECONDS)

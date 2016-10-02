@@ -46,6 +46,7 @@ import kotlin.jvm.functions.Function1;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class CacheView extends BaseController implements CacheExampleView {
 
@@ -65,7 +66,8 @@ public class CacheView extends BaseController implements CacheExampleView {
             public Observable<Union2<UnknownAgotCharacter, KnownAgotCharacter>> invoke(String charId) {
                 return CacheExampleAgotServiceKt.characterInfo(
                         charId,
-                        AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()));
+                        AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()),
+                        Schedulers.newThread());
             }
         });
     }

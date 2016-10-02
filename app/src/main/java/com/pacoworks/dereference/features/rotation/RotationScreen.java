@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import kotlin.jvm.functions.Function1;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class RotationScreen extends BaseController implements RotationView {
 
@@ -52,7 +53,8 @@ public class RotationScreen extends BaseController implements RotationView {
                 return RotationAgotServiceKt
                         .requestCharacterInfo(
                                 user,
-                                AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()));
+                                AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()),
+                                Schedulers.newThread());
             }
         });
     }
