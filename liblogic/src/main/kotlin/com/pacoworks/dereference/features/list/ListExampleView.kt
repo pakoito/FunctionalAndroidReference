@@ -17,15 +17,20 @@
 package com.pacoworks.dereference.features.list
 
 import com.pacoworks.dereference.architecture.ui.BoundView
+import org.javatuples.Pair
 import rx.Observable
 
-interface ListExampleView : ListExampleInputView, ListExampleOutputView
+interface ListExampleView : ListExampleInputView, ListExampleOutputView {
+}
 
 interface ListExampleInputView : BoundView
 
 interface ListExampleOutputView {
-    fun listClicks(): Observable<org.javatuples.Pair<Int, String>>
+    fun listClicks(): Observable<Pair<Int, String>>
 
-    fun listLongClicks(): Observable<org.javatuples.Pair<Int, String>>
+    fun listLongClicks(): Observable<Pair<Int, String>>
+
+    fun dragAndDropMoves(): Observable<Pair<Int, Int>>
+
 }
 

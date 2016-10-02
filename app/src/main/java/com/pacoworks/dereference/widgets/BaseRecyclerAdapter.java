@@ -47,32 +47,12 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
         this.hasSameId = hasSameId;
     }
 
-    private void updateSingle(final T value) {
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return values.size();
-            }
-
-            @Override
-            public int getNewListSize() {
-                return values.size() + 1;
-            }
-
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return hasSameId.call(values.get(oldItemPosition), value);
-            }
-
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                return values.get(oldItemPosition).equals(value);
-            }
-        }, true);
-        diffResult.dispatchUpdatesTo(this);
+    @Override
+    public int getItemCount() {
+        return values.size();
     }
 
-    private void updateMany(final List<T> newValues) {
+    public void swap(final List<T> newValues) {
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
@@ -94,13 +74,9 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
                 return values.get(oldItemPosition).equals(value);
             }
         }, true);
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    private void swap(final List<T> newValues) {
         values.clear();
         values.addAll(newValues);
-        notifyDataSetChanged();
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override

@@ -40,11 +40,6 @@ public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleV
     }
 
     @Override
-    public int getItemCount() {
-        return 1000;
-    }
-
-    @Override
     protected void onBindViewHolder(ListExampleVH holder, int position, String element) {
         final TextView itemView = (TextView) holder.itemView;
         itemView.setText(position * 1000 + "");

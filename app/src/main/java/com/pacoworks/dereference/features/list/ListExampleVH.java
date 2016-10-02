@@ -20,10 +20,24 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-public class ListExampleVH extends RecyclerView.ViewHolder {
+import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper;
+
+public class ListExampleVH extends RecyclerView.ViewHolder implements ReactiveDNDTouchHelper.ReactiveDNDViewHolder {
     public ListExampleVH(Context context) {
         super(new TextView(context));
         TextView txv = (TextView) itemView;
         txv.setPadding(0, 20, 0, 20);
+    }
+
+    @Override
+    public void onDragStarted() {
+        itemView.animate().cancel();
+        itemView.animate().alpha(0.4f).scaleX(2f).scaleY(2f);
+    }
+
+    @Override
+    public void onDragEnded() {
+        itemView.animate().cancel();
+        itemView.animate().alpha(1f).scaleX(1f).scaleY(1f);
     }
 }

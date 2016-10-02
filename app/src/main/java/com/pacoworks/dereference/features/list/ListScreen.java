@@ -20,27 +20,50 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.features.global.BaseController;
+import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 public class ListScreen extends BaseController implements ListExampleView {
 
     private static final int SPAN_COUNT = 3;
+
+    final PublishRelay<Pair<Integer, String>> clicksPRelay = PublishRelay.create();
+
+    final PublishRelay<Pair<Integer, String>> longClicksPRelay = PublishRelay.create();
+
+    final PublishRelay<Pair<Integer, Integer>> dragAndDropPRelay = PublishRelay.create();
 
     @NonNull
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         final RecyclerView recyclerView = new RecyclerView(context);
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
-        recyclerView.setAdapter(new ListExampleAdapter());
+        final ListExampleAdapter adapter = new ListExampleAdapter();
+        adapter.swap(Observable.range(0, 1000).map(new Func1<Integer, String>() {
+            @Override
+            public String call(Integer integer) {
+                return integer.toString();
+            }
+        }).toList().toBlocking().first());
+        adapter.getClicks().subscribe(clicksPRelay);
+        adapter.getLongClicks().subscribe(longClicksPRelay);
+        recyclerView.setAdapter(adapter);
+        final ReactiveDNDTouchHelper callback = new ReactiveDNDTouchHelper();
+        final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        callback.getDNDObservable().subscribe(dragAndDropPRelay);
+        touchHelper.attachToRecyclerView(recyclerView);
         return recyclerView;
     }
 
@@ -49,21 +72,21 @@ public class ListScreen extends BaseController implements ListExampleView {
 
     }
 
-    @NonNull
+    @NotNull
     @Override
     public Observable<Pair<Integer, String>> listClicks() {
-        return getCastedAdapter().getClicks();
+        return clicksPRelay.asObservable();
     }
 
     @NotNull
     @Override
     public Observable<Pair<Integer, String>> listLongClicks() {
-        return getCastedAdapter().getLongClicks();
+        return longClicksPRelay.asObservable();
     }
 
-    private ListExampleAdapter getCastedAdapter() {
-        return (ListExampleAdapter) ((RecyclerView) getView()).getAdapter();
+    @NotNull
+    @Override
+    public Observable<Pair<Integer, Integer>> dragAndDropMoves() {
+        return dragAndDropPRelay.asObservable();
     }
-
-
 }
