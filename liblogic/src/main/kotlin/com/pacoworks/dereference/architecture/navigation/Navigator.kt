@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.home.model
+package com.pacoworks.dereference.architecture.navigation
 
-sealed class HomeScreenSelection {
-    object RecyclerView : HomeScreenSelection()
-    object MediaPlayer: HomeScreenSelection()
-    object Rotation: HomeScreenSelection()
+import com.pacoworks.rxsealedunions.Union1
+
+interface Navigator {
+    fun goTo(screen: Screen)
+
+    fun goBack(): Union1<Screen>
 }

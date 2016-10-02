@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.architecture.ui
+package com.pacoworks.dereference.features.list;
 
-import com.pacoworks.rxsealedunions.Union1
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
-interface Navigator {
-    fun goTo(screen: Screen)
-
-    fun goBack(): Union1<Screen>
+public class ListExampleVH extends RecyclerView.ViewHolder {
+    public ListExampleVH(Context context) {
+        super(new TextView(context));
+        TextView txv = (TextView) itemView;
+        txv.setPadding(0, 20, 0, 20);
+    }
 }

@@ -16,9 +16,10 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.architecture.ui.Direction
-import com.pacoworks.dereference.architecture.ui.Screen
-import com.pacoworks.dereference.architecture.ui.createRotation
+import com.pacoworks.dereference.architecture.navigation.Direction
+import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.architecture.navigation.createList
+import com.pacoworks.dereference.architecture.navigation.createRotation
 import com.pacoworks.dereference.features.home.model.HomeScreenSelection
 import org.javatuples.Pair
 import rx.Observable
@@ -30,6 +31,7 @@ fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Action1<Pair<Scree
                 .flatMap {
                     when (it) {
                         is HomeScreenSelection.Rotation -> Observable.just(Pair.with(createRotation(), Direction.FORWARD))
+                        is HomeScreenSelection.RecyclerView -> Observable.just(Pair.with(createList(), Direction.FORWARD))
                         else -> Observable.empty<Pair<Screen, Direction>>()
                     }
 

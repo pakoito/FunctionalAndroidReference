@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.architecture.ui
+package com.pacoworks.dereference.architecture.navigation
 
-import com.pacoworks.rxsealedunions.Union2
+import com.pacoworks.rxsealedunions.Union3
 import com.pacoworks.rxsealedunions.generic.GenericUnions
 
-typealias Screen = Union2<Home, Rotation>
+typealias Screen = Union3<Home, RotationExample, ListExample>
 
 enum class Direction {
     BACK, FORWARD
 }
 
-private val SCREEN_FACTORY: Union2.Factory<Home, Rotation> = GenericUnions.doubletFactory()
+private val SCREEN_FACTORY: Union3.Factory<Home, RotationExample, ListExample> = GenericUnions.tripletFactory()
 
 sealed class Screens(open val id: String = "")
 
 data class Home(override val id: String = ""): Screens(id)
 
-data class Rotation(override val id: String = ""): Screens(id)
+data class RotationExample(override val id: String = ""): Screens(id)
+
+data class ListExample(override val id: String = ""): Screens(id)
 
 fun createHome(): Screen = SCREEN_FACTORY.first(Home())
 
-fun createRotation(): Screen = SCREEN_FACTORY.second(Rotation())
+fun createRotation(): Screen = SCREEN_FACTORY.second(RotationExample())
+
+fun createList(): Screen = SCREEN_FACTORY.third(ListExample())

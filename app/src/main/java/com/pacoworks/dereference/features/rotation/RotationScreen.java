@@ -16,6 +16,7 @@
 
 package com.pacoworks.dereference.features.rotation;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -58,8 +59,8 @@ public class RotationScreen extends BaseController implements RotationView {
 
     @NonNull
     @Override
-    protected View createView(LayoutInflater inflater, ViewGroup container) {
-        final EditText textView = new EditText(container.getContext());
+    protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
+        final EditText textView = new EditText(context);
         textView.setHint("Character Id [10-200]");
         textView.addTextChangedListener(new TextWatcher() {
             @Override

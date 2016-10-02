@@ -29,7 +29,7 @@ import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.architecture.reactive.ActivityResult;
 import com.pacoworks.dereference.architecture.reactive.PermissionResult;
 import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveActivity;
-import com.pacoworks.dereference.architecture.ui.Navigator;
+import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.features.home.HomeScreen;
 
 import java.util.HashMap;

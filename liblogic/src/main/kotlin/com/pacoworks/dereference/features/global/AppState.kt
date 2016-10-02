@@ -17,9 +17,9 @@
 package com.pacoworks.dereference.features.global
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.architecture.ui.Direction
-import com.pacoworks.dereference.architecture.ui.createHome
-import com.pacoworks.dereference.architecture.ui.Screen
+import com.pacoworks.dereference.architecture.navigation.Direction
+import com.pacoworks.dereference.architecture.navigation.createHome
+import com.pacoworks.dereference.architecture.navigation.Screen
 import org.javatuples.Pair
 
 class AppState(

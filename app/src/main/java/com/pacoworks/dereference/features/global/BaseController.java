@@ -16,6 +16,7 @@
 
 package com.pacoworks.dereference.features.global;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
@@ -55,14 +56,14 @@ public abstract class BaseController extends Controller implements BoundView {
     @NonNull
     @Override
     protected final View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
-        final View view = createView(inflater, container);
+        final View view = createView(container.getContext(), inflater, container);
         reactiveController.onCreate();
         return view;
     }
 
     @NonNull
     @CheckResult
-    protected abstract View createView(LayoutInflater inflater, ViewGroup container);
+    protected abstract View createView(Context context, LayoutInflater inflater, ViewGroup container);
 
     @Override
     protected void onAttach(@NonNull View view) {

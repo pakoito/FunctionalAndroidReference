@@ -17,7 +17,7 @@
 package com.pacoworks.dereference.features.global;
 
 import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy;
-import com.pacoworks.dereference.architecture.ui.Navigator;
+import com.pacoworks.dereference.architecture.navigation.Navigator;
 
 import rx.android.schedulers.AndroidSchedulers;
 
