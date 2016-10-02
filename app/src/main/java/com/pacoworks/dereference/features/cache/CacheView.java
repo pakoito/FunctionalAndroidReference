@@ -140,7 +140,7 @@ public class CacheView extends BaseController implements CacheExampleView {
 
     @NotNull
     @Override
-    public Observable<String> filter() {
+    public Observable<String> filterSelected() {
         return filterSelectionPRelay.asObservable();
     }
 }

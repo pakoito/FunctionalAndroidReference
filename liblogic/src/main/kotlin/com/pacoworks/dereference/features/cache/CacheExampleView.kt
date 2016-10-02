@@ -32,5 +32,5 @@ interface CacheExampleInputView: BoundView {
 }
 
 interface CacheExampleOutputView {
-    fun filter(): Observable<String>
+    fun filterSelected(): Observable<String>
 }
