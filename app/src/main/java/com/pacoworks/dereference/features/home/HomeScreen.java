@@ -31,10 +31,10 @@ import com.pacoworks.dereference.architecture.navigation.Direction;
 import com.pacoworks.dereference.architecture.navigation.Home;
 import com.pacoworks.dereference.architecture.navigation.ListExample;
 import com.pacoworks.dereference.architecture.navigation.RotationExample;
+import com.pacoworks.dereference.architecture.navigation.ScreensKt;
 import com.pacoworks.dereference.core.functional.Mapper;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
-import com.pacoworks.dereference.features.home.model.HomeScreenSelection;
 import com.pacoworks.rxsealedunions.Union3;
 
 import org.javatuples.Pair;
@@ -49,7 +49,7 @@ import rx.functions.Func1;
 
 public class HomeScreen extends BaseController implements HomeView {
 
-    private final PublishRelay<HomeScreenSelection> screenSelectionPublishRelay = PublishRelay.create();
+    private final PublishRelay<Union3<Home, RotationExample, ListExample>> screenSelectionPublishRelay = PublishRelay.create();
 
     public HomeScreen() {
         super();
@@ -73,12 +73,12 @@ public class HomeScreen extends BaseController implements HomeView {
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         LinearLayout elements = new LinearLayout(context);
         elements.setOrientation(LinearLayout.VERTICAL);
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "RecyclerView", Mapper.<HomeScreenSelection>just(HomeScreenSelection.RecyclerView.INSTANCE)));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Rotation", Mapper.<HomeScreenSelection>just(HomeScreenSelection.Rotation.INSTANCE)));
+        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "RecyclerView", Mapper.<Union3<Home, RotationExample, ListExample>>just(ScreensKt.createList())));
+        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Rotation", Mapper.<Union3<Home, RotationExample, ListExample>>just(ScreensKt.createRotation())));
         return elements;
     }
 
-    private View createButton(Context context, PublishRelay<HomeScreenSelection> screenSelectionPublishRelay, String name, Func1<? super Object, HomeScreenSelection> func0) {
+    private View createButton(Context context, PublishRelay<Union3<Home, RotationExample, ListExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union3<Home, RotationExample, ListExample>> func0) {
         TextView txv = new TextView(context);
         txv.setText(name);
         RxView.clicks(txv).map(func0).subscribe(screenSelectionPublishRelay);
@@ -93,7 +93,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     @NotNull
     @Override
-    public Observable<HomeScreenSelection> buttonClick() {
+    public Observable<Union3<Home, RotationExample, ListExample>> buttonClick() {
         return screenSelectionPublishRelay;
     }
 }

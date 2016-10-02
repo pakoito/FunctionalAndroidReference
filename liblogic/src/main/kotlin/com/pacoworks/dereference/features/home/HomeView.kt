@@ -17,7 +17,7 @@
 package com.pacoworks.dereference.features.home
 
 import com.pacoworks.dereference.architecture.ui.BoundView
-import com.pacoworks.dereference.features.home.model.HomeScreenSelection
+import com.pacoworks.dereference.architecture.navigation.Screen
 import rx.Observable
 
 interface HomeView: HomeViewInput, HomeViewOutput
@@ -26,5 +26,5 @@ interface HomeViewInput : BoundView {
 }
 
 interface HomeViewOutput {
-    fun buttonClick(): Observable<HomeScreenSelection>
+    fun buttonClick(): Observable<Screen>
 }
