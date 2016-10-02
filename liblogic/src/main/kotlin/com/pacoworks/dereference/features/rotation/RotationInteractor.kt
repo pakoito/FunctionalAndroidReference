@@ -97,6 +97,7 @@ private fun handleRetryAfterError(user: Observable<UserInput>, transaction: Stat
                             /* The type checker assumes WaitingForRetry otherwise */
                             .map { it as Transaction }
                             .concatWith(user.first().map { Loading(it) })
+                            /* Stop with the retry upon exiting the screen */
                             .takeUntil(lifecycle.filter { it == ConductorLifecycle.Exit })
                 }
                 .subscribe(transaction)
