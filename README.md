@@ -48,9 +48,11 @@ Written in Kotlin, with no Android dependencies.
 
 * Every parameter in a function must be passed explicitly. No globals, no fields.
 
-* No nullable types outside the UI and service layers.
-
 * Prefer encapsulating variables in closures rather than fields. If using fields, final fields will be mandated whenever possible.
+
+* Collections must be immutable.
+
+* No nullable types outside the UI and service layers.
 
 * Use functional patterns like unions, laziness, or higher order functions, instead of classic OOP Gang of Four patterns.
 
