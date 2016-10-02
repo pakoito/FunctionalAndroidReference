@@ -41,7 +41,7 @@ fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, stat
 
 private fun handleFilterChange(server: (String) -> Observable<Union2<UnknownAgotCharacter, KnownAgotCharacter>>, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
         doSM(
-                { viewOutputView.filterSelected() },
+                { viewOutputView.filterSelected().distinctUntilChanged() },
                 { state.characterCache.first() },
                 { id, cache ->
                     cache[id]!!.let {
@@ -62,4 +62,4 @@ private fun updateFromNetwork(id: String, cache: AgotCharacterCache, server: Cac
                 .map { it[id] }
 
 private fun handleSelectedState(viewOutputView: CacheExampleOutputView, currentId: StateHolder<String>): Subscription =
-        viewOutputView.filterSelected().subscribe(currentId)
+        viewOutputView.filterSelected().distinctUntilChanged().subscribe(currentId)
