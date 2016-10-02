@@ -39,7 +39,7 @@ import rx.Observable;
 
 public class RotationScreen extends BaseController implements RotationView {
 
-    private PublishRelay<String> userPublishRelay = PublishRelay.create();
+    private final PublishRelay<String> userPublishRelay = PublishRelay.create();
     private final RotationState state;
 
     public RotationScreen() {

@@ -40,7 +40,7 @@ import rx.functions.Action2;
 import rx.functions.Action3;
 
 public abstract class BaseController extends Controller implements BoundView {
-    ReactiveController reactiveController = new ReactiveController();
+    private final ReactiveController reactiveController = new ReactiveController();
 
     public BaseController() {
         super();

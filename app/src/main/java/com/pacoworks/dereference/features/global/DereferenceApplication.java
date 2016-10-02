@@ -21,7 +21,7 @@ import android.content.Context;
 
 public class DereferenceApplication extends Application {
 
-    Injector injector;
+    private Injector injector;
 
     @Override
     public void onCreate() {
