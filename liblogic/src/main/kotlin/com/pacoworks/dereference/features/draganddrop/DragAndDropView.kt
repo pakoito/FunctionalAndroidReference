@@ -25,9 +25,12 @@ interface DragAndDropView : DragAndDropInputView, DragAndDropOutputView {
 
 interface DragAndDropInputView : BoundView {
     fun updateElements(elements: List<String>): Unit
+    fun updateSelected(selected: Set<String>): Unit
 }
 
 interface DragAndDropOutputView {
     fun dragAndDropMoves(): Observable<Pair<Int, Int>>
+
+    fun listClicks(): Observable<Pair<Int, String>>
 }
 

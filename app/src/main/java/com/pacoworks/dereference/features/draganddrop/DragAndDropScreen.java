@@ -35,6 +35,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 import rx.Observable;
 
@@ -44,6 +45,8 @@ public class DragAndDropScreen extends BaseController implements DragAndDropView
     private final PublishRelay<Pair<Integer, Integer>> dragAndDropPRelay = PublishRelay.create();
 
     private final ListExampleState state;
+
+    private final PublishRelay<Pair<Integer, String>> listClicks = PublishRelay.create();
 
     private RecyclerView recyclerView;
 
@@ -60,6 +63,7 @@ public class DragAndDropScreen extends BaseController implements DragAndDropView
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
         final ListExampleAdapter adapter = new ListExampleAdapter();
         recyclerView.setAdapter(adapter);
+        adapter.getClicks().subscribe(listClicks);
         final ReactiveDNDTouchHelper callback = new ReactiveDNDTouchHelper();
         final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         callback.getDNDObservable().subscribe(dragAndDropPRelay);
@@ -81,6 +85,17 @@ public class DragAndDropScreen extends BaseController implements DragAndDropView
     @Override
     public void updateElements(@NotNull List<String> elements) {
         getCastedAdapter().swap(elements);
+    }
+
+    @Override
+    public void updateSelected(@NotNull Set<String> selected) {
+        getCastedAdapter().swapSelected(selected);
+    }
+
+    @NotNull
+    @Override
+    public Observable<Pair<Integer, String>> listClicks() {
+        return listClicks;
     }
 
     private ListExampleAdapter getCastedAdapter() {

@@ -16,19 +16,40 @@
 
 package com.pacoworks.dereference.features.draganddrop
 
+import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.list.ListExampleState
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
+import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
+import org.javatuples.Pair
+import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import java.util.*
 
 fun bindDragAndDropExample(viewInput: DragAndDropInputView, state: ListExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
+    viewInput.createBinder<Set<String>>().call(state.selected, viewInput::updateSelected)
 }
 
 fun subscribeDragAndDropInteractor(viewOutput: DragAndDropOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
+                handleSelected(viewOutput.listClicks(), state.selected),
                 handleDragAndDrop(state, viewOutput))
+
+fun handleSelected(listClicks: Observable<Pair<Int, String>>, selected: StateHolder<Set<String>>): Subscription =
+        doSM(
+                { selected },
+                { listClicks.map { it.value1 }.first() },
+                { selected, item ->
+                    Observable.just(
+                            if (selected.contains(item)) {
+                                selected.minus(item)
+                            } else {
+                                selected.plus(item)
+                            }
+                    )
+                }
+        ).subscribe(selected)
 
 
 private fun handleDragAndDrop(state: ListExampleState, viewOutput: DragAndDropOutputView): Subscription =
