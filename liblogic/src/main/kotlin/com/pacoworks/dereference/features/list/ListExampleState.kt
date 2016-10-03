@@ -19,10 +19,13 @@ package com.pacoworks.dereference.features.list
 import com.jakewharton.rxrelay.BehaviorRelay
 import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.features.list.model.EditMode
+import com.pacoworks.dereference.features.list.model.createEditModeNormal
 import rx.Observable
 
 
 data class ListExampleState(
         val elements: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(Observable.range(0, 5).map { it.toString() }.toList().toBlocking().first())),
-        val selected: StateHolder<Set<String>> = SerializedRelay(BehaviorRelay.create<Set<String>>(setOf()))
+        val selected: StateHolder<Set<String>> = SerializedRelay(BehaviorRelay.create<Set<String>>(setOf())),
+        val editMode: StateHolder<EditMode> = SerializedRelay(BehaviorRelay.create<EditMode>(createEditModeNormal()))
 )

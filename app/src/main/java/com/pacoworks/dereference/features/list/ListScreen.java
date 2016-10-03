@@ -20,7 +20,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,9 @@ import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.core.functional.Mapper;
 import com.pacoworks.dereference.core.functional.None;
 import com.pacoworks.dereference.features.global.BaseController;
-import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper;
+import com.pacoworks.dereference.features.list.model.Delete;
+import com.pacoworks.dereference.features.list.model.Normal;
+import com.pacoworks.rxsealedunions.Union2;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Set;
 
 import rx.Observable;
+import rx.functions.Action1;
 
 public class ListScreen extends BaseController implements ListExampleView {
     private static final int SPAN_COUNT = 3;
@@ -59,6 +61,10 @@ public class ListScreen extends BaseController implements ListExampleView {
 
     private RecyclerView recyclerView;
 
+    private TextView deleteButton;
+
+    private TextView addButton;
+
     public ListScreen() {
         super();
         state = new ListExampleState();
@@ -69,9 +75,9 @@ public class ListScreen extends BaseController implements ListExampleView {
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         final View inflate = inflater.inflate(R.layout.screen_list, container, false);
-        final TextView addButton = (TextView) inflate.findViewById(R.id.screen_list_add);
+        addButton = (TextView) inflate.findViewById(R.id.screen_list_add);
         RxView.clicks(addButton).map(Mapper.<None>just(None.VOID)).subscribe(addPRelay);
-        final TextView deleteButton = (TextView) inflate.findViewById(R.id.screen_list_delete);
+        deleteButton = (TextView) inflate.findViewById(R.id.screen_list_delete);
         RxView.clicks(deleteButton).map(Mapper.<None>just(None.VOID)).subscribe(deletePRelay);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.screen_list_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
@@ -79,10 +85,10 @@ public class ListScreen extends BaseController implements ListExampleView {
         adapter.getClicks().subscribe(clicksPRelay);
         adapter.getLongClicks().subscribe(longClicksPRelay);
         recyclerView.setAdapter(adapter);
-        final ReactiveDNDTouchHelper callback = new ReactiveDNDTouchHelper();
-        final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        callback.getDNDObservable().subscribe(dragAndDropPRelay);
-        touchHelper.attachToRecyclerView(recyclerView);
+        //final ReactiveDNDTouchHelper callback = new ReactiveDNDTouchHelper();
+        //final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        //callback.getDNDObservable().subscribe(dragAndDropPRelay);
+        //touchHelper.attachToRecyclerView(recyclerView);
         return inflate;
     }
 
@@ -133,5 +139,22 @@ public class ListScreen extends BaseController implements ListExampleView {
     @Override
     public Observable<None> deleteClick() {
         return deletePRelay.asObservable();
+    }
+
+    @Override
+    public void updateEditMode(@NotNull Union2<Normal, Delete> editMode) {
+        editMode.continued(new Action1<Normal>() {
+            @Override
+            public void call(Normal normal) {
+                addButton.setVisibility(View.VISIBLE);
+                deleteButton.setVisibility(View.GONE);
+            }
+        }, new Action1<Delete>() {
+            @Override
+            public void call(Delete delete) {
+                addButton.setVisibility(View.GONE);
+                deleteButton.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

@@ -112,6 +112,6 @@ public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> 
     }
 
     public Observable<Pair<Integer, T>> getLongClicks() {
-        return clicksRelay.asObservable();
+        return longClicksRelay.asObservable();
     }
 }

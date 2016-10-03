@@ -18,6 +18,7 @@ package com.pacoworks.dereference.features.list
 
 import com.pacoworks.dereference.architecture.ui.BoundView
 import com.pacoworks.dereference.core.functional.None
+import com.pacoworks.dereference.features.list.model.EditMode
 import org.javatuples.Pair
 import rx.Observable
 
@@ -27,6 +28,7 @@ interface ListExampleView : ListExampleInputView, ListExampleOutputView {
 interface ListExampleInputView : BoundView {
     fun updateElements(elements: List<String>): Unit
     fun updateSelected(selected: Set<String>): Unit
+    fun updateEditMode(editMode: EditMode): Unit
 }
 
 interface ListExampleOutputView {

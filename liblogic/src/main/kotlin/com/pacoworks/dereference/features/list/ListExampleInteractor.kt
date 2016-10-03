@@ -18,6 +18,9 @@ package com.pacoworks.dereference.features.list
 
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.core.functional.None
+import com.pacoworks.dereference.features.list.model.EditMode
+import com.pacoworks.dereference.features.list.model.createEditModeDelete
+import com.pacoworks.dereference.features.list.model.createEditModeNormal
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import com.pacoworks.rxtuples.RxTuples
@@ -30,28 +33,14 @@ import java.util.*
 fun bindListExample(viewInput: ListExampleInputView, state: ListExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
     viewInput.createBinder<Set<String>>().call(state.selected, viewInput::updateSelected)
+    viewInput.createBinder<EditMode>().call(state.editMode, viewInput::updateEditMode)
 }
 
 fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
                 handleDragAndDrop(state, viewOutput),
-                handleSelect(state.selected, viewOutput.listClicks()),
                 handleAdd(state.elements, viewOutput.addClick()),
-                handleDelete(state.elements, state.selected, viewOutput.deleteClick()))
-
-fun handleSelect(selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
-        doFM(
-                { listClicks.map { it.value1 } },
-                { value ->
-                    selected.first().map {
-                        if (it.contains(value)) {
-                            it.minus(value)
-                        } else {
-                            it.plus(value)
-                        }
-                    }
-                }
-        ).subscribe(selected)
+                handleEditModes(state, viewOutput.listLongClicks(), viewOutput.deleteClick(), viewOutput.listClicks()))
 
 private fun handleDragAndDrop(state: ListExampleState, viewOutput: ListExampleOutputView): Subscription =
         doFM(
@@ -78,14 +67,59 @@ fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<Non
         )
                 .subscribe(elementsState)
 
-fun handleDelete(elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>, deleteClick: Observable<None>): Subscription =
+fun handleEditModes(state: ListExampleState, listLongClicks: Observable<Pair<Int, String>>, deleteClick: Observable<None>, listClicks: Observable<Pair<Int, String>>): Subscription =
+        CompositeSubscription(
+                handleEnterEditState(listLongClicks, state.editMode),
+                handleExitEditState(deleteClick, state.editMode),
+                handleOnCommitDelete(state.editMode, state.elements, state.selected),
+                handleOnSwitchEditState(state.editMode, state.selected),
+                handleSelect(state.editMode, state.selected, listClicks))
+
+fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode: StateHolder<EditMode>): Subscription =
+        listLongClicks
+                .flatMap { click ->
+                    editMode.first()
+                            .filter { it.join({ true }, { false }) }
+                            .map { createEditModeDelete(click.value1) }
+                }.subscribe(editMode)
+
+fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<EditMode>): Subscription =
+        deleteClick
+                .flatMap {
+                    editMode.first()
+                            .filter { it.join({ false }, { true }) }
+                            .map { createEditModeNormal() }
+                }.subscribe(editMode)
+
+fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>): Subscription =
+        editMode
+                .map { it.join({ setOf<String>() }, { setOf(it.id) }) }
+                .subscribe(selected)
+
+fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>): Subscription =
         doSM(
-                { Observable.combineLatest(elementsState, selected, RxTuples.toPair<List<String>, Set<String>>()) },
-                { deleteClick.first() },
-                { statePair, click ->
+                { editMode.filter { it.join({ true }, { false }) } },
+                { Observable.zip(elementsState, selected, RxTuples.toPair<List<String>, Set<String>>()).first() },
+                { exitEditMode, statePair ->
                     Observable.from(statePair.value0).filter { !statePair.value1.contains(it) }.toList()
                 }
         )
-                /* Double state update: selected to empty, elements after deletion */
-                .doOnNext { selected.call(setOf()) }
                 .subscribe(elementsState)
+
+fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
+        editMode.
+                switchMap {
+                    if (it.join({ false }, { true })) {
+                        listClicks.map { it.value1 }
+                    } else {
+                        Observable.empty()
+                    }
+                }.flatMap { value ->
+            selected.first().map {
+                if (it.contains(value)) {
+                    it.minus(value)
+                } else {
+                    it.plus(value)
+                }
+            }
+        }.subscribe(selected)
