@@ -41,7 +41,7 @@ fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: Lis
                 handleEnterEditState(viewOutput.listLongClicks(), state.editMode),
                 handleExitEditState(viewOutput.deleteClick(), state.editMode),
                 handleOnCommitDelete(state.editMode, state.elements, state.selected),
-                /* Must be after handleOnCommitDelete to assure that selections are not cleared before they're deleted */
+                /* FIXME: Must be after handleOnCommitDelete to assure that selections are not cleared before they're deleted */
                 handleOnSwitchEditState(state.editMode, state.selected),
                 handleSelect(state.editMode, state.selected, viewOutput.listClicks()))
 
