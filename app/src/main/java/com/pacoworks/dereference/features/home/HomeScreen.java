@@ -29,6 +29,7 @@ import com.jakewharton.rxrelay.BehaviorRelay;
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.architecture.navigation.CacheExample;
 import com.pacoworks.dereference.architecture.navigation.Direction;
+import com.pacoworks.dereference.architecture.navigation.DragAndDropExample;
 import com.pacoworks.dereference.architecture.navigation.Home;
 import com.pacoworks.dereference.architecture.navigation.ListExample;
 import com.pacoworks.dereference.architecture.navigation.RotationExample;
@@ -36,7 +37,7 @@ import com.pacoworks.dereference.architecture.navigation.ScreensKt;
 import com.pacoworks.dereference.core.functional.Mapper;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
-import com.pacoworks.rxsealedunions.Union4;
+import com.pacoworks.rxsealedunions.Union5;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -50,20 +51,20 @@ import rx.functions.Func1;
 
 public class HomeScreen extends BaseController implements HomeView {
 
-    private final PublishRelay<Union4<Home, RotationExample, ListExample, CacheExample>> screenSelectionPublishRelay = PublishRelay.create();
+    private final PublishRelay<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> screenSelectionPublishRelay = PublishRelay.create();
 
     public HomeScreen() {
         super();
-        final Lazy<BehaviorRelay<Pair<Union4<Home, RotationExample, ListExample, CacheExample>, Direction>>> navigationLazy =
-                LazyKt.lazy(new Function0<BehaviorRelay<Pair<Union4<Home, RotationExample, ListExample, CacheExample>, Direction>>>() {
+        final Lazy<BehaviorRelay<Pair<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>, Direction>>> navigationLazy =
+                LazyKt.lazy(new Function0<BehaviorRelay<Pair<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>, Direction>>>() {
                     @Override
-                    public BehaviorRelay<Pair<Union4<Home, RotationExample, ListExample, CacheExample>, Direction>> invoke() {
+                    public BehaviorRelay<Pair<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>, Direction>> invoke() {
                         return DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation();
                     }
                 });
-        HomeInteractorKt.subscribeHomeInteractor(this, new Action1<Pair<Union4<Home, RotationExample, ListExample, CacheExample>, Direction>>() {
+        HomeInteractorKt.subscribeHomeInteractor(this, new Action1<Pair<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>, Direction>>() {
             @Override
-            public void call(Pair<Union4<Home, RotationExample, ListExample, CacheExample>, Direction> navigation) {
+            public void call(Pair<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>, Direction> navigation) {
                 navigationLazy.getValue().call(navigation);
             }
         });
@@ -74,13 +75,14 @@ public class HomeScreen extends BaseController implements HomeView {
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         LinearLayout elements = new LinearLayout(context);
         elements.setOrientation(LinearLayout.VERTICAL);
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "RecyclerView", Mapper.<Union4<Home, RotationExample, ListExample, CacheExample>>just(ScreensKt.createList())));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Rotation", Mapper.<Union4<Home, RotationExample, ListExample, CacheExample>>just(ScreensKt.createRotation())));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Cache", Mapper.<Union4<Home, RotationExample, ListExample, CacheExample>>just(ScreensKt.createCache())));
+        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "RecyclerView with Delete mode", Mapper.<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>>just(ScreensKt.createList())));
+        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Drag And Drop", Mapper.<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>>just(ScreensKt.createDragAndDrop())));
+        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Rotation", Mapper.<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>>just(ScreensKt.createRotation())));
+        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Cache", Mapper.<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>>just(ScreensKt.createCache())));
         return elements;
     }
 
-    private View createButton(Context context, PublishRelay<Union4<Home, RotationExample, ListExample, CacheExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union4<Home, RotationExample, ListExample, CacheExample>> func0) {
+    private View createButton(Context context, PublishRelay<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> func0) {
         TextView txv = new TextView(context);
         txv.setText(name);
         RxView.clicks(txv).map(func0).subscribe(screenSelectionPublishRelay);
@@ -95,7 +97,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     @NotNull
     @Override
-    public Observable<Union4<Home, RotationExample, ListExample, CacheExample>> buttonClick() {
+    public Observable<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> buttonClick() {
         return screenSelectionPublishRelay;
     }
 }

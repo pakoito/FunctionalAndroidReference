@@ -32,7 +32,7 @@ public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleV
 
     private final Set<String> selected = new HashSet<>();
 
-    protected ListExampleAdapter() {
+    public ListExampleAdapter() {
         super(new Func2<String, String, Boolean>() {
             @Override
             public Boolean call(String s, String s2) {

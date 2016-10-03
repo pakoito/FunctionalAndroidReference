@@ -16,16 +16,16 @@
 
 package com.pacoworks.dereference.architecture.navigation
 
-import com.pacoworks.rxsealedunions.Union4
+import com.pacoworks.rxsealedunions.Union5
 import com.pacoworks.rxsealedunions.generic.GenericUnions
 
-typealias Screen = Union4<Home, RotationExample, ListExample, CacheExample>
+typealias Screen = Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>
 
 enum class Direction {
     BACK, FORWARD
 }
 
-private val SCREEN_FACTORY: Union4.Factory<Home, RotationExample, ListExample, CacheExample> = GenericUnions.quartetFactory()
+private val SCREEN_FACTORY: Union5.Factory<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> = GenericUnions.quintetFactory()
 
 sealed class Screens(open val id: String = "")
 
@@ -34,6 +34,8 @@ data class Home(override val id: String = ""): Screens(id)
 data class RotationExample(override val id: String = ""): Screens(id)
 
 data class ListExample(override val id: String = ""): Screens(id)
+
+data class DragAndDropExample(override val id: String = ""): Screens(id)
 
 data class CacheExample(override val id: String = ""): Screens(id)
 
@@ -44,3 +46,5 @@ fun createRotation(): Screen = SCREEN_FACTORY.second(RotationExample())
 fun createList(): Screen = SCREEN_FACTORY.third(ListExample())
 
 fun createCache(): Screen = SCREEN_FACTORY.fourth(CacheExample())
+
+fun createDragAndDrop(): Screen = SCREEN_FACTORY.fifth(DragAndDropExample())

@@ -23,17 +23,19 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.pacoworks.dereference.architecture.navigation.CacheExample;
+import com.pacoworks.dereference.architecture.navigation.DragAndDropExample;
 import com.pacoworks.dereference.architecture.navigation.Home;
 import com.pacoworks.dereference.architecture.navigation.ListExample;
 import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.architecture.navigation.RotationExample;
 import com.pacoworks.dereference.architecture.navigation.ScreensKt;
-import com.pacoworks.dereference.features.cache.CacheView;
+import com.pacoworks.dereference.features.cache.CacheScreen;
+import com.pacoworks.dereference.features.draganddrop.DragAndDropScreen;
 import com.pacoworks.dereference.features.home.HomeScreen;
 import com.pacoworks.dereference.features.list.ListScreen;
 import com.pacoworks.dereference.features.rotation.RotationScreen;
 import com.pacoworks.rxsealedunions.Union1;
-import com.pacoworks.rxsealedunions.Union4;
+import com.pacoworks.rxsealedunions.Union5;
 import com.pacoworks.rxsealedunions.generic.GenericUnions;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import rx.functions.Func1;
 
 public class MainNavigator implements Navigator {
-    private static final Union1.Factory<Union4<Home, RotationExample, ListExample, CacheExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
+    private static final Union1.Factory<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
 
     private final Router router;
 
@@ -53,7 +55,7 @@ public class MainNavigator implements Navigator {
     }
 
     @Override
-    public void goTo(@NotNull Union4<Home, RotationExample, ListExample, CacheExample> screenUnion) {
+    public void goTo(@NotNull Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> screenUnion) {
         Controller screen = getControllerFromScreen(screenUnion);
         router.pushController(RouterTransaction.with(screen)
                 .pushChangeHandler(new FadeChangeHandler())
@@ -61,7 +63,7 @@ public class MainNavigator implements Navigator {
     }
 
     @Override
-    public Union1<Union4<Home, RotationExample, ListExample, CacheExample>> goBack() {
+    public Union1<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> goBack() {
         final int backstackSize = router.getBackstackSize();
         if (backstackSize > 1) {
             final RouterTransaction routerTransaction = router.getBackstack().get(backstackSize - 1);
@@ -74,7 +76,7 @@ public class MainNavigator implements Navigator {
         }
     }
 
-    private Controller getControllerFromScreen(Union4<Home, RotationExample, ListExample, CacheExample> screenUnion) {
+    private Controller getControllerFromScreen(Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> screenUnion) {
         return screenUnion.join(new Func1<Home, Controller>() {
             @Override
             public Controller call(Home home) {
@@ -93,12 +95,17 @@ public class MainNavigator implements Navigator {
         }, new Func1<CacheExample, Controller>() {
             @Override
             public Controller call(CacheExample cacheExample) {
-                return new CacheView();
+                return new CacheScreen();
+            }
+        }, new Func1<DragAndDropExample, Controller>() {
+            @Override
+            public Controller call(DragAndDropExample dragAndDropExample) {
+                return new DragAndDropScreen();
             }
         });
     }
 
-    private Union4<Home, RotationExample, ListExample, CacheExample> getScreenFromController(Controller controller) {
+    private Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> getScreenFromController(Controller controller) {
         return ScreensKt.createHome();
     }
 }

@@ -21,7 +21,6 @@ import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.features.list.model.EditMode
 import com.pacoworks.dereference.features.list.model.createEditModeDelete
 import com.pacoworks.dereference.features.list.model.createEditModeNormal
-import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import com.pacoworks.rxtuples.RxTuples
 import org.javatuples.Pair
@@ -38,23 +37,12 @@ fun bindListExample(viewInput: ListExampleInputView, state: ListExampleState) {
 
 fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
-                handleDragAndDrop(state, viewOutput),
                 handleAdd(state.elements, viewOutput.addClick()),
-                handleEditModes(state, viewOutput.listLongClicks(), viewOutput.deleteClick(), viewOutput.listClicks()))
-
-private fun handleDragAndDrop(state: ListExampleState, viewOutput: ListExampleOutputView): Subscription =
-        doFM(
-                { viewOutput.dragAndDropMoves() },
-                { swap ->
-                    state.elements
-                            .first()
-                            .map {
-                                it.toMutableList()
-                                        .apply { Collections.swap(this, swap.value0, swap.value1) }
-                                        .toList()
-                            }
-                }
-        ).subscribe(state.elements)
+                handleEnterEditState(viewOutput.listLongClicks(), state.editMode),
+                handleExitEditState(viewOutput.deleteClick(), state.editMode),
+                handleOnCommitDelete(state.editMode, state.elements, state.selected),
+                handleOnSwitchEditState(state.editMode, state.selected),
+                handleSelect(state.editMode, state.selected, viewOutput.listClicks()))
 
 fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<None>): Subscription =
         doSM(
@@ -66,14 +54,6 @@ fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<Non
                 }
         )
                 .subscribe(elementsState)
-
-fun handleEditModes(state: ListExampleState, listLongClicks: Observable<Pair<Int, String>>, deleteClick: Observable<None>, listClicks: Observable<Pair<Int, String>>): Subscription =
-        CompositeSubscription(
-                handleEnterEditState(listLongClicks, state.editMode),
-                handleExitEditState(deleteClick, state.editMode),
-                handleOnCommitDelete(state.editMode, state.elements, state.selected),
-                handleOnSwitchEditState(state.editMode, state.selected),
-                handleSelect(state.editMode, state.selected, listClicks))
 
 fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode: StateHolder<EditMode>): Subscription =
         listLongClicks

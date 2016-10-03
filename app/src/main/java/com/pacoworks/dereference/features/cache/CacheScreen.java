@@ -49,7 +49,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class CacheView extends BaseController implements CacheExampleView {
+public class CacheScreen extends BaseController implements CacheExampleView {
 
     private final CacheExampleState cacheExampleState;
 
@@ -59,7 +59,7 @@ public class CacheView extends BaseController implements CacheExampleView {
 
     private Spinner spin;
 
-    public CacheView() {
+    public CacheScreen() {
         super();
         cacheExampleState = new CacheExampleState();
         CacheExampleInteractorKt.subscribeCacheExampleInteractor(this, cacheExampleState, new Function1<String, Observable<Union2<UnknownAgotCharacter, KnownAgotCharacter>>>() {
