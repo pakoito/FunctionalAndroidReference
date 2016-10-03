@@ -18,10 +18,7 @@ package com.pacoworks.dereference.features.cache
 
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.cache.model.AgotCharacter
-import com.pacoworks.dereference.features.cache.model.KnownAgotCharacter
-import com.pacoworks.dereference.features.cache.model.UnknownAgotCharacter
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
-import com.pacoworks.rxsealedunions.Union2
 import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -39,7 +36,7 @@ fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, stat
                 handleFilterChange(server, state, viewOutputView),
                 handleSelectedState(viewOutputView, state.currentId))
 
-private fun handleFilterChange(server: (String) -> Observable<Union2<UnknownAgotCharacter, KnownAgotCharacter>>, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
+private fun handleFilterChange(server: (String) -> Observable<AgotCharacter>, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
         doSM(
                 { viewOutputView.filterSelected().distinctUntilChanged() },
                 { state.characterCache.first() },
