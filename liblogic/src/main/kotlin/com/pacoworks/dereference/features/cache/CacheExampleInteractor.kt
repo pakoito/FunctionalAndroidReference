@@ -47,8 +47,8 @@ private fun handleFilterChange(server: (String) -> Observable<Union2<UnknownAgot
                     cache[id]!!.let {
                         character ->
                         character.join(
-                                { updateFromNetwork(it.id, cache, server, state.characterCache).startWith(character) },
-                                { Observable.just(character) })
+                                { unknown -> updateFromNetwork(unknown.id, cache, server, state.characterCache).startWith(character) },
+                                { present -> Observable.just(character) })
                     }
                 }
         ).subscribe(state.currentCharacter)

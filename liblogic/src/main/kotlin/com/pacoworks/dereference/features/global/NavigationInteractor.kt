@@ -17,12 +17,12 @@
 package com.pacoworks.dereference.features.global
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
-import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy
 import com.pacoworks.dereference.architecture.navigation.Direction
 import com.pacoworks.dereference.architecture.navigation.Navigator
 import com.pacoworks.dereference.architecture.navigation.Screen
 import com.pacoworks.dereference.architecture.navigation.createHome
+import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
+import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy
 import org.javatuples.Pair
 import rx.Scheduler
 import rx.Subscription
@@ -49,9 +49,9 @@ private fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator:
                     navigator.goBack()
                             .join(
                                     /* If back to screen, just forwards it */
-                                    { Pair.with(it, Direction.BACK) },
+                                    { screen -> Pair.with(screen, Direction.BACK) },
                                     /* If back to exit app, reset to initial state */
-                                    { Pair.with(createHome(), Direction.FORWARD) }
+                                    { -> Pair.with(createHome(), Direction.FORWARD) }
                             )
                 }
                 .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })

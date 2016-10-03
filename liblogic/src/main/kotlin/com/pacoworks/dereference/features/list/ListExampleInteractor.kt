@@ -74,7 +74,7 @@ fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<Edi
 
 fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>): Subscription =
         editMode
-                .map { it.join({ setOf<String>() }, { setOf(it.id) }) }
+                .map { it.join({ normal -> setOf<String>() }, { delete -> setOf(delete.id) }) }
                 .subscribe(selected)
 
 fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>): Subscription =
