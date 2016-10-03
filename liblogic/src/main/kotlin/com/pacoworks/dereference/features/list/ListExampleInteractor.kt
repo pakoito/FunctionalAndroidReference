@@ -79,7 +79,7 @@ fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode
         listLongClicks
                 .flatMap { click ->
                     editMode.first()
-                            .filter { it.join({ true }, { false }) }
+                            .filter { it.join({ normal -> true }, { delete -> false }) }
                             .map { createEditModeDelete(click.value1) }
                 }.subscribe(editMode)
 
@@ -87,7 +87,7 @@ fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<Edi
         deleteClick
                 .flatMap {
                     editMode.first()
-                            .filter { it.join({ false }, { true }) }
+                            .filter { it.join({ normal -> false }, { delete -> true }) }
                             .map { createEditModeNormal() }
                 }.subscribe(editMode)
 
@@ -98,7 +98,7 @@ fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHold
 
 fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>): Subscription =
         doSM(
-                { editMode.filter { it.join({ true }, { false }) } },
+                { editMode.filter { it.join({ normal -> true }, { delete -> false }) } },
                 { Observable.zip(elementsState, selected, RxTuples.toPair<List<String>, Set<String>>()).first() },
                 { exitEditMode, statePair ->
                     Observable.from(statePair.value0).filter { !statePair.value1.contains(it) }.toList()
@@ -109,7 +109,7 @@ fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHo
 fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
         editMode.
                 switchMap {
-                    if (it.join({ false }, { true })) {
+                    if (it.join({ normal -> false }, { delete -> true })) {
                         listClicks.map { it.value1 }
                     } else {
                         Observable.empty()
