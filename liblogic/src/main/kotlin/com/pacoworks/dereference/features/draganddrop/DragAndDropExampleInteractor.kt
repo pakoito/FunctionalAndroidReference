@@ -34,7 +34,7 @@ fun bindDragAndDropExample(viewInput: DragAndDropInputView, state: ListExampleSt
 fun subscribeDragAndDropInteractor(viewOutput: DragAndDropOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
                 handleSelected(viewOutput.listClicks(), state.selected),
-                handleDragAndDrop(state, viewOutput))
+                handleDragAndDrop(viewOutput, state.elements))
 
 fun handleSelected(listClicks: Observable<Pair<Int, String>>, selected: StateHolder<Set<String>>): Subscription =
         doSM(
@@ -52,11 +52,11 @@ fun handleSelected(listClicks: Observable<Pair<Int, String>>, selected: StateHol
         ).subscribe(selected)
 
 
-private fun handleDragAndDrop(state: ListExampleState, viewOutput: DragAndDropOutputView): Subscription =
+private fun handleDragAndDrop(viewOutput: DragAndDropOutputView, elements: StateHolder<List<String>>): Subscription =
         doFM(
                 { viewOutput.dragAndDropMoves() },
                 { swap ->
-                    state.elements
+                    elements
                             .first()
                             .map {
                                 it.toMutableList()
@@ -64,4 +64,4 @@ private fun handleDragAndDrop(state: ListExampleState, viewOutput: DragAndDropOu
                                         .toList()
                             }
                 }
-        ).subscribe(state.elements)
+        ).subscribe(elements)
