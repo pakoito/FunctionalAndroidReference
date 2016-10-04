@@ -40,7 +40,7 @@ fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     })
 }
 
-fun subscribeRotationInteractor(lifecycle: Observable<ConductorLifecycle>, view: RotationViewOutput, state: RotationState, services: (String) -> Observable<Transaction>) =
+fun subscribeRotationInteractor(lifecycle: Observable<ConductorLifecycle>, view: RotationViewOutput, state: RotationState, services: TransactionRequest) =
         CompositeSubscription(
                 handleUserInput(view, state.user),
                 handleStart(state.user, state.transaction),
