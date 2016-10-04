@@ -36,7 +36,7 @@ fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, stat
                 handleFilterChange(server, state, viewOutputView),
                 handleSelectedState(viewOutputView, state.currentId))
 
-private fun handleFilterChange(server: (String) -> Observable<AgotCharacter>, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
+private fun handleFilterChange(server: CacheRequest, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
         doSM(
                 { viewOutputView.filterSelected().distinctUntilChanged() },
                 { state.characterCache.first() },
