@@ -47,6 +47,5 @@ fun createUnknownNetworkErrorCharacter(id: String): AgotCharacter =
 fun createUnknownIncorrectCharacter(id: String): AgotCharacter =
         CHAR_GENERATOR.first(UnknownAgotCharacter(id, REASON_FACTORY.third(IncorrectInfo)))
 
-
 fun createKnownCharacter(id: String, name: String, titles: List<String>): AgotCharacter =
         CHAR_GENERATOR.second(KnownAgotCharacter(id, name, titles))
