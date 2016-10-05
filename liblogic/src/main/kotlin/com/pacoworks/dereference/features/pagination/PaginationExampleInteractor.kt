@@ -38,8 +38,7 @@ private fun handleLoading(service: PaginationExampleService, state: PaginationEx
                 { elements, click, page ->
                     service.invoke(page)
                             .map { elements.plus(it) }
-                            .doOnNext {
-                                state.pages.call(page + 1)
-                            }
+                            /* Update pages inline after a success */
+                            .doOnNext { state.pages.call(page + 1) }
                 }
         ).subscribe(state.elements)
