@@ -88,7 +88,9 @@ public class PaginationScreen extends BaseController implements PaginationExampl
 
     @Override
     public void updateElements(@NotNull List<String> elements) {
-        getCastedAdapter().swap(elements);
+        final ListExampleAdapter castedAdapter = getCastedAdapter();
+        castedAdapter.swap(elements);
+        recyclerView.scrollToPosition(elements.size() - 10);
     }
 
     private ListExampleAdapter getCastedAdapter() {
