@@ -47,9 +47,9 @@ public class PaginationScreen extends BaseController implements PaginationExampl
     public PaginationScreen() {
         super();
         state = new PaginationExampleState();
-        PaginationExampleInteractorKt.subscribePaginationExample(this, state, new Function1<Integer, Observable<String>>() {
+        PaginationExampleInteractorKt.subscribePaginationExample(this, state, new Function1<Integer, Observable<List<String>>>() {
             @Override
-            public Observable<String> invoke(Integer integer) {
+            public Observable<List<String>> invoke(Integer integer) {
                 return PaginationExampleServiceKt.requestMore(integer);
             }
         });
@@ -65,8 +65,7 @@ public class PaginationScreen extends BaseController implements PaginationExampl
                 new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        if (dy > 0) //check for scroll down
-                        {
+                        if (dy > 0) {
                             int visibleItemCount = layoutManager.getChildCount();
                             int totalItemCount = layoutManager.getItemCount();
                             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();

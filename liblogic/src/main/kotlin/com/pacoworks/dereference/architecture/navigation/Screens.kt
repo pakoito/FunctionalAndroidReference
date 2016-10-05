@@ -16,28 +16,31 @@
 
 package com.pacoworks.dereference.architecture.navigation
 
-import com.pacoworks.rxsealedunions.Union5
+import com.pacoworks.rxsealedunions.Union6
 import com.pacoworks.rxsealedunions.generic.GenericUnions
 
-typealias Screen = Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>
+typealias Screen = Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>
 
 enum class Direction {
     BACK, FORWARD
 }
 
-private val SCREEN_FACTORY: Union5.Factory<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> = GenericUnions.quintetFactory()
+private val SCREEN_FACTORY: Union6.Factory<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>
+        = GenericUnions.sextetFactory()
 
 sealed class Screens(open val id: String = "")
 
-data class Home(override val id: String = ""): Screens(id)
+data class Home(override val id: String = "") : Screens(id)
 
-data class RotationExample(override val id: String = ""): Screens(id)
+data class RotationExample(override val id: String = "") : Screens(id)
 
-data class ListExample(override val id: String = ""): Screens(id)
+data class ListExample(override val id: String = "") : Screens(id)
 
-data class DragAndDropExample(override val id: String = ""): Screens(id)
+data class DragAndDropExample(override val id: String = "") : Screens(id)
 
-data class CacheExample(override val id: String = ""): Screens(id)
+data class CacheExample(override val id: String = "") : Screens(id)
+
+data class PaginationExample(override val id: String = "") : Screens(id)
 
 fun createHome(): Screen = SCREEN_FACTORY.first(Home())
 
@@ -48,3 +51,5 @@ fun createList(): Screen = SCREEN_FACTORY.third(ListExample())
 fun createCache(): Screen = SCREEN_FACTORY.fourth(CacheExample())
 
 fun createDragAndDrop(): Screen = SCREEN_FACTORY.fifth(DragAndDropExample())
+
+fun createPagination(): Screen = SCREEN_FACTORY.sixth(PaginationExample())

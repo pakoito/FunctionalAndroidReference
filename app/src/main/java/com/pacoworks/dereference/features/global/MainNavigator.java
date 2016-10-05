@@ -27,15 +27,17 @@ import com.pacoworks.dereference.architecture.navigation.DragAndDropExample;
 import com.pacoworks.dereference.architecture.navigation.Home;
 import com.pacoworks.dereference.architecture.navigation.ListExample;
 import com.pacoworks.dereference.architecture.navigation.Navigator;
+import com.pacoworks.dereference.architecture.navigation.PaginationExample;
 import com.pacoworks.dereference.architecture.navigation.RotationExample;
 import com.pacoworks.dereference.architecture.navigation.ScreensKt;
 import com.pacoworks.dereference.features.cache.CacheScreen;
 import com.pacoworks.dereference.features.draganddrop.DragAndDropScreen;
 import com.pacoworks.dereference.features.home.HomeScreen;
 import com.pacoworks.dereference.features.list.ListScreen;
+import com.pacoworks.dereference.features.pagination.PaginationScreen;
 import com.pacoworks.dereference.features.rotation.RotationScreen;
 import com.pacoworks.rxsealedunions.Union1;
-import com.pacoworks.rxsealedunions.Union5;
+import com.pacoworks.rxsealedunions.Union6;
 import com.pacoworks.rxsealedunions.generic.GenericUnions;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import rx.functions.Func1;
 
 public class MainNavigator implements Navigator {
-    private static final Union1.Factory<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
+    private static final Union1.Factory<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
 
     private final Router router;
 
@@ -55,7 +57,7 @@ public class MainNavigator implements Navigator {
     }
 
     @Override
-    public void goTo(@NotNull Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> screenUnion) {
+    public void goTo(@NotNull Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample> screenUnion) {
         Controller screen = getControllerFromScreen(screenUnion);
         router.pushController(RouterTransaction.with(screen)
                 .pushChangeHandler(new FadeChangeHandler())
@@ -63,7 +65,7 @@ public class MainNavigator implements Navigator {
     }
 
     @Override
-    public Union1<Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample>> goBack() {
+    public Union1<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> goBack() {
         final int backstackSize = router.getBackstackSize();
         if (backstackSize > 1) {
             final RouterTransaction routerTransaction = router.getBackstack().get(backstackSize - 1);
@@ -76,7 +78,7 @@ public class MainNavigator implements Navigator {
         }
     }
 
-    private Controller getControllerFromScreen(Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> screenUnion) {
+    private Controller getControllerFromScreen(Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample> screenUnion) {
         return screenUnion.join(new Func1<Home, Controller>() {
             @Override
             public Controller call(Home home) {
@@ -102,10 +104,15 @@ public class MainNavigator implements Navigator {
             public Controller call(DragAndDropExample dragAndDropExample) {
                 return new DragAndDropScreen();
             }
+        }, new Func1<PaginationExample, Controller>() {
+            @Override
+            public Controller call(PaginationExample paginationExample) {
+                return new PaginationScreen();
+            }
         });
     }
 
-    private Union5<Home, RotationExample, ListExample, CacheExample, DragAndDropExample> getScreenFromController(Controller controller) {
+    private Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample> getScreenFromController(Controller controller) {
         return ScreensKt.createHome();
     }
 }

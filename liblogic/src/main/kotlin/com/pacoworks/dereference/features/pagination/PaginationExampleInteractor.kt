@@ -18,7 +18,6 @@ package com.pacoworks.dereference.features.pagination
 
 import com.pacoworks.dereference.features.pagination.services.PaginationExampleService
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
-import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
@@ -31,12 +30,16 @@ fun subscribePaginationExample(viewOutput: PaginationExampleOutputView, state: P
                 handleLoading(service, state, viewOutput)
         )
 
-private fun handleLoading(service: (Int) -> Observable<String>, state: PaginationExampleState, viewOutput: PaginationExampleOutputView): Subscription =
+private fun handleLoading(service: PaginationExampleService, state: PaginationExampleState, viewOutput: PaginationExampleOutputView): Subscription =
         doSM(
                 { state.elements },
                 { viewOutput.endOfPage().first() },
                 { elements, click -> state.pages.first() },
                 { elements, click, page ->
-                    service.invoke(page).map { elements.plus(it) }
+                    service.invoke(page)
+                            .map { elements.plus(it) }
+                            .doOnNext {
+                                state.pages.call(page + 1)
+                            }
                 }
         ).subscribe(state.elements)

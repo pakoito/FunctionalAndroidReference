@@ -19,7 +19,11 @@ package com.pacoworks.dereference.features.pagination.services
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-typealias PaginationExampleService = (Int) -> Observable<String>
+typealias PaginationExampleService = (Int) -> Observable<List<String>>
 
-fun requestMore(page: Int): Observable<String> =
-        Observable.range(page * 100, page * 100 + 99).map { it.toString() }.delay(2, TimeUnit.SECONDS)
+fun requestMore(page: Int): Observable<List<String>> =
+        Observable.range(0, 10)
+                .map { ((10 * (page + 1)) + it).toString() }
+                .toList()
+                .delay(2, TimeUnit.SECONDS)
+                .onErrorResumeNext(Observable.empty())
