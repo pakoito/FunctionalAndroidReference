@@ -85,10 +85,6 @@ public class ListScreen extends BaseController implements ListExampleView {
         adapter.getClicks().subscribe(clicksPRelay);
         adapter.getLongClicks().subscribe(longClicksPRelay);
         recyclerView.setAdapter(adapter);
-        //final ReactiveDNDTouchHelper callback = new ReactiveDNDTouchHelper();
-        //final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        //callback.getDNDObservable().subscribe(dragAndDropPRelay);
-        //touchHelper.attachToRecyclerView(recyclerView);
         return inflate;
     }
 
