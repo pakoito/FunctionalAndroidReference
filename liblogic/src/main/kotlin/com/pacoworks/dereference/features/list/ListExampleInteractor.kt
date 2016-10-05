@@ -45,7 +45,7 @@ fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: Lis
                 handleOnSwitchEditState(state.editMode, state.selected),
                 handleSelect(state.editMode, state.selected, viewOutput.listClicks()))
 
-fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<None>): Subscription =
+private fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<None>): Subscription =
         doSM(
                 { elementsState },
                 { addClick.first() },
@@ -56,7 +56,7 @@ fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<Non
         )
                 .subscribe(elementsState)
 
-fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode: StateHolder<EditMode>): Subscription =
+private fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode: StateHolder<EditMode>): Subscription =
         listLongClicks
                 .flatMap { click ->
                     editMode.first()
@@ -64,7 +64,7 @@ fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode
                             .map { createEditModeDelete(click.value1) }
                 }.subscribe(editMode)
 
-fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<EditMode>): Subscription =
+private fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<EditMode>): Subscription =
         deleteClick
                 .flatMap {
                     editMode.first()
@@ -72,12 +72,12 @@ fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<Edi
                             .map { createEditModeNormal() }
                 }.subscribe(editMode)
 
-fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>): Subscription =
+private fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>): Subscription =
         editMode
                 .map { it.join({ normal -> setOf<String>() }, { delete -> setOf(delete.id) }) }
                 .subscribe(selected)
 
-fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>): Subscription =
+private fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>): Subscription =
         doSM(
                 { editMode.filter { it.join({ normal -> true }, { delete -> false }) } },
                 { Observable.zip(elementsState, selected, RxTuples.toPair<List<String>, Set<String>>()).first() },
@@ -87,7 +87,7 @@ fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHo
         )
                 .subscribe(elementsState)
 
-fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
+private fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
         editMode.
                 switchMap {
                     if (it.join({ normal -> false }, { delete -> true })) {
