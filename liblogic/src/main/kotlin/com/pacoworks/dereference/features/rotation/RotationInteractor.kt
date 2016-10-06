@@ -84,10 +84,12 @@ private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<T
         doFM(
                 { user },
                 { transaction.filter { it is Success }.first() },
-                /* If the user hasn't changed since the previous reload */
                 { currentUser, trans ->
                     /* Skip the current value. New version will arrive later. */
-                    user.skip(1).first().filter { it != currentUser }.map { Loading(it) }
+                    user.skip(1).first()
+                            /* If the user hasn't changed since the previous reload */
+                            .filter { it != currentUser }
+                            .map { Loading(it) }
                 }
         ).subscribe(transaction)
 
