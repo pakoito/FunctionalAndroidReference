@@ -25,7 +25,6 @@ import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;
 
-import io.palaima.debugdrawer.timber.data.LumberYard;
 import kotlin.Lazy;
 import kotlin.LazyKt;
 import kotlin.jvm.functions.Function0;
@@ -67,10 +66,7 @@ public class Injector {
             return;
         }
         LeakCanary.install(application);
-        LumberYard lumberYard = LumberYard.getInstance(application);
-        lumberYard.cleanUp();
 
-        Timber.plant(lumberYard.tree());
         Timber.plant(new Timber.DebugTree());
 
         TinyDancer.create()

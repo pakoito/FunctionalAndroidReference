@@ -26,10 +26,10 @@ import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.pacoworks.dereference.R;
+import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.architecture.reactive.ActivityResult;
 import com.pacoworks.dereference.architecture.reactive.PermissionResult;
 import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveActivity;
-import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.features.home.HomeScreen;
 
 import java.util.HashMap;
@@ -40,7 +40,6 @@ import io.palaima.debugdrawer.DebugDrawer;
 import io.palaima.debugdrawer.commons.BuildModule;
 import io.palaima.debugdrawer.commons.DeviceModule;
 import io.palaima.debugdrawer.okhttp3.OkHttp3Module;
-import io.palaima.debugdrawer.timber.TimberModule;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         final Injector injector = DereferenceApplication.get(this).getInjector();
         debugDrawer = new DebugDrawer.Builder(this)
                 .modules(
-                        new TimberModule(),
                         new OkHttp3Module(injector.getHttpClient()),
                         new DeviceModule(this),
                         new BuildModule(this)
