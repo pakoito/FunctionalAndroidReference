@@ -65,14 +65,18 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
                 .subscribe(user)
 
 private fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
-        transaction.ofType(Idle::class.java)
-                .first()
-                .switchMap { user.first().map { Loading(it) } }
+        doSM(
+                { transaction.ofType(Idle::class.java).first() },
+                {
+                    user.filter { it.name != "" }
+                            .first()
+                            .map { Loading(it) }
+                }
+        )
                 .subscribe(transaction)
 
 private fun handleLoad(transaction: StateHolder<Transaction>, services: TransactionRequest): Subscription =
         transaction.ofType(Loading::class.java)
-                .filter { it.user.name != "" }
                 .switchMap { services.invoke(it.user.name) }
                 .subscribe(transaction)
 

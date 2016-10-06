@@ -18,10 +18,10 @@ package com.pacoworks.dereference.features.rotation
 
 import com.jakewharton.rxrelay.BehaviorRelay
 import com.jakewharton.rxrelay.SerializedRelay
-import com.pacoworks.dereference.features.rotation.model.UserInput
 import com.pacoworks.dereference.features.rotation.model.Transaction
+import com.pacoworks.dereference.features.rotation.model.UserInput
 
 class RotationState(
         val transaction: SerializedRelay<Transaction, Transaction> = SerializedRelay(BehaviorRelay.create<Transaction>(Transaction.Idle)),
-        val user: SerializedRelay<UserInput, UserInput> = SerializedRelay(BehaviorRelay.create())
+        val user: SerializedRelay<UserInput, UserInput> = SerializedRelay(BehaviorRelay.create(UserInput("")))
 )
