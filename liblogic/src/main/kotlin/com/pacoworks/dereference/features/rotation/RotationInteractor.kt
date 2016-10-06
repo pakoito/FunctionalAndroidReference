@@ -22,6 +22,7 @@ import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.Transaction.*
 import com.pacoworks.dereference.features.rotation.model.UserInput
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
+import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -50,15 +51,17 @@ fun subscribeRotationInteractor(lifecycle: Observable<ConductorLifecycle>, view:
         )
 
 fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Subscription =
-        view.enterUser()
-                .debounce(1, TimeUnit.SECONDS)
-                .switchMap {
-                    if (it.length > 0) {
-                        Observable.just(UserInput(it))
+        doSM(
+                { user },
+                { view.enterUser().debounce(1, TimeUnit.SECONDS) },
+                { oldUserInput, newUserInput ->
+                    if (oldUserInput.name != newUserInput && newUserInput.length > 0) {
+                        Observable.just(UserInput(newUserInput))
                     } else {
                         Observable.empty()
                     }
                 }
+        )
                 .subscribe(user)
 
 private fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
