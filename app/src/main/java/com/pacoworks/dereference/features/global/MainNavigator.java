@@ -21,7 +21,7 @@ import android.app.Activity;
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.SimpleSwapChangeHandler;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.pacoworks.dereference.architecture.navigation.CacheExample;
 import com.pacoworks.dereference.architecture.navigation.DragAndDropExample;
 import com.pacoworks.dereference.architecture.navigation.Home;
@@ -60,8 +60,8 @@ public class MainNavigator implements Navigator {
     public void goTo(@NotNull Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample> screenUnion) {
         Controller screen = getControllerFromScreen(screenUnion);
         router.pushController(RouterTransaction.with(screen)
-                .pushChangeHandler(new SimpleSwapChangeHandler())
-                .popChangeHandler(new SimpleSwapChangeHandler()));
+                .pushChangeHandler(new FadeChangeHandler())
+                .popChangeHandler(new FadeChangeHandler()));
     }
 
     @Override
