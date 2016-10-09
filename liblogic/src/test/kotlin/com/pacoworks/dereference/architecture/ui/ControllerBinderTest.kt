@@ -23,13 +23,13 @@ import org.junit.Assert
 import org.junit.Test
 import rx.schedulers.Schedulers
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.AtomicReference
 
 class ControllerBinderTest {
 
     @Test
-    fun bindEnter_ViewNotBound() {
+    fun bindEnter_valueReceived_ViewNotBound() {
         val lifecycleObservable = BehaviorRelay.create<ConductorLifecycle>(ConductorLifecycle.Enter)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
@@ -82,13 +82,13 @@ class ControllerBinderTest {
         val mainThreadScheduler = Schedulers.io()
         val state = createStateHolder(1)
         val latch = CountDownLatch(1)
-        val correctResult = AtomicBoolean(false)
+        val threadName = AtomicReference<String>("")
         val doView = { string: Int ->
-            correctResult.set(Thread.currentThread().name.contains("RxIoScheduler"))
+            threadName.set(Thread.currentThread().name)
             latch.countDown()
         }
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
         latch.await()
-        Assert.assertTrue(correctResult.get())
+        Assert.assertTrue(threadName.get().contains("RxIoScheduler"))
     }
 }
