@@ -30,7 +30,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindEnter_valueReceived_ViewNotBound() {
-        val lifecycleObservable = BehaviorRelay.create<ConductorLifecycle>(ConductorLifecycle.Enter)
+        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Enter)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
         val callCount = AtomicLong()
@@ -44,7 +44,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindEnter_LifecycleAttach_ViewBound() {
-        val lifecycleObservable = BehaviorRelay.create<ConductorLifecycle>(ConductorLifecycle.Enter)
+        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Enter)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
         val callCount = AtomicLong()
@@ -61,7 +61,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindAttach_LifecycleDetach_ViewUnbound() {
-        val lifecycleObservable = BehaviorRelay.create<ConductorLifecycle>(ConductorLifecycle.Attach)
+        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Attach)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
         val callCount = AtomicLong()
@@ -78,7 +78,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindAttach_ValueReceived_ReceivedOnScheduler() {
-        val lifecycleObservable = BehaviorRelay.create<ConductorLifecycle>(ConductorLifecycle.Attach)
+        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Attach)
         val mainThreadScheduler = Schedulers.io()
         val state = createStateHolder(1)
         val latch = CountDownLatch(1)
