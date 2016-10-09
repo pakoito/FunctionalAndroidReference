@@ -62,7 +62,7 @@ class CacheExampleSubscribeCacheTest {
         val characterCache = createStateHolder(mapOf(userId to createUnknownUnavailableCharacter(userId)))
         val currentCharacter = createStateHolder(createUnknownUnavailableCharacter(""))
         val state = CacheExampleState(characterCache = characterCache, currentCharacter = currentCharacter)
-        /* Server returns correctly */
+        /* Server returns a problem */
         val server: CacheRequest = { Observable.just(createUnknownNetworkErrorCharacter("Explosion")) }
         /* Start subscription */
         handleFilterChange(server, state, viewOutputView)
@@ -89,7 +89,7 @@ class CacheExampleSubscribeCacheTest {
         val characterCache = createStateHolder(mapOf(userId to createUnknownUnavailableCharacter(userId)))
         val currentCharacter = createStateHolder(createUnknownUnavailableCharacter(""))
         val state = CacheExampleState(characterCache = characterCache, currentCharacter = currentCharacter)
-        /* Server returns correctly */
+        /* Server returns incorrect character */
         val server: CacheRequest = { Observable.just(createUnknownIncorrectCharacter(it)) }
         /* Start subscription */
         handleFilterChange(server, state, viewOutputView)
