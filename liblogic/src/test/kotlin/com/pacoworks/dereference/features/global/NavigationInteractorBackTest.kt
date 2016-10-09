@@ -33,14 +33,18 @@ class NavigationInteractorBackTest {
         val back = activityReactiveBuddy.back
         val initialScreen = Pair.with(createRotation(), Direction.FORWARD)
         val state = AppState(navigation = createStateHolder(initialScreen))
+        /* Our navigator doesn't have a screen to return to */
         val navigator = object : MockBackNavigator() {
             override fun goBack(): Union1<Screen> = BACK_RESULT_FACTORY.none()
         }
         backPressed(activityReactiveBuddy, navigator, state)
         val testSubscriber = TestSubscriber<Pair<Screen, Direction>>()
         state.navigation.subscribe(testSubscriber)
+        /* See initial screen */
         testSubscriber.assertValueCount(1)
+        /* Back pressed */
         back.call(None.VOID)
+        /* Assert that we return to HomeScreen */
         testSubscriber.assertValueCount(2)
         val startScreen = Pair.with(createHome(), Direction.FORWARD)
         testSubscriber.assertValues(initialScreen, startScreen)
@@ -52,19 +56,23 @@ class NavigationInteractorBackTest {
         val back = activityReactiveBuddy.back
         val initialScreen = Pair.with(createRotation(), Direction.FORWARD)
         val state = AppState(navigation = createStateHolder(initialScreen))
-        val newScreen = createDragAndDrop()
+        val previousScreen = createDragAndDrop()
+        /* Our navigator returns to an existing screen */
         val navigator = object : MockBackNavigator() {
             override fun goBack(): Union1<Screen> {
-                return BACK_RESULT_FACTORY.first(newScreen)
+                return BACK_RESULT_FACTORY.first(previousScreen)
             }
         }
         backPressed(activityReactiveBuddy, navigator, state)
         val testSubscriber = TestSubscriber<Pair<Screen, Direction>>()
         state.navigation.subscribe(testSubscriber)
+        /* See initial screen */
         testSubscriber.assertValueCount(1)
+        /* Back pressed */
         back.call(None.VOID)
         testSubscriber.assertValueCount(2)
-        val startScreen = Pair.with(newScreen, Direction.BACK)
+        /* Assert that we return to previous screen */
+        val startScreen = Pair.with(previousScreen, Direction.BACK)
         testSubscriber.assertValues(initialScreen, startScreen)
     }
 }
