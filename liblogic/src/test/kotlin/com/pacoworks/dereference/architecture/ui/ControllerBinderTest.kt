@@ -36,6 +36,7 @@ class ControllerBinderTest {
         val callCount = AtomicLong()
         val doView = mockView<Int>(callCount)
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
+        /* No initial state */
         Assert.assertEquals(0L, callCount.get())
         /* State changes not forwarded */
         state.call(3)
@@ -50,6 +51,7 @@ class ControllerBinderTest {
         val callCount = AtomicLong()
         val doView = mockView<Int>(callCount)
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
+        /* No initial state */
         Assert.assertEquals(0L, callCount.get())
         lifecycleObservable.call(ConductorLifecycle.Attach)
         /* Initial state is applied */
@@ -67,7 +69,9 @@ class ControllerBinderTest {
         val callCount = AtomicLong()
         val doView = mockView<Int>(callCount)
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
+        /* View already contains initial state */
         Assert.assertEquals(1L, callCount.get())
+        /* State changes applied */
         state.call(2)
         Assert.assertEquals(2L, callCount.get())
         lifecycleObservable.call(ConductorLifecycle.Detach)
