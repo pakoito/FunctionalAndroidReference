@@ -16,12 +16,13 @@
 
 package com.pacoworks.dereference.features.global
 
-import com.jakewharton.rxrelay.BehaviorRelay
 import com.pacoworks.dereference.architecture.navigation.Direction
-import com.pacoworks.dereference.architecture.navigation.createHome
 import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.architecture.navigation.createHome
+import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 import org.javatuples.Pair
 
 class AppState(
-    val navigation: BehaviorRelay<Pair<Screen, Direction>> = BehaviorRelay.create(Pair.with(createHome(), Direction.FORWARD))
+    val navigation: StateHolder<Pair<Screen, Direction>> = createStateHolder(Pair.with(createHome(), Direction.FORWARD))
 )

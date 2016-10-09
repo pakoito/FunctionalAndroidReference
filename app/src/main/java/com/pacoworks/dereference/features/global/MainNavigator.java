@@ -17,6 +17,7 @@
 package com.pacoworks.dereference.features.global;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
@@ -64,6 +65,7 @@ public class MainNavigator implements Navigator {
                 .popChangeHandler(new FadeChangeHandler()));
     }
 
+    @NonNull
     @Override
     public Union1<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> goBack() {
         final int backstackSize = router.getBackstackSize();

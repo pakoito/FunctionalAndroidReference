@@ -16,13 +16,13 @@
 
 package com.pacoworks.dereference.features.global
 
-import com.jakewharton.rxrelay.BehaviorRelay
 import com.pacoworks.dereference.architecture.navigation.Direction
 import com.pacoworks.dereference.architecture.navigation.Navigator
 import com.pacoworks.dereference.architecture.navigation.Screen
 import com.pacoworks.dereference.architecture.navigation.createHome
 import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
 import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy
+import com.pacoworks.dereference.architecture.ui.StateHolder
 import org.javatuples.Pair
 import rx.Scheduler
 import rx.Subscription
@@ -33,7 +33,7 @@ fun subscribeNavigation(state: AppState, navigator: Navigator, activityReactiveB
                 pushScreen(activityReactiveBuddy, navigator, state.navigation, mainThreadScheduler),
                 backPressed(activityReactiveBuddy, navigator, state))
 
-private fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, navigation: BehaviorRelay<Pair<Screen, Direction>>, mainThreadScheduler: Scheduler) =
+fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, navigation: StateHolder<Pair<Screen, Direction>>, mainThreadScheduler: Scheduler): Subscription =
         navigation
                 /* Skip the first value to avoid re-pushing the current value after rotation */
                 .skip(1)
@@ -43,7 +43,7 @@ private fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: 
                 .observeOn(mainThreadScheduler)
                 .subscribe { navigator.goTo(it) }
 
-private fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, state: AppState): Subscription =
+fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, state: AppState): Subscription =
         activityReactiveBuddy.back()
                 .map {
                     navigator.goBack()
