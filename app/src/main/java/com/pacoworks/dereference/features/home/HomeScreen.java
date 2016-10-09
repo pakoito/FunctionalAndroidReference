@@ -25,8 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxrelay.BehaviorRelay;
 import com.jakewharton.rxrelay.PublishRelay;
+import com.jakewharton.rxrelay.SerializedRelay;
 import com.pacoworks.dereference.architecture.navigation.CacheExample;
 import com.pacoworks.dereference.architecture.navigation.Direction;
 import com.pacoworks.dereference.architecture.navigation.DragAndDropExample;
@@ -56,10 +56,11 @@ public class HomeScreen extends BaseController implements HomeView {
 
     public HomeScreen() {
         super();
-        final Lazy<BehaviorRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>> navigationLazy =
-                LazyKt.lazy(new Function0<BehaviorRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>>() {
+        /* This is Kotlin's typealias is important */
+        final Lazy<SerializedRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>, Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>> navigationLazy =
+                LazyKt.lazy(new Function0<SerializedRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>, Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>>() {
                     @Override
-                    public BehaviorRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>> invoke() {
+                    public SerializedRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>, Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>> invoke() {
                         return DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation();
                     }
                 });
