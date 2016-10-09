@@ -16,8 +16,8 @@ The app module contains all the code in the view layer, including:
 
 Contains the architectural pillars:
 
-* DereferenceApplication: it's the only singleton in the app and holds the global injection module Injector
-* Injector: global dependencies module, it holds all global state and retained services.
+* DereferenceApplication: it's the only singleton in the app and holds the global injection module called Injector
+* Injector: it's the global dependencies module, and holds all global state (i.e. state of navigation) and retained services (i.e. OkHttp)
 * MainActivity: delegates its callbacks to the helper ReactiveActivity. It's also in charge of initializing Conductor and DebugDrawer. Lastly, it initializes the MainOrchestrator.
 * MainOrchestrator: makes sure that all use cases that apply for the whole application are subscribed and unsubscribed correctly, along with passing the correct dependencies.
 * MainNavigator: it's a use case for navigation based off Conductor. It implements the liblogic requirements for screen transitions.
