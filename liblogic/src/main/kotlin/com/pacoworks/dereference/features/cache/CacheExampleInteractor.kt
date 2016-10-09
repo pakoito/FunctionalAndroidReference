@@ -36,7 +36,7 @@ fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, stat
                 handleFilterChange(server, state, viewOutputView),
                 handleSelectedState(viewOutputView, state.currentId))
 
-private fun handleFilterChange(server: CacheRequest, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
+fun handleFilterChange(server: CacheRequest, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
         doSM(
                 { viewOutputView.filterSelected().distinctUntilChanged() },
                 { state.characterCache.first() },
@@ -58,5 +58,5 @@ private fun updateFromNetwork(id: String, cache: AgotCharacterCache, server: Cac
                 /* Return new result from cache */
                 .map { it[id] }
 
-private fun handleSelectedState(viewOutputView: CacheExampleOutputView, currentId: StateHolder<String>): Subscription =
+fun handleSelectedState(viewOutputView: CacheExampleOutputView, currentId: StateHolder<String>): Subscription =
         viewOutputView.filterSelected().distinctUntilChanged().subscribe(currentId)
