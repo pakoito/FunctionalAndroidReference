@@ -16,7 +16,6 @@
 
 package com.pacoworks.dereference.features.global
 
-import com.pacoworks.dereference.architecture.navigation.*
 import com.pacoworks.dereference.architecture.ui.createStateHolder
 import com.pacoworks.dereference.mockView
 import com.pacoworks.rxsealedunions.Union1
