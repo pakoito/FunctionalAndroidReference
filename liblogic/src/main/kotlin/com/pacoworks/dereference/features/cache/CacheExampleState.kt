@@ -16,9 +16,8 @@
 
 package com.pacoworks.dereference.features.cache
 
-import com.jakewharton.rxrelay.BehaviorRelay
-import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 import com.pacoworks.dereference.features.cache.model.AgotCharacter
 import com.pacoworks.dereference.features.cache.model.createUnknownUnavailableCharacter
 import rx.Observable
@@ -26,10 +25,10 @@ import rx.Observable
 typealias AgotCharacterCache = Map<String, AgotCharacter>
 
 data class CacheExampleState(
-        val ids: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(CHARACTER_IDS)),
-        val currentId: StateHolder<String> = SerializedRelay(BehaviorRelay.create<String>(initialId)),
-        val characterCache: StateHolder<AgotCharacterCache> = SerializedRelay(BehaviorRelay.create<AgotCharacterCache>(CHARACTERS)),
-        val currentCharacter: StateHolder<AgotCharacter> = SerializedRelay(BehaviorRelay.create<AgotCharacter>(initialCharacter))
+        val ids: StateHolder<List<String>> = createStateHolder(CHARACTER_IDS),
+        val currentId: StateHolder<String> = createStateHolder(initialId),
+        val characterCache: StateHolder<AgotCharacterCache> = createStateHolder(CHARACTERS),
+        val currentCharacter: StateHolder<AgotCharacter> = createStateHolder(initialCharacter)
 )
 
 private val CHARACTERS: AgotCharacterCache = Observable.range(30, 100).map { createUnknownUnavailableCharacter(it.toString()) }.toMap { it.join({ it.id }, { it.id }) }.toBlocking().first()

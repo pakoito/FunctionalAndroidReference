@@ -19,10 +19,11 @@ package com.pacoworks.dereference.features.pagination
 import com.jakewharton.rxrelay.BehaviorRelay
 import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 import rx.Observable
 
 
 data class PaginationExampleState(
-        val elements: StateHolder<List<String>> = SerializedRelay(BehaviorRelay.create<List<String>>(Observable.range(0, 10).map { it.toString() }.toList().toBlocking().first())),
+        val elements: StateHolder<List<String>> = createStateHolder<List<String>>(Observable.range(0, 10).map { it.toString() }.toList().toBlocking().first()),
         val pages: StateHolder<Int> = SerializedRelay(BehaviorRelay.create(0))
 )
