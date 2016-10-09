@@ -25,6 +25,7 @@ import rx.Observable
 import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
+typealias CacheRequest = (String) -> Observable<AgotCharacter>
 
 fun characterInfo(id: String, agotApi: AgotApi, scheduler: Scheduler): Observable<AgotCharacter> =
         agotApi.getCharacterInfo(id)

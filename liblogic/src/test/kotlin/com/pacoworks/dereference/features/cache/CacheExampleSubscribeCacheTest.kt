@@ -21,6 +21,7 @@ import com.pacoworks.dereference.features.cache.model.createKnownCharacter
 import com.pacoworks.dereference.features.cache.model.createUnknownIncorrectCharacter
 import com.pacoworks.dereference.features.cache.model.createUnknownNetworkErrorCharacter
 import com.pacoworks.dereference.features.cache.model.createUnknownUnavailableCharacter
+import com.pacoworks.dereference.features.cache.services.CacheRequest
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import rx.Observable

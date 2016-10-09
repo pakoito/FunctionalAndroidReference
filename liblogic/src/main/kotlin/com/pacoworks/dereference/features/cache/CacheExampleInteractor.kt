@@ -19,6 +19,8 @@ package com.pacoworks.dereference.features.cache
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.cache.model.AgotCharacter
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
+import com.pacoworks.dereference.features.cache.services.CacheRequest
+
 import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -28,8 +30,6 @@ fun bindCacheExample(viewInput: CacheExampleInputView, state: CacheExampleState)
     viewInput.createBinder<List<String>>().call(state.ids, viewInput::filterList)
     viewInput.createBinder<String>().call(state.currentId, viewInput::currentFilter)
 }
-
-typealias CacheRequest = (String) -> Observable<AgotCharacter>
 
 fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, state: CacheExampleState, server: CacheRequest): Subscription =
         CompositeSubscription(
