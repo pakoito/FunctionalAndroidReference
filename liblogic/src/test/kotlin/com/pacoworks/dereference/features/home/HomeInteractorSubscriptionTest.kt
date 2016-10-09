@@ -17,10 +17,10 @@
 package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.PublishRelay
-import com.pacoworks.dereference.architecture.navigation.Direction
-import com.pacoworks.dereference.architecture.navigation.Screen
-import com.pacoworks.dereference.architecture.navigation.createHome
-import com.pacoworks.dereference.architecture.navigation.createRotation
+import com.pacoworks.dereference.features.global.Direction
+import com.pacoworks.dereference.features.global.Screen
+import com.pacoworks.dereference.features.global.createHome
+import com.pacoworks.dereference.features.global.createRotation
 import com.pacoworks.dereference.architecture.ui.createStateHolder
 import org.javatuples.Pair
 import org.junit.Test

@@ -16,8 +16,8 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.architecture.navigation.Direction
-import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.features.global.Direction
+import com.pacoworks.dereference.features.global.Screen
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import org.javatuples.Pair
 import rx.Subscription

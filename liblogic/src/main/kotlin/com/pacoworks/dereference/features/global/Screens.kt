@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.architecture.navigation
+package com.pacoworks.dereference.features.global
 
 import com.pacoworks.rxsealedunions.Union6
 import com.pacoworks.rxsealedunions.generic.GenericUnions

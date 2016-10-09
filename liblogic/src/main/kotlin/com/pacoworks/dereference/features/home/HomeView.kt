@@ -16,7 +16,7 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.features.global.Screen
 import com.pacoworks.dereference.architecture.ui.BoundView
 import rx.Observable
 

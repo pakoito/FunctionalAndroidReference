@@ -16,7 +16,7 @@
 
 package com.pacoworks.dereference.features.global
 
-import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.features.global.Screen
 import com.pacoworks.rxsealedunions.Union1
 
 interface NavigatorView {
