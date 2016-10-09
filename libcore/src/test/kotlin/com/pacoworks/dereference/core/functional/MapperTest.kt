@@ -31,11 +31,9 @@ class MapperTest {
     fun fmapTest() {
         val value = 1
         val valueString = "1"
-        val fmap = fmap({ int: Int ->
-            int.toString()
-        }, {
-            assertEquals(valueString, it)
-        })
+        val fmap = fmap(
+                { int: Int -> int.toString() },
+                { assertEquals(valueString, it) })
         fmap.invoke(value)
     }
 }
