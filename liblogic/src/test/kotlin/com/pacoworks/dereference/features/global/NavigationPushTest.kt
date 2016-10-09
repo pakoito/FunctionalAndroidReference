@@ -34,7 +34,7 @@ class NavigationPushTest {
         val homeScreen = createHome()
         val initialScreen = Pair.with(homeScreen, Direction.FORWARD)
         val navigation = createStateHolder(initialScreen)
-        val navigator = MockForwardNavigator()
+        val navigator = MockForwardNavigatorView()
         pushScreen(MockActivityReactiveBuddy(), navigator, navigation, Schedulers.immediate())
         /* Initial value skipped because it'll be the already displayed screen after binding  */
         assertEquals(0L, navigator.goToCount.get())
@@ -48,7 +48,7 @@ class NavigationPushTest {
     }
 }
 
-private class MockForwardNavigator : Navigator {
+private class MockForwardNavigatorView : NavigatorView {
     private val BACK_RESULT_FACTORY: Union1.Factory<Screen> = GenericUnions.singletFactory()
 
     override fun goBack(): Union1<Screen> = BACK_RESULT_FACTORY.none()

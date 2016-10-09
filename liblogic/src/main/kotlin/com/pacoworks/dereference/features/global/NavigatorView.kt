@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package com.pacoworks.dereference.features.global;
+package com.pacoworks.dereference.features.global
 
-import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy;
+import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.rxsealedunions.Union1
 
-import rx.android.schedulers.AndroidSchedulers;
+interface NavigatorView {
+    fun goTo(screen: Screen)
 
-public class MainOrchestrator {
-    private MainOrchestrator() {
-        // No instances
-    }
-
-    public static void start(AppState state, NavigatorView navigatorView, ActivityReactiveBuddy activityReactiveBuddy) {
-        NavigationInteractorKt.subscribeNavigation(state, navigatorView, activityReactiveBuddy, AndroidSchedulers.mainThread());
-    }
+    fun goBack(): Union1<Screen>
 }

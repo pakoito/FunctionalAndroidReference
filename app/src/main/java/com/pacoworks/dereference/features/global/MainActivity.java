@@ -26,7 +26,6 @@ import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.pacoworks.dereference.R;
-import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.architecture.reactive.ActivityResult;
 import com.pacoworks.dereference.architecture.reactive.PermissionResult;
 import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveActivity;
@@ -69,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
             router.pushController(RouterTransaction.with(new HomeScreen()));
         }
         reactiveActivity.onCreate();
-        Navigator navigator = new MainNavigator(router, this);
-        MainOrchestrator.start(injector.getState(), navigator, reactiveActivity.createBuddy());
+        NavigatorView navigatorView = new MainNavigator(router, this);
+        MainOrchestrator.start(injector.getState(), navigatorView, reactiveActivity.createBuddy());
     }
 
     @Override

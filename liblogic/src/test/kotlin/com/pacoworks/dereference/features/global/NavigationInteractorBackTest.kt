@@ -34,7 +34,7 @@ class NavigationInteractorBackTest {
         val initialScreen = Pair.with(createRotation(), Direction.FORWARD)
         val state = AppState(navigation = createStateHolder(initialScreen))
         /* Our navigator doesn't have a screen to return to */
-        val navigator = object : MockBackNavigator() {
+        val navigator = object : MockBackNavigatorView() {
             override fun goBack(): Union1<Screen> = BACK_RESULT_FACTORY.none()
         }
         backPressed(activityReactiveBuddy, navigator, state)
@@ -58,7 +58,7 @@ class NavigationInteractorBackTest {
         val state = AppState(navigation = createStateHolder(initialScreen))
         val previousScreen = createDragAndDrop()
         /* Our navigator returns to an existing screen */
-        val navigator = object : MockBackNavigator() {
+        val navigator = object : MockBackNavigatorView() {
             override fun goBack(): Union1<Screen> {
                 return BACK_RESULT_FACTORY.first(previousScreen)
             }
@@ -77,7 +77,7 @@ class NavigationInteractorBackTest {
     }
 }
 
-private abstract class MockBackNavigator : Navigator {
+private abstract class MockBackNavigatorView : NavigatorView {
     override fun goTo(screen: Screen) =
             mockView<Screen>().invoke(screen)
 }

@@ -17,7 +17,6 @@
 package com.pacoworks.dereference.features.global
 
 import com.pacoworks.dereference.architecture.navigation.Direction
-import com.pacoworks.dereference.architecture.navigation.Navigator
 import com.pacoworks.dereference.architecture.navigation.Screen
 import com.pacoworks.dereference.architecture.navigation.createHome
 import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
@@ -28,12 +27,12 @@ import rx.Scheduler
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
-fun subscribeNavigation(state: AppState, navigator: Navigator, activityReactiveBuddy: ActivityReactiveBuddy, mainThreadScheduler: Scheduler): Subscription =
+fun subscribeNavigation(state: AppState, navigatorView: NavigatorView, activityReactiveBuddy: ActivityReactiveBuddy, mainThreadScheduler: Scheduler): Subscription =
         CompositeSubscription(
-                pushScreen(activityReactiveBuddy, navigator, state.navigation, mainThreadScheduler),
-                backPressed(activityReactiveBuddy, navigator, state))
+                pushScreen(activityReactiveBuddy, navigatorView, state.navigation, mainThreadScheduler),
+                backPressed(activityReactiveBuddy, navigatorView, state))
 
-fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, navigation: StateHolder<Pair<Screen, Direction>>, mainThreadScheduler: Scheduler): Subscription =
+fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: NavigatorView, navigation: StateHolder<Pair<Screen, Direction>>, mainThreadScheduler: Scheduler): Subscription =
         navigation
                 /* Skip the first value to avoid re-pushing the current value after rotation */
                 .skip(1)
@@ -41,12 +40,12 @@ fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigato
                 .map { it.value0 }
                 .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
                 .observeOn(mainThreadScheduler)
-                .subscribe { navigator.goTo(it) }
+                .subscribe { navigatorView.goTo(it) }
 
-fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigator: Navigator, state: AppState): Subscription =
+fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: NavigatorView, state: AppState): Subscription =
         activityReactiveBuddy.back()
                 .map {
-                    navigator.goBack()
+                    navigatorView.goBack()
                             .join(
                                     /* If back to screen, just forwards it */
                                     { screen -> Pair.with(screen, Direction.BACK) },

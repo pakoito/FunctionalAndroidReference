@@ -27,7 +27,6 @@ import com.pacoworks.dereference.architecture.navigation.CacheExample;
 import com.pacoworks.dereference.architecture.navigation.DragAndDropExample;
 import com.pacoworks.dereference.architecture.navigation.Home;
 import com.pacoworks.dereference.architecture.navigation.ListExample;
-import com.pacoworks.dereference.architecture.navigation.Navigator;
 import com.pacoworks.dereference.architecture.navigation.PaginationExample;
 import com.pacoworks.dereference.architecture.navigation.RotationExample;
 import com.pacoworks.dereference.architecture.navigation.ScreensKt;
@@ -45,7 +44,7 @@ import org.jetbrains.annotations.NotNull;
 
 import rx.functions.Func1;
 
-public class MainNavigator implements Navigator {
+public class MainNavigator implements NavigatorView {
     private static final Union1.Factory<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
 
     private final Router router;
