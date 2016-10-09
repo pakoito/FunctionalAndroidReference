@@ -16,12 +16,16 @@
 
 package com.pacoworks.dereference.architecture.ui
 
+import com.jakewharton.rxrelay.BehaviorRelay
 import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 import rx.Observable
 import rx.Subscription
 
 typealias StateHolder<T> = SerializedRelay<T, T>
+
+fun <T> createStateHolder(value: T): StateHolder<T> =
+        SerializedRelay(BehaviorRelay.create<T>(value))
 
 fun <T> bind(lifecycleObservable: Observable<ConductorLifecycle>, mainThreadScheduler: rx.Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
