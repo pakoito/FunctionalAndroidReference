@@ -25,7 +25,7 @@ import rx.observers.TestSubscriber
 class DragAndDropSubscribeDragAndDropTest {
     @Test
     fun elementsInList_dragAndDrop_ElementsSwapped() {
-        val initialList = listOf("0", "1")
+        val initialList = listOf("0", "1", "2")
         val elements = createStateHolder(initialList)
         val dragAndDrops = PublishRelay.create<Pair<Int, Int>>()
         handleDragAndDrop(dragAndDrops, elements)
@@ -33,9 +33,13 @@ class DragAndDropSubscribeDragAndDropTest {
         elements.subscribe(testSubscriber)
         testSubscriber.assertValueCount(1)
         dragAndDrops.call(Pair.with(0, 1))
-        val swappedList = listOf("1", "0")
+        val swappedList = listOf("1", "0", "2")
         testSubscriber.assertValueCount(2)
         testSubscriber.assertValues(initialList, swappedList)
+        dragAndDrops.call(Pair.with(1, 2))
+        val scrambledListList = listOf("1", "2", "0")
+        testSubscriber.assertValueCount(3)
+        testSubscriber.assertValues(initialList, swappedList, scrambledListList)
         testSubscriber.assertNoTerminalEvent()
     }
 }
