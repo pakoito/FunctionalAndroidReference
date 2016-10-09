@@ -47,7 +47,6 @@ import kotlin.Lazy;
 import kotlin.LazyKt;
 import kotlin.jvm.functions.Function0;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 public class HomeScreen extends BaseController implements HomeView {
@@ -56,7 +55,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     public HomeScreen() {
         super();
-        /* This is Kotlin's typealias is important */
+        /* This is why Kotlin's typealias is important */
         final Lazy<SerializedRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>, Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>> navigationLazy =
                 LazyKt.lazy(new Function0<SerializedRelay<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>, Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>>() {
                     @Override
@@ -64,12 +63,7 @@ public class HomeScreen extends BaseController implements HomeView {
                         return DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation();
                     }
                 });
-        HomeInteractorKt.subscribeHomeInteractor(this, new Action1<Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction>>() {
-            @Override
-            public void call(Pair<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>, Direction> navigation) {
-                navigationLazy.getValue().call(navigation);
-            }
-        });
+        HomeInteractorKt.subscribeHomeInteractor(this, navigationLazy.getValue());
     }
 
     @NonNull

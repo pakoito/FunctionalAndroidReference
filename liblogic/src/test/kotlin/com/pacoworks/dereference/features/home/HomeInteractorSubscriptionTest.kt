@@ -19,32 +19,33 @@ package com.pacoworks.dereference.features.home
 import com.jakewharton.rxrelay.PublishRelay
 import com.pacoworks.dereference.architecture.navigation.Direction
 import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.architecture.navigation.createHome
 import com.pacoworks.dereference.architecture.navigation.createRotation
-import com.pacoworks.dereference.mockView
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 import org.javatuples.Pair
-import org.junit.Assert
 import org.junit.Test
 import rx.Observable
-import rx.functions.Action1
-import java.util.concurrent.atomic.AtomicLong
-import java.util.concurrent.atomic.AtomicReference
+import rx.observers.TestSubscriber
 
 class HomeInteractorSubscriptionTest {
     @Test
     fun userClick_UpdateScreen() {
-        val callCount = AtomicLong()
-        val value = AtomicReference<Pair<Screen, Direction>>()
-        val mockNavigation = mockView(callCount, value)
         val view = MockHomeViewOutput()
-        subscribeHomeInteractor(view, Action1 { mockNavigation.invoke(it) })
-        /* No value selected */
-        Assert.assertEquals(0L, callCount.get())
+        val startScreen = createHome()
+        val startState = Pair.with(startScreen, Direction.FORWARD)
+        val navigation = createStateHolder(startState)
+        subscribeHomeInteractor(view, navigation)
+        val testSubscriber = TestSubscriber.create<Pair<Screen, Direction>>()
+        navigation.subscribe(testSubscriber)
+        /* Starting value */
+        testSubscriber.assertValueCount(1)
         /* Click on screen */
         val newScreen = createRotation()
+        val newState = Pair.with(newScreen, Direction.FORWARD)
         view.screenClick.call(newScreen)
         /* Assert new value is seen */
-        Assert.assertEquals(1L, callCount.get())
-        Assert.assertEquals(newScreen, value.get().value0)
+        testSubscriber.assertValueCount(2)
+        testSubscriber.assertValues(startState, newState)
     }
 
 }

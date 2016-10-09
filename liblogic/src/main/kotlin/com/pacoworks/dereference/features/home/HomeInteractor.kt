@@ -18,11 +18,11 @@ package com.pacoworks.dereference.features.home
 
 import com.pacoworks.dereference.architecture.navigation.Direction
 import com.pacoworks.dereference.architecture.navigation.Screen
+import com.pacoworks.dereference.architecture.ui.StateHolder
 import org.javatuples.Pair
 import rx.Subscription
-import rx.functions.Action1
 
-fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Action1<Pair<Screen, Direction>>): Subscription =
+fun subscribeHomeInteractor(view: HomeViewOutput, navigation: StateHolder<Pair<Screen, Direction>>): Subscription =
         view.buttonClick()
                 .map { Pair.with(it, Direction.FORWARD) }
                 .subscribe(navigation)
