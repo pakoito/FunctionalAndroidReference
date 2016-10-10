@@ -18,7 +18,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "com.pacoworks.dereference"
         minSdkVersion 16
@@ -62,15 +62,15 @@ dependencies {
     compile 'com.jakewharton.timber:timber:4.3.1'
 
     // Debug
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     debugCompile 'io.palaima.debugdrawer:debugdrawer:0.7.0'
     releaseCompile 'io.palaima.debugdrawer:debugdrawer-no-op:0.7.0'
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.0'
     compile 'io.palaima.debugdrawer:debugdrawer-timber:0.7.0'
     compile 'io.palaima.debugdrawer:debugdrawer-okhttp3:0.7.0'
-    debugCompile 'com.github.brianPlummer:tinydancer:0.0.9'
+    compile 'com.github.brianPlummer:tinydancer:0.0.9'
 
     // Test
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
