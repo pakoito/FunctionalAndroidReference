@@ -23,7 +23,7 @@ import com.pacoworks.dereference.features.rotation.model.UserInput
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class RotationInteractorBindTest {
+class RotationBindTest {
     @Test
     fun idle_StateLoading_CallLoading() {
         val transaction = createStateHolder<Transaction>(Transaction.Idle)

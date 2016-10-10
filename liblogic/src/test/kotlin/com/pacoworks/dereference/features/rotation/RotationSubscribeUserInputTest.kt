@@ -23,7 +23,7 @@ import rx.observers.TestSubscriber
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-class RotationInteractorSubscribeUserInputTest {
+class RotationSubscribeUserInputTest {
     @Test
     fun emptyInput_validInput_NewValue() {
         val initialValue = UserInput("")
