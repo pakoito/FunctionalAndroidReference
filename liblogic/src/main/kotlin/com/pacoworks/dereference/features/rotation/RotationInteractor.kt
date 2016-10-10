@@ -21,6 +21,7 @@ import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.Transaction.*
 import com.pacoworks.dereference.features.rotation.model.UserInput
+import com.pacoworks.dereference.features.rotation.services.TransactionRequest
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import rx.Observable
@@ -28,7 +29,6 @@ import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import java.util.concurrent.TimeUnit
 
-typealias TransactionRequest = (String) -> Observable<Transaction>
 
 fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     view.createBinder<Transaction>().call(state.transaction, {

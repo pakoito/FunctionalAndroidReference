@@ -26,6 +26,8 @@ import rx.Observable
 import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
+typealias TransactionRequest = (String) -> Observable<Transaction>
+
 fun requestCharacterInfo(user: String, agotApi: AgotApi, scheduler: Scheduler): Observable<Transaction> =
         doFM(
                 {
