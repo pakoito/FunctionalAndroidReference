@@ -80,7 +80,7 @@ fun handleLoad(transaction: StateHolder<Transaction>, services: TransactionReque
                 .switchMap { services.invoke(it.user.name) }
                 .subscribe(transaction)
 
-fun handleReload(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
+fun handleReload(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doFM(
                 { user },
                 { transaction.filter { it is Success }.first() },
