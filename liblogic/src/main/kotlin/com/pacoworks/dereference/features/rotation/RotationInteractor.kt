@@ -93,13 +93,13 @@ fun handleReload(user: StateHolder<UserInput>, transaction: StateHolder<Transact
                 }
         ).subscribe(transaction)
 
-fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
+fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
         transaction
                 .filter { it is Failure }
                 .flatMap {
                     Observable.interval(0, 1, TimeUnit.SECONDS)
-                            .startWith(0)
-                            .map { WaitingForRetry((countdown - it).toInt()) }
+                            .map { WaitingForRetry((COUNTDOWN - it - 1).toInt()) }
+                            .startWith(WaitingForRetry(5))
                             /* Take until value is 0 */
                             .takeUntil { it.seconds <= 0 }
                             /* The type checker assumes WaitingForRetry otherwise */
@@ -110,4 +110,4 @@ fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<
                 }
                 .subscribe(transaction)
 
-private const val countdown = 5
+private const val COUNTDOWN = 5
