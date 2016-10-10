@@ -20,6 +20,7 @@ import com.jakewharton.rxrelay.BehaviorRelay
 import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 import rx.Observable
+import rx.Scheduler
 import rx.Subscription
 
 typealias StateHolder<T> = SerializedRelay<T, T>
@@ -27,7 +28,7 @@ typealias StateHolder<T> = SerializedRelay<T, T>
 fun <T> createStateHolder(value: T): StateHolder<T> =
         SerializedRelay(BehaviorRelay.create<T>(value))
 
-fun <T> bind(lifecycleObservable: Observable<ConductorLifecycle>, mainThreadScheduler: rx.Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
+fun <T> bind(lifecycleObservable: Observable<ConductorLifecycle>, mainThreadScheduler: Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ConductorLifecycle.Attach }
                 .flatMap { state }
