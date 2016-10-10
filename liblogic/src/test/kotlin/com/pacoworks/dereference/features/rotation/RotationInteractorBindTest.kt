@@ -16,17 +16,12 @@
 
 package com.pacoworks.dereference.features.rotation
 
-import com.jakewharton.rxrelay.SerializedRelay
 import com.pacoworks.dereference.architecture.ui.createStateHolder
-import com.pacoworks.dereference.bindAsTest
 import com.pacoworks.dereference.features.rotation.model.BookCharacter
 import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.UserInput
-import com.pacoworks.dereference.mockView
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import rx.functions.Action2
-import java.util.concurrent.atomic.AtomicLong
 
 class RotationInteractorBindTest {
     @Test
@@ -112,26 +107,4 @@ class RotationInteractorBindTest {
         assertEquals(0, view.waitingCount.get())
         assertEquals(1, view.successCount.get())
     }
-}
-
-class MockRotationViewInput : RotationViewInput {
-    val loadingCount = AtomicLong()
-    val errorCount = AtomicLong()
-    val waitingCount = AtomicLong()
-    val successCount = AtomicLong()
-
-    override fun setLoading(user: String) =
-            mockView<String>(loadingCount).invoke(user)
-
-    override fun showError(reason: String) =
-            mockView<String>(errorCount).invoke(reason)
-
-    override fun setWaiting(seconds: Int) =
-            mockView<Int>(waitingCount).invoke(seconds)
-
-    override fun showRepos(value: String) =
-            mockView<String>(successCount).invoke(value)
-
-    override fun <T> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
-            bindAsTest()
 }
