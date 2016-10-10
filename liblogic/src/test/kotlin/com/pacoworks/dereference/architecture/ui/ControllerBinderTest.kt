@@ -17,7 +17,7 @@
 package com.pacoworks.dereference.architecture.ui
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ControllerLifecycle
 import com.pacoworks.dereference.mockView
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -31,7 +31,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindEnter_valueReceived_ViewNotBound() {
-        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Enter)
+        val lifecycleObservable = BehaviorRelay.create(ControllerLifecycle.Enter)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
         val callCount = AtomicLong()
@@ -46,7 +46,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindEnter_LifecycleAttach_ViewBound() {
-        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Enter)
+        val lifecycleObservable = BehaviorRelay.create(ControllerLifecycle.Enter)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
         val callCount = AtomicLong()
@@ -54,7 +54,7 @@ class ControllerBinderTest {
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
         /* No initial state */
         assertEquals(0L, callCount.get())
-        lifecycleObservable.call(ConductorLifecycle.Attach)
+        lifecycleObservable.call(ControllerLifecycle.Attach)
         /* Initial state is applied */
         assertEquals(1L, callCount.get())
         /* State changes applied now */
@@ -64,7 +64,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindAttach_LifecycleDetach_ViewUnbound() {
-        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Attach)
+        val lifecycleObservable = BehaviorRelay.create(ControllerLifecycle.Attach)
         val mainThreadScheduler = Schedulers.immediate()
         val state = createStateHolder(1)
         val callCount = AtomicLong()
@@ -75,7 +75,7 @@ class ControllerBinderTest {
         /* State changes applied */
         state.call(2)
         assertEquals(2L, callCount.get())
-        lifecycleObservable.call(ConductorLifecycle.Detach)
+        lifecycleObservable.call(ControllerLifecycle.Detach)
         /* State changes after detach are not applied */
         state.call(3)
         assertEquals(2L, callCount.get())
@@ -83,7 +83,7 @@ class ControllerBinderTest {
 
     @Test
     fun bindAttach_ValueReceived_ReceivedOnScheduler() {
-        val lifecycleObservable = BehaviorRelay.create(ConductorLifecycle.Attach)
+        val lifecycleObservable = BehaviorRelay.create(ControllerLifecycle.Attach)
         val mainThreadScheduler = Schedulers.io()
         val state = createStateHolder(1)
         val latch = CountDownLatch(1)

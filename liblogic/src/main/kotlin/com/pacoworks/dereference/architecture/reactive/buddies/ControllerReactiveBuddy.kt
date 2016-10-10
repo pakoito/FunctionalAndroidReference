@@ -16,10 +16,10 @@
 
 package com.pacoworks.dereference.architecture.reactive.buddies
 
-import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ControllerLifecycle
 import rx.Observable
 
 interface ControllerReactiveBuddy {
-    fun lifecycle(): Observable<ConductorLifecycle>
+    fun lifecycle(): Observable<ControllerLifecycle>
 }
 

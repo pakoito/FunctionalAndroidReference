@@ -17,7 +17,7 @@
 package com.pacoworks.dereference.features.rotation
 
 import com.jakewharton.rxrelay.PublishRelay
-import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ControllerLifecycle
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.architecture.ui.createStateHolder
 import com.pacoworks.dereference.features.rotation.model.Transaction
@@ -31,7 +31,7 @@ class RotationSubscribeRetryTest {
         val initialValue = "Hello"
         val initialInput = UserInput(initialValue)
         val userState = createStateHolder(initialInput)
-        val lifecycle = PublishRelay.create<ConductorLifecycle>()
+        val lifecycle = PublishRelay.create<ControllerLifecycle>()
         val initialState = Transaction.Idle
         val transactionState: StateHolder<Transaction> = createStateHolder(initialState)
         val testSubscriber = TestSubscriber<Transaction>()
@@ -59,7 +59,7 @@ class RotationSubscribeRetryTest {
         val initialValue = "Hello"
         val initialInput = UserInput(initialValue)
         val userState = createStateHolder(initialInput)
-        val lifecycle = PublishRelay.create<ConductorLifecycle>()
+        val lifecycle = PublishRelay.create<ControllerLifecycle>()
         val initialState = Transaction.Idle
         val transactionState: StateHolder<Transaction> = createStateHolder(initialState)
         val testSubscriber = TestSubscriber<Transaction>()
@@ -72,7 +72,7 @@ class RotationSubscribeRetryTest {
         val loadTransaction = Transaction.Failure("")
         transactionState.call(loadTransaction)
         /* Cancel after two states have been received */
-        transactionState.skip(2).subscribe { lifecycle.call(ConductorLifecycle.Exit) }
+        transactionState.skip(2).subscribe { lifecycle.call(ControllerLifecycle.Exit) }
         /* Assert all values are seen */
         testSubscriber.assertValueCount(4)
         testSubscriber.assertValues(initialState, loadTransaction,

@@ -16,7 +16,7 @@
 
 package com.pacoworks.dereference.features.rotation
 
-import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ControllerLifecycle
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.Transaction.*
@@ -41,7 +41,7 @@ fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     })
 }
 
-fun subscribeRotationInteractor(lifecycle: Observable<ConductorLifecycle>, view: RotationViewOutput, state: RotationState, services: TransactionRequest) =
+fun subscribeRotationInteractor(lifecycle: Observable<ControllerLifecycle>, view: RotationViewOutput, state: RotationState, services: TransactionRequest) =
         CompositeSubscription(
                 handleUserInput(view, state.user),
                 handleStart(state.user, state.transaction),
@@ -93,7 +93,7 @@ fun handleReload(user: StateHolder<UserInput>, transaction: StateHolder<Transact
                 }
         ).subscribe(transaction)
 
-fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
+fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ControllerLifecycle>): Subscription =
         transaction
                 .filter { it is Failure }
                 .flatMap {
@@ -106,7 +106,7 @@ fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder
                             .map { it as Transaction }
                             .concatWith(user.first().map { Loading(it) })
                             /* Stop with the retry upon exiting the screen */
-                            .takeUntil(lifecycle.filter { it == ConductorLifecycle.Exit })
+                            .takeUntil(lifecycle.filter { it == ControllerLifecycle.Exit })
                 }
                 .subscribe(transaction)
 

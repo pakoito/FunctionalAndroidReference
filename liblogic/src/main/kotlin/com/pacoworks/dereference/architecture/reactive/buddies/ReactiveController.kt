@@ -17,25 +17,25 @@
 package com.pacoworks.dereference.architecture.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
+import com.pacoworks.dereference.architecture.reactive.ControllerLifecycle
 
 class ReactiveController {
 
-    val lifecycleRelay: BehaviorRelay<ConductorLifecycle> = BehaviorRelay.create<ConductorLifecycle>()
+    val lifecycleRelay: BehaviorRelay<ControllerLifecycle> = BehaviorRelay.create<ControllerLifecycle>()
 
-    private fun call(lifecycle: ConductorLifecycle) = lifecycleRelay.call(lifecycle)
+    private fun call(lifecycle: ControllerLifecycle) = lifecycleRelay.call(lifecycle)
 
-    fun onEnter() = call(ConductorLifecycle.Enter)
+    fun onEnter() = call(ControllerLifecycle.Enter)
 
-    fun onCreate() = call(ConductorLifecycle.Create)
+    fun onCreate() = call(ControllerLifecycle.Create)
 
-    fun onAttach() = call(ConductorLifecycle.Attach)
+    fun onAttach() = call(ControllerLifecycle.Attach)
 
-    fun onDetach() = call(ConductorLifecycle.Detach)
+    fun onDetach() = call(ControllerLifecycle.Detach)
 
-    fun onDestroy() = call(ConductorLifecycle.Destroy)
+    fun onDestroy() = call(ControllerLifecycle.Destroy)
 
-    fun onFinish() = call(ConductorLifecycle.Exit)
+    fun onFinish() = call(ControllerLifecycle.Exit)
 
     fun createBuddy() = object : ControllerReactiveBuddy {
         override fun lifecycle() = lifecycleRelay.asObservable()
