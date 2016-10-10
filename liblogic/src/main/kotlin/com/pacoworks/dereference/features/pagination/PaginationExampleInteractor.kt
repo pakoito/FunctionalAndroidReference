@@ -27,10 +27,10 @@ fun bindPaginationExample(viewInput: PaginationExampleInputView, state: Paginati
 
 fun subscribePaginationExample(viewOutput: PaginationExampleOutputView, state: PaginationExampleState, service: PaginationExampleService): Subscription =
         CompositeSubscription(
-                handleLoading(service, state, viewOutput)
+                handleLoading(viewOutput, state, service)
         )
 
-private fun handleLoading(service: PaginationExampleService, state: PaginationExampleState, viewOutput: PaginationExampleOutputView): Subscription =
+fun handleLoading(viewOutput: PaginationExampleOutputView, state: PaginationExampleState, service: PaginationExampleService): Subscription =
         doSM(
                 { state.elements },
                 { viewOutput.endOfPage().first() },

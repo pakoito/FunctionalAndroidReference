@@ -18,9 +18,8 @@ package com.pacoworks.dereference.features.cache
 
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.cache.model.AgotCharacter
-import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import com.pacoworks.dereference.features.cache.services.CacheRequest
-
+import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
