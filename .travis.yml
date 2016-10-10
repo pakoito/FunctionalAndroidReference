@@ -1,0 +1,22 @@
+sudo: false
+
+language: android
+jdk: oraclejdk8
+
+android:
+  components:
+    - platform-tools
+    - tools
+    - android-24
+    - build-tools-24.0.3
+    - extra-android-m2repository
+    - extra-android-support
+
+after_success:
+  - ./gradlew check
+  - bash <(curl -s https://codecov.io/bash)
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle
