@@ -17,6 +17,7 @@
 package com.pacoworks.dereference.features.list;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -31,13 +32,13 @@ public class ListExampleVH extends RecyclerView.ViewHolder implements ReactiveDN
 
     @Override
     public void onDragStarted() {
-        itemView.animate().cancel();
-        itemView.animate().alpha(0.4f).scaleX(2f).scaleY(2f);
+        ViewCompat.animate(itemView).cancel();
+        ViewCompat.animate(itemView).alpha(0.4f).scaleX(2f).scaleY(2f);
     }
 
     @Override
     public void onDragEnded() {
-        itemView.animate().cancel();
-        itemView.animate().alpha(1f).scaleX(1f).scaleY(1f);
+        ViewCompat.animate(itemView).cancel();
+        ViewCompat.animate(itemView).alpha(1f).scaleX(1f).scaleY(1f);
     }
 }
