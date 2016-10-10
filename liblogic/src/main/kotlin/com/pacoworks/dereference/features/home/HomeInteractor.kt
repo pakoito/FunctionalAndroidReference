@@ -16,13 +16,14 @@
 
 package com.pacoworks.dereference.features.home
 
+import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.features.global.Direction
 import com.pacoworks.dereference.features.global.Screen
-import com.pacoworks.dereference.architecture.ui.StateHolder
 import org.javatuples.Pair
 import rx.Subscription
 
-fun subscribeHomeInteractor(view: HomeViewOutput, navigation: StateHolder<Pair<Screen, Direction>>): Subscription =
+fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Lazy<StateHolder<Pair<Screen, Direction>>>): Subscription =
         view.buttonClick()
                 .map { Pair.with(it, Direction.FORWARD) }
-                .subscribe(navigation)
+                /* Using method reference doesn't typecheck. Call it explicitly instead */
+                .subscribe { navigation.value.call(it) }

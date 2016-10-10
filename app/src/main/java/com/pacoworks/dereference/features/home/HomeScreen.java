@@ -63,7 +63,7 @@ public class HomeScreen extends BaseController implements HomeView {
                         return DereferenceApplication.get(getActivity()).getInjector().getState().getNavigation();
                     }
                 });
-        HomeInteractorKt.subscribeHomeInteractor(this, navigationLazy.getValue());
+        HomeInteractorKt.subscribeHomeInteractor(this, navigationLazy);
     }
 
     @NonNull
