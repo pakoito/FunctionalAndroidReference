@@ -30,7 +30,7 @@ class NavigationInteractorBackTest {
     fun navigationAtFirstScreen_backPressed_HomeScreen() {
         val activityReactiveBuddy = MockActivityReactiveBuddy()
         val back = activityReactiveBuddy.back
-        val initialScreen = Pair.with(createRotation(), Direction.FORWARD)
+        val initialScreen = Pair.with(createPagination(), Direction.FORWARD)
         val state = AppState(navigation = createStateHolder(initialScreen))
         /* Our navigator doesn't have a screen to return to */
         val navigator = object : MockBackNavigatorView() {
@@ -54,7 +54,7 @@ class NavigationInteractorBackTest {
     fun navigationAtManyScreens_backPressed_PreviousScreen() {
         val activityReactiveBuddy = MockActivityReactiveBuddy()
         val back = activityReactiveBuddy.back
-        val initialScreen = Pair.with(createRotation(), Direction.FORWARD)
+        val initialScreen = Pair.with(createList(), Direction.FORWARD)
         val state = AppState(navigation = createStateHolder(initialScreen))
         val previousScreen = createDragAndDrop()
         /* Our navigator returns to an existing screen */
