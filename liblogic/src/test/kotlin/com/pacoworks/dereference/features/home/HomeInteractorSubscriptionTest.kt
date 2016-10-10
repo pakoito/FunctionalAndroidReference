@@ -33,10 +33,10 @@ class HomeInteractorSubscriptionTest {
         val view = MockHomeViewOutput()
         val startScreen = createHome()
         val startState = Pair.with(startScreen, Direction.FORWARD)
-        val navigation = createStateHolder(startState)
+        val navigation = lazy { createStateHolder(startState) }
         subscribeHomeInteractor(view, navigation)
         val testSubscriber = TestSubscriber.create<Pair<Screen, Direction>>()
-        navigation.subscribe(testSubscriber)
+        navigation.value.subscribe(testSubscriber)
         /* Starting value */
         testSubscriber.assertValueCount(1)
         /* Click on screen */
