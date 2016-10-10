@@ -17,10 +17,10 @@
 package com.pacoworks.dereference.architecture.reactive.buddies
 
 import com.jakewharton.rxrelay.BehaviorRelay
-import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
 import com.pacoworks.dereference.architecture.reactive.ActivityResult
 import com.pacoworks.dereference.architecture.reactive.PermissionResult
+import com.pacoworks.dereference.core.functional.None
 
 class ReactiveActivity {
 
@@ -51,6 +51,8 @@ class ReactiveActivity {
     fun onFinish() = call(ActivityLifecycle.Exit)
 
     fun onActivityResult(result: ActivityResult) = activityResultRelay.call(result)
+
+    fun onPermissionResult(result: PermissionResult) = permissionResultRelay.call(result)
 
     fun onBackPressed() = onBackRelay.call(None.VOID)
 

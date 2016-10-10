@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults[i] == PERMISSION_GRANTED) {
-                reactiveActivity.getPermissionResultRelay().call(new PermissionResult.Success(requestCode, permissions[i]));
+                reactiveActivity.onPermissionResult(new PermissionResult.Success(requestCode, permissions[i]));
             } else if (grantResults[i] == PERMISSION_DENIED) {
-                reactiveActivity.getPermissionResultRelay().call(new PermissionResult.Failure(requestCode, permissions[i]));
+                reactiveActivity.onPermissionResult(new PermissionResult.Failure(requestCode, permissions[i]));
             }
         }
     }
