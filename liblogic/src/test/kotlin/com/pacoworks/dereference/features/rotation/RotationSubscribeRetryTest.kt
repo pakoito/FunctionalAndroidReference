@@ -68,11 +68,11 @@ class RotationSubscribeRetryTest {
         /* Initial state */
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)
+        /* Cancel after two states have been received */
+        transactionState.skip(2).subscribe { lifecycle.call(ControllerLifecycle.Exit) }
         /* Kickstart transaction */
         val loadTransaction = Transaction.Failure("")
         transactionState.call(loadTransaction)
-        /* Cancel after two states have been received */
-        transactionState.skip(2).subscribe { lifecycle.call(ControllerLifecycle.Exit) }
         /* Assert all values are seen */
         testSubscriber.assertValueCount(4)
         testSubscriber.assertValues(initialState, loadTransaction,
