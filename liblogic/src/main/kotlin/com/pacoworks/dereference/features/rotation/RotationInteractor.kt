@@ -66,7 +66,7 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
 
 fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doSM(
-                { transaction.ofType(Idle::class.java).first() },
+                { transaction.ofType(Idle::class.java) },
                 {
                     user.filter { it.name != "" }
                             .first()
