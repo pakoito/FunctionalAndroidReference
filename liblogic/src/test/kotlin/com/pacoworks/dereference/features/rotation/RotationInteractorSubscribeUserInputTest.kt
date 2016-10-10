@@ -39,6 +39,7 @@ class RotationInteractorSubscribeUserInputTest {
         userState.skip(1).toBlocking().first()
         testSubscriber.assertValueCount(2)
         testSubscriber.assertValues(initialValue, UserInput(validInput))
+        testSubscriber.assertNoTerminalEvent()
     }
 
     @Test
@@ -56,6 +57,7 @@ class RotationInteractorSubscribeUserInputTest {
         userState.skip(1).toBlocking().first()
         testSubscriber.assertValueCount(2)
         testSubscriber.assertValues(initialValue, UserInput(validInput))
+        testSubscriber.assertNoTerminalEvent()
     }
 
     @Test

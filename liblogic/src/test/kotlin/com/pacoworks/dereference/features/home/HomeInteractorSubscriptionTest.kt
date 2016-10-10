@@ -17,11 +17,11 @@
 package com.pacoworks.dereference.features.home
 
 import com.jakewharton.rxrelay.PublishRelay
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 import com.pacoworks.dereference.features.global.Direction
 import com.pacoworks.dereference.features.global.Screen
 import com.pacoworks.dereference.features.global.createHome
 import com.pacoworks.dereference.features.global.createRotation
-import com.pacoworks.dereference.architecture.ui.createStateHolder
 import org.javatuples.Pair
 import org.junit.Test
 import rx.Observable
@@ -46,6 +46,7 @@ class HomeInteractorSubscriptionTest {
         /* Assert new value is seen */
         testSubscriber.assertValueCount(2)
         testSubscriber.assertValues(startState, newState)
+        testSubscriber.assertNoTerminalEvent()
     }
 
 }

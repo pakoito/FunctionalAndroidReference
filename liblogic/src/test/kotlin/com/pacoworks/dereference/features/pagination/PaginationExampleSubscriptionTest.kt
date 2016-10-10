@@ -48,8 +48,10 @@ class PaginationExampleSubscriptionTest {
         /* New elements loaded */
         pagesSubscriber.assertValueCount(2)
         pagesSubscriber.assertValues(0, 1)
+        pagesSubscriber.assertNoTerminalEvent()
         elementsSubscriber.assertValueCount(2)
         elementsSubscriber.assertValues(initialList, newList)
+        elementsSubscriber.assertNoTerminalEvent()
     }
 
     @Test
@@ -76,8 +78,10 @@ class PaginationExampleSubscriptionTest {
         /* New elements loaded */
         pagesSubscriber.assertValueCount(2)
         pagesSubscriber.assertValues(0, 1)
+        pagesSubscriber.assertNoTerminalEvent()
         elementsSubscriber.assertValueCount(2)
         elementsSubscriber.assertValues(initialList, initialList.plus(newList))
+        elementsSubscriber.assertNoTerminalEvent()
     }
 }
 

@@ -47,6 +47,7 @@ class NavigationInteractorBackTest {
         testSubscriber.assertValueCount(2)
         val startScreen = Pair.with(createHome(), Direction.FORWARD)
         testSubscriber.assertValues(initialScreen, startScreen)
+        testSubscriber.assertNoTerminalEvent()
     }
 
     @Test
@@ -73,6 +74,7 @@ class NavigationInteractorBackTest {
         /* Assert that we return to previous screen */
         val startScreen = Pair.with(previousScreen, Direction.BACK)
         testSubscriber.assertValues(initialScreen, startScreen)
+        testSubscriber.assertNoTerminalEvent()
     }
 }
 

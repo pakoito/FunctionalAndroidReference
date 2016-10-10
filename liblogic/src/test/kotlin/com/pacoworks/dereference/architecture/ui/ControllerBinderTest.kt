@@ -20,6 +20,7 @@ import com.jakewharton.rxrelay.BehaviorRelay
 import com.pacoworks.dereference.architecture.reactive.ConductorLifecycle
 import com.pacoworks.dereference.mockView
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import rx.schedulers.Schedulers
 import java.util.concurrent.CountDownLatch
@@ -37,10 +38,10 @@ class ControllerBinderTest {
         val doView = mockView<Int>(callCount)
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
         /* No initial state */
-        Assert.assertEquals(0L, callCount.get())
+        assertEquals(0L, callCount.get())
         /* State changes not forwarded */
         state.call(3)
-        Assert.assertEquals(0L, callCount.get())
+        assertEquals(0L, callCount.get())
     }
 
     @Test
@@ -52,13 +53,13 @@ class ControllerBinderTest {
         val doView = mockView<Int>(callCount)
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
         /* No initial state */
-        Assert.assertEquals(0L, callCount.get())
+        assertEquals(0L, callCount.get())
         lifecycleObservable.call(ConductorLifecycle.Attach)
         /* Initial state is applied */
-        Assert.assertEquals(1L, callCount.get())
+        assertEquals(1L, callCount.get())
         /* State changes applied now */
         state.call(2)
-        Assert.assertEquals(2L, callCount.get())
+        assertEquals(2L, callCount.get())
     }
 
     @Test
@@ -70,14 +71,14 @@ class ControllerBinderTest {
         val doView = mockView<Int>(callCount)
         bind(lifecycleObservable, mainThreadScheduler, state, doView)
         /* View already contains initial state */
-        Assert.assertEquals(1L, callCount.get())
+        assertEquals(1L, callCount.get())
         /* State changes applied */
         state.call(2)
-        Assert.assertEquals(2L, callCount.get())
+        assertEquals(2L, callCount.get())
         lifecycleObservable.call(ConductorLifecycle.Detach)
         /* State changes after detach are not applied */
         state.call(3)
-        Assert.assertEquals(2L, callCount.get())
+        assertEquals(2L, callCount.get())
     }
 
     @Test
