@@ -77,6 +77,7 @@ class RotationSubscribeRetryTest {
         testSubscriber.assertValueCount(4)
         testSubscriber.assertValues(initialState, loadTransaction,
                 countDown(5), countDown(4))
+        testSubscriber.assertNoTerminalEvent()
     }
 
     private fun countDown(value: Int) =
