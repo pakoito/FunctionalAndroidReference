@@ -64,7 +64,7 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
         )
                 .subscribe(user)
 
-private fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
+fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doSM(
                 { transaction.ofType(Idle::class.java).first() },
                 {
@@ -75,12 +75,12 @@ private fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Tr
         )
                 .subscribe(transaction)
 
-private fun handleLoad(transaction: StateHolder<Transaction>, services: TransactionRequest): Subscription =
+fun handleLoad(transaction: StateHolder<Transaction>, services: TransactionRequest): Subscription =
         transaction.ofType(Loading::class.java)
                 .switchMap { services.invoke(it.user.name) }
                 .subscribe(transaction)
 
-private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
+fun handleReload(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doFM(
                 { user },
                 { transaction.filter { it is Success }.first() },
@@ -93,7 +93,7 @@ private fun handleReload(user: Observable<UserInput>, transaction: StateHolder<T
                 }
         ).subscribe(transaction)
 
-private fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
+fun handleRetryAfterError(user: Observable<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ConductorLifecycle>): Subscription =
         transaction
                 .filter { it is Failure }
                 .flatMap {
