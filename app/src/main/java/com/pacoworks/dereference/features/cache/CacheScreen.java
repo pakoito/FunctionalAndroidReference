@@ -42,6 +42,7 @@ import com.pacoworks.rxsealedunions.Union2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 import kotlin.jvm.functions.Function1;
 import rx.Observable;
@@ -128,17 +129,19 @@ public class CacheScreen extends BaseController implements CacheExampleView {
         }, new Action1<KnownAgotCharacter>() {
             @Override
             public void call(KnownAgotCharacter knownAgotCharacter) {
-                text.setText("This is " + knownAgotCharacter.toString());
+                text.setText(String.format(Locale.US, "This is %s", knownAgotCharacter.toString()));
             }
         });
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void filterList(@NotNull List<String> ids) {
         final ArrayAdapter<String> adapter = (ArrayAdapter<String>) spin.getAdapter();
         adapter.addAll(ids);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void currentFilter(@NotNull String id) {
         final ArrayAdapter<String> adapter = (ArrayAdapter<String>) spin.getAdapter();
