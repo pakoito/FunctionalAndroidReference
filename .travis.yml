@@ -13,6 +13,9 @@ android:
     - extra-android-support
     - sys-img-armeabi-v7a-android-18
 
+before_install:
+  - pip install --user codecov
+
 before_script:
   - echo no | android create avd --force -n test -t android-18 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
@@ -21,7 +24,7 @@ before_script:
 
 after_success:
   - ./gradlew check
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
 
 cache:
   directories:
