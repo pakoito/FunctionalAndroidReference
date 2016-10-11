@@ -2,6 +2,8 @@
 
 FunctionalAndroidReference is a showcase project of Functional Reactive Programming on Android, using RxJava.
 
+[![Build Status](https://travis-ci.org/pakoito/FunctionalAndroidReference.svg?branch=master)](https://travis-ci.org/pakoito/FunctionalAndroidReference) [![codecov](https://codecov.io/gh/pakoito/FunctionalAndroidReference/branch/master/graph/badge.svg)](https://codecov.io/gh/pakoito/FunctionalAndroidReference)
+
 It is not meant to be a canonical reference, but as an example of how far functional programming can be taken. It's also a collection of patterns and ideas about how to express use cases, business features, and UX on a FRP paradigm.
 
 The project has multiple self-imposed limitations:
