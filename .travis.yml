@@ -23,6 +23,9 @@ after_success:
   - ./gradlew check jacocoTestReport
   - bash <(curl -s https://codecov.io/bash)
 
+before_cache:
+  - rm -rf $HOME/.gradle/caches/
+
 cache:
   directories:
     - $HOME/.m2
