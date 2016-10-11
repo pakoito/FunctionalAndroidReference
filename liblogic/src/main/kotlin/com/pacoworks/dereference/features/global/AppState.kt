@@ -20,6 +20,6 @@ import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.architecture.ui.createStateHolder
 import org.javatuples.Pair
 
-class AppState(
+data class AppState(
     val navigation: StateHolder<Pair<Screen, Direction>> = createStateHolder(Pair.with(createHome(), Direction.FORWARD))
 )
