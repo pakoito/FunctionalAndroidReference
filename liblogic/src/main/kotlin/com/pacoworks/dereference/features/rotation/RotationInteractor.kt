@@ -99,7 +99,7 @@ fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder
                 .flatMap {
                     Observable.interval(0, 1, TimeUnit.SECONDS)
                             .map { WaitingForRetry((COUNTDOWN - it - 1).toInt()) }
-                            .startWith(WaitingForRetry(5))
+                            .startWith(WaitingForRetry(COUNTDOWN))
                             /* Take until value is 0 */
                             .takeUntil { it.seconds <= 0 }
                             /* The type checker assumes WaitingForRetry otherwise */
