@@ -21,7 +21,7 @@ before_script:
 
 after_success:
   - ./gradlew check
-  - cd liblogic && ./../gradlew jacocoTestReport coveralls
+  - cd liblogic && bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:
