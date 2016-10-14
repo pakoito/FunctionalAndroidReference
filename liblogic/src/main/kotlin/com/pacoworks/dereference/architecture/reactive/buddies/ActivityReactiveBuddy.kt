@@ -16,12 +16,15 @@
 
 package com.pacoworks.dereference.architecture.reactive.buddies
 
-import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.architecture.reactive.ActivityLifecycle
 import com.pacoworks.dereference.architecture.reactive.ActivityResult
 import com.pacoworks.dereference.architecture.reactive.PermissionResult
+import com.pacoworks.dereference.core.functional.None
 import rx.Observable
 
+/**
+ * Proxy interface to access Android framework responsibilities of a [ReactiveActivity]
+ */
 interface ActivityReactiveBuddy {
     fun lifecycle(): Observable<ActivityLifecycle>
 

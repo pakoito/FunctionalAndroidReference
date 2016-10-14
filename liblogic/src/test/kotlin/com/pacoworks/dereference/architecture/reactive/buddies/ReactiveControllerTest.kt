@@ -33,7 +33,7 @@ class ReactiveControllerTest {
         reactiveController.onAttach()
         reactiveController.onDetach()
         reactiveController.onDestroy()
-        reactiveController.onFinish()
+        reactiveController.onExit()
         /* Assert all lifecycle events seen */
         val values = ControllerLifecycle.values()
         testSubscriber.assertValueCount(values.count())

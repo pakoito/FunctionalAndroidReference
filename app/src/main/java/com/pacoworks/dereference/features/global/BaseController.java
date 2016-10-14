@@ -133,7 +133,7 @@ public abstract class BaseController extends Controller implements BoundView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        reactiveController.onFinish();
+        reactiveController.onExit();
     }
 
     @Override

@@ -19,6 +19,9 @@ package com.pacoworks.dereference.architecture.reactive.buddies
 import com.pacoworks.dereference.architecture.reactive.ControllerLifecycle
 import rx.Observable
 
+/**
+ * Proxy interface to access Android framework responsibilities of a [ReactiveController]
+ */
 interface ControllerReactiveBuddy {
     fun lifecycle(): Observable<ControllerLifecycle>
 }

@@ -38,7 +38,7 @@ class ReactiveActivityTest {
         reactiveActivity.onPause()
         reactiveActivity.onStop()
         reactiveActivity.onDestroy()
-        reactiveActivity.onFinish()
+        reactiveActivity.onExit()
         /* Assert all lifecycle events seen */
         val values = ActivityLifecycle.values()
         testSubscriber.assertValueCount(values.count())

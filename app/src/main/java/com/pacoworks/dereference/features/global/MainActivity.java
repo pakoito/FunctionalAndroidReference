@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         reactiveActivity.onDestroy();
         if (isFinishing()) {
-            reactiveActivity.onFinish();
+            reactiveActivity.onExit();
         }
     }
 
