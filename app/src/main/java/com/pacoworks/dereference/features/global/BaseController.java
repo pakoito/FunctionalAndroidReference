@@ -49,8 +49,8 @@ import rx.functions.Action3;
  * The Controller provides access to its own Android lifecycle state via a proxy class {@link ControllerReactiveBuddy}.
  * <p>
  * It defines its own lifecycle as three entry points:
- * <p><ul>
- * <li>A constructor to create the state models and start the business logic.
+ * <ul>
+ * <li>A constructor {@link BaseController#BaseController()} or {@link BaseController#BaseController(Bundle)} to create the state models and start the business logic.
  * <li>A {@link #createView(Context, LayoutInflater, ViewGroup)} method to request the current View.
  * <li>A method {@link #attachBinders()} to start the binding between view and models.
  * </ul>
