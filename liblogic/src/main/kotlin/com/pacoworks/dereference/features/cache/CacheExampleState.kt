@@ -28,7 +28,7 @@ import rx.Observable
 typealias AgotCharacterCache = Map<String, AgotCharacter>
 
 /**
- * Contains all [StateHolder] objects used to represent state in this screen
+ * Data class containing all [StateHolder] objects used to represent state in this screen
  */
 data class CacheExampleState(
         val ids: StateHolder<List<String>> = createStateHolder(CHARACTER_IDS),

@@ -23,7 +23,7 @@ import com.pacoworks.dereference.features.list.model.createEditModeNormal
 import rx.Observable
 
 /**
- * Contains all [StateHolder] objects used to represent state in this screen
+ * Data class containing all [StateHolder] objects used to represent state in this screen
  */
 data class ListExampleState(
         val elements: StateHolder<List<String>> = createStateHolder<List<String>>(Observable.range(0, 5).map { it.toString() }.toList().toBlocking().first()),

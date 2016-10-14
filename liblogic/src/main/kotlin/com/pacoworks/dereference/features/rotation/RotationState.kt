@@ -22,7 +22,7 @@ import com.pacoworks.dereference.features.rotation.model.Transaction
 import com.pacoworks.dereference.features.rotation.model.UserInput
 
 /**
- * Contains all [StateHolder] objects used to represent state in this screen
+ * Data class containing all [StateHolder] objects used to represent state in this screen
  */
 class RotationState(
         val transaction: StateHolder<Transaction> = createStateHolder<Transaction>(Transaction.Idle),
