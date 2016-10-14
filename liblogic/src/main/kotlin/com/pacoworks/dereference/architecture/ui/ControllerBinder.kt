@@ -24,7 +24,7 @@ import rx.Scheduler
 import rx.Subscription
 
 /**
- * Alias for a [SerializedRelay] backed by a [BehaviorRelay] used to represent the value of one piece of state over time
+ * A [SerializedRelay] backed by a [BehaviorRelay] used to represent the value of one piece of state over time
  */
 typealias StateHolder<T> = SerializedRelay<T, T>
 
