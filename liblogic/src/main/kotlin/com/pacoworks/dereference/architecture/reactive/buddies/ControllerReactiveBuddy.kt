@@ -23,6 +23,9 @@ import rx.Observable
  * Proxy interface to access Android framework responsibilities of a [ReactiveController]
  */
 interface ControllerReactiveBuddy {
+    /**
+     * Non-terminating [Observable] representing the Controller lifecycle
+     */
     fun lifecycle(): Observable<ControllerLifecycle>
 }
 

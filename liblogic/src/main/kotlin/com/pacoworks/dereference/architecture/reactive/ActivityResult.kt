@@ -16,9 +16,27 @@
 
 package com.pacoworks.dereference.architecture.reactive
 
+/**
+ * Algebra representing all possible results from an Activity request
+ */
 sealed class ActivityResult(open val requestCode: Int) {
-    data class SuccessWithData(override val requestCode: Int, val data : Map<String, Any>) : ActivityResult(requestCode)
-    data class FailureWithData(override val requestCode: Int, val data : Map<String, Any>) : ActivityResult(requestCode)
+    /**
+     * Data class representing a successful request containing additional data
+     */
+    data class SuccessWithData(override val requestCode: Int, val data: Map<String, Any>) : ActivityResult(requestCode)
+
+    /**
+     * Data class representing a failed request containing additional data
+     */
+    data class FailureWithData(override val requestCode: Int, val data: Map<String, Any>) : ActivityResult(requestCode)
+
+    /**
+     * Data class representing a successful request
+     */
     data class Success(override val requestCode: Int) : ActivityResult(requestCode)
+
+    /**
+     * Data class representing a failed request
+     */
     data class Failure(override val requestCode: Int) : ActivityResult(requestCode)
 }

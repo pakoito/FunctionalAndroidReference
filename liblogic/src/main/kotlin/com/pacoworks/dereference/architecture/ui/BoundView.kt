@@ -18,6 +18,13 @@ package com.pacoworks.dereference.architecture.ui
 
 import rx.functions.Action2
 
+/**
+ * Interface representing a screen that can be bound one-way to a [StateHolder]
+ */
 interface BoundView {
+    /**
+     * Creates a view-state binding function for the current screen
+     * @return binder function
+     */
     fun <T> createBinder(): Action2<StateHolder<T>, (T) -> Unit>
 }

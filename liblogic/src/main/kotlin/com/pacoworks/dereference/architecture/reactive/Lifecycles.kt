@@ -16,10 +16,16 @@
 
 package com.pacoworks.dereference.architecture.reactive
 
+/**
+ * Enum class with all possible Activity lifecycle states
+ */
 enum class ActivityLifecycle {
     Enter, Create, Start, Resume, Pause, Stop, Destroy, Exit
 }
 
+/**
+ * Enum class with all possible Controller lifecycle states
+ */
 enum class ControllerLifecycle {
     Enter, Create, Attach, Detach, Destroy, Exit
 }

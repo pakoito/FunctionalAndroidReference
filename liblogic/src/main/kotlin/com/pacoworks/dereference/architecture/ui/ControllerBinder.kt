@@ -23,11 +23,20 @@ import rx.Observable
 import rx.Scheduler
 import rx.Subscription
 
+/**
+ * Alias for a [SerializedRelay] backed by a [BehaviorRelay] used to represent the value of one piece of state over time
+ */
 typealias StateHolder<T> = SerializedRelay<T, T>
 
+/**
+ * Creates a new [StateHolder]
+ */
 fun <T> createStateHolder(value: T): StateHolder<T> =
         SerializedRelay(BehaviorRelay.create<T>(value))
 
+/**
+ * Binds a view to a [StateHolder] respecting the [com.pacoworks.dereference.features.global.BaseController] lifecycle, and the Android requirement to only modify views on the main thread
+ */
 fun <T> bind(lifecycleObservable: Observable<ControllerLifecycle>, mainThreadScheduler: Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ControllerLifecycle.Attach }
