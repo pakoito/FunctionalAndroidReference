@@ -26,7 +26,7 @@ import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
 /**
- * Network request from an id to a character
+ * Network request from an id to an [AgotCharacter]
  */
 typealias CacheRequest = (String) -> Observable<AgotCharacter>
 

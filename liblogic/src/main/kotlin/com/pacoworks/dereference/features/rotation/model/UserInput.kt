@@ -16,4 +16,7 @@
 
 package com.pacoworks.dereference.features.rotation.model
 
+/**
+ * Data class to represent valid text input by the user
+ */
 data class UserInput(val name: String)

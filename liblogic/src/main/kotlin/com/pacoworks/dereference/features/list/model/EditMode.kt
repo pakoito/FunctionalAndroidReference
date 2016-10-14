@@ -19,18 +19,33 @@ package com.pacoworks.dereference.features.list.model
 import com.pacoworks.rxsealedunions.Union2
 import com.pacoworks.rxsealedunions.generic.GenericUnions
 
+/**
+ * Algebra to represent the current edit mode
+ */
 typealias EditMode = Union2<Normal, Delete>
 
-private val EDIT_MODE_FACTORY:  Union2.Factory<Normal, Delete> = GenericUnions.doubletFactory()
+private val EDIT_MODE_FACTORY: Union2.Factory<Normal, Delete> = GenericUnions.doubletFactory()
 
 sealed class EditModes
 
+/**
+ * Data class to represent non-edit mode
+ */
 object Normal : EditModes()
 
+/**
+ * Data class to represent edit mode
+ */
 data class Delete(val id: String) : EditModes()
 
+/**
+ * Constructor for normal mode state
+ */
 fun createEditModeNormal(): EditMode =
         EDIT_MODE_FACTORY.first(Normal)
 
+/**
+ * Constructor for edit mode state
+ */
 fun createEditModeDelete(id: String): EditMode =
         EDIT_MODE_FACTORY.second(Delete(id))

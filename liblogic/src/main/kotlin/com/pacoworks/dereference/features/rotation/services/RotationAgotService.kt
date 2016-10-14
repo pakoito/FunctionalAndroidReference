@@ -27,8 +27,21 @@ import rx.Observable
 import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
+/**
+ * Network request from an id to a [Transaction]
+ */
 typealias TransactionRequest = (String) -> Observable<Transaction>
 
+/**
+ * Creates a request for Game of Thrones character by their id.
+ *
+ * It returns a single [Transaction] result and should never fail.
+ *
+ * @param user id
+ * @param agotApi api to request it to
+ * @param scheduler scheduler to run the request in
+ * @return the [Observable] operation
+ */
 fun requestCharacterInfo(user: String, agotApi: AgotApi, scheduler: Scheduler): Observable<Transaction> =
         doFM(
                 {

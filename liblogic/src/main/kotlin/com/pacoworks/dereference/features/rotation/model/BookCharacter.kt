@@ -16,4 +16,7 @@
 
 package com.pacoworks.dereference.features.rotation.model
 
+/**
+ * Data class to represent a Game of Thrones character
+ */
 data class BookCharacter(val name: String)
