@@ -26,6 +26,8 @@ import rx.subscriptions.CompositeSubscription
 
 /**
  * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ *
+ * @see [com.pacoworks.dereference.architecture.ui.bind]
  */
 fun bindCacheExample(viewInput: CacheExampleInputView, state: CacheExampleState) {
     viewInput.createBinder<AgotCharacter>().call(state.currentCharacter, viewInput::showCharacterInfo)

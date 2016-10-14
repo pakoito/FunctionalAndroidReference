@@ -31,6 +31,8 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ *
+ * @see [com.pacoworks.dereference.architecture.ui.bind]
  */
 fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     view.createBinder<Transaction>().call(state.transaction, {

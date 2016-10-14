@@ -31,6 +31,8 @@ import java.util.*
 
 /**
  * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ *
+ * @see [com.pacoworks.dereference.architecture.ui.bind]
  */
 fun bindListExample(viewInput: ListExampleInputView, state: ListExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
