@@ -32,8 +32,14 @@ import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
+/**
+ * Abstract base class implementation of {@link RecyclerView.Adapter} containing support for reactive operations, like
+ * swapping the elements, or observing single and long taps.
+ * 
+ * @param <T> type of elements held
+ * @param <U> type of the {@link RecyclerView.ViewHolder} attached to this instance
+ */
 public abstract class BaseRecyclerAdapter<T, U extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<U> {
-
     private final List<T> values = new ArrayList<>();
 
     private final PublishRelay<Pair<Integer, T>> clicksRelay = PublishRelay.create();

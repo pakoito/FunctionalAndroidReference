@@ -29,7 +29,10 @@ import org.javatuples.Pair;
 import rx.Observable;
 import rx.functions.Func1;
 
-
+/**
+ * Implementation of {@link ItemTouchHelper.Callback} exposing support for reactive operations, like observing drag and
+ * drop operations on a list.
+ */
 public class ReactiveDNDTouchHelper extends ItemTouchHelper.Callback {
     private final PublishRelay<Integer> moveStartRelay = PublishRelay.create();
 
@@ -113,6 +116,9 @@ public class ReactiveDNDTouchHelper extends ItemTouchHelper.Callback {
         }
     }
 
+    /**
+     * Interface to be implemented by ViewHolders to be animated during Drag and Drop operations.
+     */
     public interface ReactiveDNDViewHolder {
         void onDragStarted();
 
