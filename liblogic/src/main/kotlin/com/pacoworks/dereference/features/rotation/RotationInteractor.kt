@@ -29,7 +29,9 @@ import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ */
 fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     view.createBinder<Transaction>().call(state.transaction, {
         when (it) {
@@ -41,6 +43,9 @@ fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
     })
 }
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribeRotationInteractor(lifecycle: Observable<ControllerLifecycle>, view: RotationViewOutput, state: RotationState, services: TransactionRequest) =
         CompositeSubscription(
                 handleUserInput(view, state.user),

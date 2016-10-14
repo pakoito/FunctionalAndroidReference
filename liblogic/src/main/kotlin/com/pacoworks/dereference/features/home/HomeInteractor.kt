@@ -22,8 +22,15 @@ import com.pacoworks.dereference.features.global.Screen
 import org.javatuples.Pair
 import rx.Subscription
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Lazy<StateHolder<Pair<Screen, Direction>>>): Subscription =
-        view.buttonClick()
-                .map { Pair.with(it, Direction.FORWARD) }
-                /* Using method reference doesn't typecheck. Call it explicitly instead */
-                .subscribe { navigation.value.call(it) }
+        handleToScreenClicks(view, navigation)
+
+private fun handleToScreenClicks(view: HomeViewOutput, navigation: Lazy<StateHolder<Pair<Screen, Direction>>>): Subscription {
+    return view.buttonClick()
+            .map { Pair.with(it, Direction.FORWARD) }
+            /* Using method reference doesn't typecheck. Call it explicitly instead */
+            .subscribe { navigation.value.call(it) }
+}

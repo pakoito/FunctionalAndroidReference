@@ -29,12 +29,18 @@ import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import java.util.*
 
+/**
+ * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ */
 fun bindListExample(viewInput: ListExampleInputView, state: ListExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
     viewInput.createBinder<Set<String>>().call(state.selected, viewInput::updateSelected)
     viewInput.createBinder<EditMode>().call(state.editMode, viewInput::updateEditMode)
 }
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
                 handleAdd(state.elements, viewOutput.addClick()),

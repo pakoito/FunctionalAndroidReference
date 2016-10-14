@@ -24,12 +24,18 @@ import rx.Observable
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
+/**
+ * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ */
 fun bindCacheExample(viewInput: CacheExampleInputView, state: CacheExampleState) {
     viewInput.createBinder<AgotCharacter>().call(state.currentCharacter, viewInput::showCharacterInfo)
     viewInput.createBinder<List<String>>().call(state.ids, viewInput::filterList)
     viewInput.createBinder<String>().call(state.currentId, viewInput::currentFilter)
 }
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, state: CacheExampleState, server: CacheRequest): Subscription =
         CompositeSubscription(
                 handleFilterChange(server, state, viewOutputView),

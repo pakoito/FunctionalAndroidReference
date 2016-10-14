@@ -25,8 +25,21 @@ import rx.Observable
 import rx.Scheduler
 import java.util.concurrent.TimeUnit
 
+/**
+ * Network request from an id to a character
+ */
 typealias CacheRequest = (String) -> Observable<AgotCharacter>
 
+/**
+ * Creates a request for Game of Thrones character by their id.
+ *
+ * It returns a single [AgotCharacter] result and should never fail.
+ *
+ * @param character id
+ * @param agotApi api to request it to
+ * @param scheduler scheduler to run the request in
+ * @return the [Observable] operation
+ */
 fun characterInfo(id: String, agotApi: AgotApi, scheduler: Scheduler): Observable<AgotCharacter> =
         agotApi.getCharacterInfo(id)
                 .subscribeOn(scheduler)

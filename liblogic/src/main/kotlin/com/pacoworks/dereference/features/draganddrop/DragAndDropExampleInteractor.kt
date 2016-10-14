@@ -26,11 +26,17 @@ import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import java.util.*
 
+/**
+ * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ */
 fun bindDragAndDropExample(viewInput: DragAndDropInputView, state: ListExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
     viewInput.createBinder<Set<String>>().call(state.selected, viewInput::updateSelected)
 }
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribeDragAndDropInteractor(viewOutput: DragAndDropOutputView, state: ListExampleState): Subscription =
         CompositeSubscription(
                 handleSelected(viewOutput.listClicks(), state.selected),

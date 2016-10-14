@@ -21,10 +21,16 @@ import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
+/**
+ * Binds the state of this use case to a [com.pacoworks.dereference.architecture.ui.BoundView]
+ */
 fun bindPaginationExample(viewInput: PaginationExampleInputView, state: PaginationExampleState) {
     viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
 }
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribePaginationExample(viewOutput: PaginationExampleOutputView, state: PaginationExampleState, service: PaginationExampleService): Subscription =
         CompositeSubscription(
                 handleLoading(viewOutput, state, service)

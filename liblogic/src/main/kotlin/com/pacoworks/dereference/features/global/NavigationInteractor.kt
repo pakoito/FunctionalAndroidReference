@@ -24,6 +24,9 @@ import rx.Scheduler
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
+/**
+ * Subscribes all use cases in the file
+ */
 fun subscribeNavigation(state: AppState, navigatorView: NavigatorView, activityReactiveBuddy: ActivityReactiveBuddy, mainThreadScheduler: Scheduler): Subscription =
         CompositeSubscription(
                 pushScreen(activityReactiveBuddy, navigatorView, state.navigation, mainThreadScheduler),
