@@ -20,13 +20,23 @@ import com.pacoworks.dereference.architecture.ui.BoundView
 import com.pacoworks.dereference.core.functional.None
 import rx.Observable
 
-interface PaginationExampleView : PaginationExampleInputView, PaginationExampleOutputView {
-}
+/**
+ * Composite interface including all inputs and outputs for this feature
+ */
+interface PaginationExampleView : PaginationExampleInputView, PaginationExampleOutputView
 
+/**
+ * Interface representing all UI changing side-effects that can be applied to this screen.
+ *
+ * It extends [BoundView] to provide generic bindings between the view and the state
+ */
 interface PaginationExampleInputView : BoundView {
     fun updateElements(elements: List<String>): Unit
 }
 
+/**
+ * Interface representing all signal for user interaction this screen provides
+ */
 interface PaginationExampleOutputView {
     fun endOfPage(): Observable<None>
 }

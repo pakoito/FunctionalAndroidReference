@@ -20,9 +20,16 @@ import com.pacoworks.dereference.architecture.ui.BoundView
 import com.pacoworks.dereference.features.cache.model.AgotCharacter
 import rx.Observable
 
-interface CacheExampleView: CacheExampleInputView, CacheExampleOutputView {
-}
+/**
+ * Composite interface including all inputs and outputs for this feature
+ */
+interface CacheExampleView: CacheExampleInputView, CacheExampleOutputView
 
+/**
+ * Interface representing all UI changing side-effects that can be applied to this screen.
+ *
+ * It extends [BoundView] to provide generic bindings between the view and the state
+ */
 interface CacheExampleInputView: BoundView {
     fun showCharacterInfo(info: AgotCharacter): Unit
 
@@ -31,6 +38,9 @@ interface CacheExampleInputView: BoundView {
     fun currentFilter(id: String): Unit
 }
 
+/**
+ * Interface representing all signal for user interaction this screen provides
+ */
 interface CacheExampleOutputView {
     fun filterSelected(): Observable<String>
 }

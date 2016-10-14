@@ -20,14 +20,24 @@ import com.pacoworks.dereference.architecture.ui.BoundView
 import org.javatuples.Pair
 import rx.Observable
 
-interface DragAndDropView : DragAndDropInputView, DragAndDropOutputView {
-}
+/**
+ * Composite interface including all inputs and outputs for this feature
+ */
+interface DragAndDropView : DragAndDropInputView, DragAndDropOutputView
 
+/**
+ * Interface representing all UI changing side-effects that can be applied to this screen.
+ *
+ * It extends [BoundView] to provide generic bindings between the view and the state
+ */
 interface DragAndDropInputView : BoundView {
     fun updateElements(elements: List<String>): Unit
     fun updateSelected(selected: Set<String>): Unit
 }
 
+/**
+ * Interface representing all signal for user interaction this screen provides
+ */
 interface DragAndDropOutputView {
     fun dragAndDropMoves(): Observable<Pair<Int, Int>>
 

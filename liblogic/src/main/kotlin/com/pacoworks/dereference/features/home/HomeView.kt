@@ -16,14 +16,25 @@
 
 package com.pacoworks.dereference.features.home
 
-import com.pacoworks.dereference.features.global.Screen
 import com.pacoworks.dereference.architecture.ui.BoundView
+import com.pacoworks.dereference.features.global.Screen
 import rx.Observable
 
+/**
+ * Composite interface including all inputs and outputs for this feature
+ */
 interface HomeView: HomeViewInput, HomeViewOutput
 
+/**
+ * Interface representing all UI changing side-effects that can be applied to this screen.
+ *
+ * It extends [BoundView] to provide generic bindings between the view and the state
+ */
 interface HomeViewInput : BoundView
 
+/**
+ * Interface representing all signal for user interaction this screen provides
+ */
 interface HomeViewOutput {
     fun buttonClick(): Observable<Screen>
 }

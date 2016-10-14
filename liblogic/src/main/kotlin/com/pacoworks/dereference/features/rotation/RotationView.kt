@@ -19,8 +19,16 @@ package com.pacoworks.dereference.features.rotation
 import com.pacoworks.dereference.architecture.ui.BoundView
 import rx.Observable
 
+/**
+ * Composite interface including all inputs and outputs for this feature
+ */
 interface RotationView: RotationViewInput, RotationViewOutput
 
+/**
+ * Interface representing all UI changing side-effects that can be applied to this screen.
+ *
+ * It extends [BoundView] to provide generic bindings between the view and the state
+ */
 interface RotationViewInput : BoundView {
     fun setLoading(user: String): Unit
 
@@ -31,6 +39,9 @@ interface RotationViewInput : BoundView {
     fun showRepos(value: String): Unit
 }
 
+/**
+ * Interface representing all signal for user interaction this screen provides
+ */
 interface RotationViewOutput {
     fun enterUser(): Observable<String>
 }

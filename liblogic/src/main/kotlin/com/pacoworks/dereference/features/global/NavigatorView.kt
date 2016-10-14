@@ -16,9 +16,11 @@
 
 package com.pacoworks.dereference.features.global
 
-import com.pacoworks.dereference.features.global.Screen
 import com.pacoworks.rxsealedunions.Union1
 
+/**
+ * Interface defining Navigavion signals and side-effects
+ */
 interface NavigatorView {
     fun goTo(screen: Screen)
 
