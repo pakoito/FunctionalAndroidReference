@@ -20,9 +20,20 @@ package com.pacoworks.dereference.core.functional
 
 import rx.functions.Func1
 
-fun <T> just(element: T): Func1<in Any, T> {
-    return Func1 { element }
+/**
+ * Maps a function to a value passed as a parameter
+ *
+ * @param value the parameter to return
+ */
+fun <T> just(value: T): Func1<in Any, T> {
+    return Func1 { value }
 }
 
+/**
+ * Maps a value before passing it to a function
+ *
+ * @param mapper mapping function
+ * @param action function to be called
+ */
 fun <T, U> fmap(mapper: (T) -> U, action: (U) -> Unit): (T) -> Unit =
         { action.invoke(mapper.invoke(it)) }
