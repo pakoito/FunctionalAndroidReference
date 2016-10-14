@@ -59,7 +59,7 @@ class RotationBindTest {
         assertEquals(0, view.errorCount.get())
         assertEquals(0, view.waitingCount.get())
         assertEquals(0, view.successCount.get())
-        transaction.call(Transaction.Failure("Something went wrong"))
+        transaction.call(Transaction.Failure("Something went wrong", UserInput("")))
         assertEquals(0, view.loadingCount.get())
         assertEquals(1, view.errorCount.get())
         assertEquals(0, view.waitingCount.get())

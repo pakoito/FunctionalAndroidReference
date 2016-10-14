@@ -16,10 +16,32 @@
 
 package com.pacoworks.dereference.features.rotation.model
 
+/**
+ * Algebra to represent the state of a network transaction
+ */
 sealed class Transaction {
+    /**
+     * Data class to represent that the transaction is idle
+     */
     object Idle : Transaction()
+
+    /**
+     * Data class to represent that the transaction is loading some user input
+     */
     data class Loading(val user: UserInput) : Transaction()
+
+    /**
+     * Data class to represent that the transaction is complete and has retrieved a [BookCharacter]
+     */
     data class Success(val charInfo: BookCharacter) : Transaction()
-    data class Failure(val reason: String) : Transaction()
+
+    /**
+     * Data class to represent that the transaction has failed to complete along with the request id and reason
+     */
+    data class Failure(val reason: String, val request: UserInput) : Transaction()
+
+    /**
+     * Data class to represent that the transaction will be retried and how many seconds until it happens
+     */
     data class WaitingForRetry(val seconds: Int) : Transaction()
 }

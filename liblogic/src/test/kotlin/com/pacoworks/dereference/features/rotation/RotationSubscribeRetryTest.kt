@@ -41,7 +41,7 @@ class RotationSubscribeRetryTest {
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)
         /* Kickstart transaction */
-        val loadTransaction = Transaction.Failure("")
+        val loadTransaction = Transaction.Failure("", UserInput(""))
         transactionState.call(loadTransaction)
         /* Block until next Loading state */
         val endState = Transaction.Loading(initialInput)
@@ -70,7 +70,7 @@ class RotationSubscribeRetryTest {
         testSubscriber.assertValue(initialState)
         /* Cancel after two states have been received */
         /* Kickstart transaction */
-        val loadTransaction = Transaction.Failure("")
+        val loadTransaction = Transaction.Failure("", UserInput(""))
         transactionState.call(loadTransaction)
         /* Finish the transaction when 4 is seen */
         transactionState.filter { it == countDown(4) }.doOnNext { lifecycle.call(ControllerLifecycle.Exit) }.toBlocking().first()

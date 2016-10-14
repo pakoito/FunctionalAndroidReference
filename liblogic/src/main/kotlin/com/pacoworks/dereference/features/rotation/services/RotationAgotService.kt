@@ -18,6 +18,7 @@ package com.pacoworks.dereference.features.rotation.services
 
 import com.pacoworks.dereference.features.rotation.model.BookCharacter
 import com.pacoworks.dereference.features.rotation.model.Transaction
+import com.pacoworks.dereference.features.rotation.model.UserInput
 import com.pacoworks.dereference.model.agot.ToonDto
 import com.pacoworks.dereference.network.AgotApi
 import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
@@ -38,25 +39,25 @@ fun requestCharacterInfo(user: String, agotApi: AgotApi, scheduler: Scheduler): 
                 },
                 { result: Notification<ToonDto> ->
                     Observable.just(when (result.kind) {
-                        Notification.Kind.OnNext -> validate(result.value)
+                        Notification.Kind.OnNext -> validate(user, result.value)
                         Notification.Kind.OnError ->
                             Transaction.Failure(
                                     if (result.throwable?.message == null) {
                                         ""
                                     } else {
                                         result.throwable.message!!
-                                    })
-                        else -> Transaction.Failure("Completed without results")
+                                    }, UserInput(user))
+                        else -> Transaction.Failure("Completed without results", UserInput(user))
                     })
                 }
         )
                 /* Add fake delay to better test rotation */
                 .delay(5, TimeUnit.SECONDS)
 
-private fun validate(value: ToonDto): Transaction =
+private fun validate(user: String, value: ToonDto): Transaction =
         value.name.let {
             if (it == null) {
-                Transaction.Failure("Character could not be validated")
+                Transaction.Failure("Character could not be validated", UserInput(user))
             } else {
                 Transaction.Success(BookCharacter(it))
             }
