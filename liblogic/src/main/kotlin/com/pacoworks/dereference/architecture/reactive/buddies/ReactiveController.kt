@@ -62,6 +62,11 @@ class ReactiveController {
      */
     fun onExit() = call(ControllerLifecycle.Exit)
 
+    /**
+     * Creates a proxy object [ControllerReactiveBuddy] to access framework events, like lifecycle.
+     *
+     * @return a new [ControllerReactiveBuddy]
+     */
     fun createBuddy() = object : ControllerReactiveBuddy {
         override fun lifecycle() = lifecycleRelay.asObservable()
     }
