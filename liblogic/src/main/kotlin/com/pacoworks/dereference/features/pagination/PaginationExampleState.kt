@@ -20,7 +20,9 @@ import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.architecture.ui.createStateHolder
 import rx.Observable
 
-
+/**
+ * Contains all [StateHolder] objects used to represent state in this screen
+ */
 data class PaginationExampleState(
         val elements: StateHolder<List<String>> = createStateHolder<List<String>>(Observable.range(0, 10).map { it.toString() }.toList().toBlocking().first()),
         val pages: StateHolder<Int> = createStateHolder(0)

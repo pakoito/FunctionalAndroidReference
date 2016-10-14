@@ -22,8 +22,14 @@ import com.pacoworks.dereference.features.cache.model.AgotCharacter
 import com.pacoworks.dereference.features.cache.model.createUnknownUnavailableCharacter
 import rx.Observable
 
+/**
+ * Map class containing [AgotCharacter] indexed by their id
+ */
 typealias AgotCharacterCache = Map<String, AgotCharacter>
 
+/**
+ * Contains all [StateHolder] objects used to represent state in this screen
+ */
 data class CacheExampleState(
         val ids: StateHolder<List<String>> = createStateHolder(CHARACTER_IDS),
         val currentId: StateHolder<String> = createStateHolder(initialId),
