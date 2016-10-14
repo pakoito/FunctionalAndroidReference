@@ -50,6 +50,9 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+/**
+ * Controller implementing CacheExampleView
+ */
 public class CacheScreen extends BaseController implements CacheExampleView {
 
     private final CacheExampleState cacheExampleState;

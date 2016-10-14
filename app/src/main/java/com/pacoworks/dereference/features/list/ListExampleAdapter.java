@@ -28,6 +28,9 @@ import java.util.Set;
 
 import rx.functions.Func2;
 
+/**
+ * Simple list example extending {@link BaseRecyclerAdapter} and allowing for elements selection.
+ */
 public class ListExampleAdapter extends BaseRecyclerAdapter<String, ListExampleVH> {
 
     private final Set<String> selected = new HashSet<>();

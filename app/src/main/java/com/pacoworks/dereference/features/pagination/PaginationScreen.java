@@ -37,6 +37,9 @@ import java.util.List;
 import kotlin.jvm.functions.Function1;
 import rx.Observable;
 
+/**
+ * Controller implementing PaginationExampleView
+ */
 public class PaginationScreen extends BaseController implements PaginationExampleView {
     private final PublishRelay<None> endOfPagePRelay = PublishRelay.create();
 

@@ -49,6 +49,9 @@ import kotlin.jvm.functions.Function0;
 import rx.Observable;
 import rx.functions.Func1;
 
+/**
+ * Controller implementing HomeView
+ */
 public class HomeScreen extends BaseController implements HomeView {
 
     private final PublishRelay<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> screenSelectionPublishRelay = PublishRelay.create();

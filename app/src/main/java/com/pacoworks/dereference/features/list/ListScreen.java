@@ -44,6 +44,9 @@ import java.util.Set;
 import rx.Observable;
 import rx.functions.Action1;
 
+/**
+ * Controller implementing ListExampleView
+ */
 public class ListScreen extends BaseController implements ListExampleView {
     private static final int SPAN_COUNT = 3;
 

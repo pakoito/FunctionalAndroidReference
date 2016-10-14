@@ -39,6 +39,9 @@ import kotlin.jvm.functions.Function1;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+/**
+ * Controller implementing RotationView
+ */
 public class RotationScreen extends BaseController implements RotationView {
 
     private final PublishRelay<String> userPublishRelay = PublishRelay.create();

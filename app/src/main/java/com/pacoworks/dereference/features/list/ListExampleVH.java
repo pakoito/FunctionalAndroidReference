@@ -21,9 +21,12 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper;
+import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper.ReactiveDNDViewHolder;
 
-public class ListExampleVH extends RecyclerView.ViewHolder implements ReactiveDNDTouchHelper.ReactiveDNDViewHolder {
+/**
+ * Simple ViewHolder example. It implements {@link ReactiveDNDViewHolder} to display animations on Drag and Drop operations.
+ */
+public class ListExampleVH extends RecyclerView.ViewHolder implements ReactiveDNDViewHolder {
     public ListExampleVH(Context context) {
         super(new TextView(context));
         TextView txv = (TextView) itemView;

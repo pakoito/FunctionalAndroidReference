@@ -39,6 +39,9 @@ import java.util.Set;
 
 import rx.Observable;
 
+/**
+ * Controller implementing DragAndDropView
+ */
 public class DragAndDropScreen extends BaseController implements DragAndDropView {
     private static final int SPAN_COUNT = 3;
 
