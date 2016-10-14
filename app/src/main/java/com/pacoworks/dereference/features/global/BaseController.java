@@ -40,14 +40,41 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action2;
 import rx.functions.Action3;
 
+/**
+ * Abstract base class for all Controllers, representing a single screen or visible element in the app. It delegates all its framework responsibilities to a proxy
+ * class {@link ReactiveController}.
+ * <p>
+ * It implements the interface {@link BoundView} and provides a default implementation for constructing Android-lifecycle aware binders.
+ * <p>
+ * The Controller provides access to its own Android lifecycle state via a proxy class {@link ControllerReactiveBuddy}.
+ * <p>
+ * It defines its own lifecycle as three entry points:
+ * <p><ul>
+ * <li>A constructor to create the state models and start the business logic.
+ * <li>A {@link #createView(Context, LayoutInflater, ViewGroup)} method to request the current View.
+ * <li>A method {@link #attachBinders()} to start the binding between view and models.
+ * </ul>
+ */
 public abstract class BaseController extends Controller implements BoundView {
     private final ReactiveController reactiveController = new ReactiveController();
 
+    /**
+     * Lifecycle entry point for logic.
+     * <p>
+     * Use to create the screen's state and initialize the business logic.
+     */
     public BaseController() {
         super();
         reactiveController.onEnter();
     }
 
+    /**
+     * Lifecycle entry point for logic.
+     * <p>
+     * Use to create the screen's state and initialize the business logic.
+     *
+     * @param args arguments passed when this instance is created
+     */
     public BaseController(Bundle args) {
         super(args);
         reactiveController.onEnter();
@@ -61,6 +88,18 @@ public abstract class BaseController extends Controller implements BoundView {
         return view;
     }
 
+    /**
+     * Lifecycle entry point for view.
+     * <p>
+     * Requests the view representing the current screen.
+     * <p>
+     * Use to initialize the view and its state: adapters, styling, listeners...
+     *
+     * @param context   current Android context
+     * @param inflater  layout inflater based off the current context
+     * @param container parent view
+     * @return a new instance of the view attached to this screen
+     */
     @NonNull
     @CheckResult
     protected abstract View createView(Context context, LayoutInflater inflater, ViewGroup container);
@@ -72,6 +111,11 @@ public abstract class BaseController extends Controller implements BoundView {
         reactiveController.onAttach();
     }
 
+    /**
+     * Lifecycle entry point for binding state to the view.
+     * <p>
+     * Use to call any binding methods.
+     */
     protected abstract void attachBinders();
 
     @Override
@@ -104,6 +148,11 @@ public abstract class BaseController extends Controller implements BoundView {
         }, createBuddy().lifecycle());
     }
 
+    /**
+     * Creates a proxy object {@link ControllerReactiveBuddy} to access controller-related events, like lifecycle.
+     *
+     * @return a new {@link ControllerReactiveBuddy}
+     */
     protected ControllerReactiveBuddy createBuddy() {
         return reactiveController.createBuddy();
     }

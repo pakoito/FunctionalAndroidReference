@@ -20,6 +20,9 @@ import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveB
 
 import rx.android.schedulers.AndroidSchedulers;
 
+/**
+ * Starts any business logic that is not dependent on the current screen.
+ */
 public class MainOrchestrator {
     private MainOrchestrator() {
         // No instances

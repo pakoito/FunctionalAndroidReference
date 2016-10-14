@@ -28,6 +28,7 @@ import com.bluelinelabs.conductor.RouterTransaction;
 import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.architecture.reactive.ActivityResult;
 import com.pacoworks.dereference.architecture.reactive.PermissionResult;
+import com.pacoworks.dereference.architecture.reactive.buddies.ActivityReactiveBuddy;
 import com.pacoworks.dereference.architecture.reactive.buddies.ReactiveActivity;
 import com.pacoworks.dereference.features.home.HomeScreen;
 
@@ -43,6 +44,12 @@ import io.palaima.debugdrawer.okhttp3.OkHttp3Module;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+/**
+ * Single Activity that holds all the screens in the app. It delegates all its framework responsibilities to a proxy
+ * class {@link ReactiveActivity}.
+ * <p>
+ * The Activity provides access to its own Android lifecycle state via a proxy class {@link ActivityReactiveBuddy}.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private final ReactiveActivity reactiveActivity = new ReactiveActivity();
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         }
         reactiveActivity.onCreate();
         NavigatorView navigatorView = new MainNavigator(router, this);
-        MainOrchestrator.start(injector.getState(), navigatorView, reactiveActivity.createBuddy());
+        MainOrchestrator.start(injector.getState(), navigatorView, createBuddy());
     }
 
     @Override
@@ -153,5 +160,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         reactiveActivity.onBackPressed();
+    }
+
+    /**
+     * Creates a proxy object {@link ActivityReactiveBuddy} to access framework events, like lifecycle.
+     *
+     * @return a new {@link ActivityReactiveBuddy}
+     */
+    @NonNull
+    private ActivityReactiveBuddy createBuddy() {
+        return reactiveActivity.createBuddy();
     }
 }

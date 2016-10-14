@@ -19,8 +19,10 @@ package com.pacoworks.dereference.features.global;
 import android.app.Application;
 import android.content.Context;
 
+/**
+ * Application class. It holds the global injection module.
+ */
 public class DereferenceApplication extends Application {
-
     private Injector injector;
 
     @Override
@@ -29,10 +31,21 @@ public class DereferenceApplication extends Application {
         injector = new Injector(this);
     }
 
-    public static DereferenceApplication get(Context context){
-        return (DereferenceApplication) context.getApplicationContext();
+    /**
+     * Access the {@link DereferenceApplication} single instance.
+     * 
+     * @param context
+     * @return
+     */
+    public static DereferenceApplication get(Context context) {
+        return (DereferenceApplication)context.getApplicationContext();
     }
 
+    /**
+     * Retrieves the global injection module
+     * 
+     * @return the module
+     */
     public Injector getInjector() {
         return injector;
     }

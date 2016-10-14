@@ -32,6 +32,9 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
+/**
+ * Global injection module. It creates and holds all state and services not bound to any one screen.
+ */
 public class Injector {
     private static final long CACHE_SIZE = 10L * 1024L * 1024L; /* 10 MiB */
 

@@ -37,6 +37,9 @@ import org.jetbrains.annotations.NotNull;
 
 import rx.functions.Func1;
 
+/**
+ * Implementation of NavigatorView for displaying screens using Conductor
+ */
 public class MainNavigator implements NavigatorView {
     private static final Union1.Factory<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> BACK_RESULT_FACTORY = GenericUnions.singletFactory();
 
