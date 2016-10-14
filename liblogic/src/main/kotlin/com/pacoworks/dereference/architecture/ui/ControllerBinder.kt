@@ -31,7 +31,7 @@ fun <T> createStateHolder(value: T): StateHolder<T> =
 fun <T> bind(lifecycleObservable: Observable<ControllerLifecycle>, mainThreadScheduler: Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ControllerLifecycle.Attach }
-                .flatMap { state }
+                .switchMap { state }
                 .takeUntil(lifecycleObservable.filter { it == ControllerLifecycle.Detach })
                 .observeOn(mainThreadScheduler)
                 .subscribe(doView)
