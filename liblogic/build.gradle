@@ -55,7 +55,7 @@ dependencies {
 
     // RxJava
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
-    compile 'com.github.pakoito:FunctionalRx:e77a180012'
+    compile 'com.github.pakoito:FunctionalRx:1.0.0'
 
     // Test
     testCompile 'org.jetbrains.spek:spek-api:1.0.89'
