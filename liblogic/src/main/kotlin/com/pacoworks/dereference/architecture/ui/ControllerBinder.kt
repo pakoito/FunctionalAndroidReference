@@ -40,7 +40,9 @@ fun <T> createStateHolder(value: T): StateHolder<T> =
 fun <T> bind(lifecycleObservable: Observable<ControllerLifecycle>, mainThreadScheduler: Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ControllerLifecycle.Attach }
+                /* Stop the previous state emissions and switch to the new one */
                 .switchMap { state }
-                .takeUntil(lifecycleObservable.filter { it == ControllerLifecycle.Detach })
                 .observeOn(mainThreadScheduler)
+                /* Must be after observeOn to assure no races to main thread. See https://www.reddit.com/r/androiddev/comments/574suy/android_leak_pattern_subscriptions_in_views/d8v9l0w */
+                .takeUntil(lifecycleObservable.filter { it == ControllerLifecycle.Detach })
                 .subscribe(doView)
