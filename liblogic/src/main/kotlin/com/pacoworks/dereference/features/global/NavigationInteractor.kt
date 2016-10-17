@@ -38,8 +38,8 @@ fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: Navi
                 .skip(1)
                 .filter { it.value1 == Direction.FORWARD }
                 .map { it.value0 }
-                .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
                 .observeOn(mainThreadScheduler)
+                .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
                 .subscribe { navigatorView.goTo(it) }
 
 fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: NavigatorView, state: AppState): Subscription =
