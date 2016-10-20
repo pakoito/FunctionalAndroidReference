@@ -25,9 +25,8 @@ import rx.functions.Func1
  *
  * @param value the parameter to return
  */
-fun <T> just(value: T): Func1<in Any, T> {
-    return Func1 { value }
-}
+fun <T> just(value: T): Func1<in Any, T> =
+        Func1 { value }
 
 /**
  * Maps a value before passing it to a function
