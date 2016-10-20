@@ -86,8 +86,8 @@ class RxJavaFullStackTrace<T> : Observable.Operator<T, T> {
         fun clearNestedStack(throwable: Throwable): Throwable =
                 throwable.apply {
                     stackTrace = stackTrace.filter { it.className.contains("^rx\\.") }.toTypedArray()
-                    if (null != cause) {
-                        clearNestedStack(cause!!)
+                    cause?.let {
+                        clearNestedStack(it)
                     }
                 }
     }
