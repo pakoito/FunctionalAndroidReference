@@ -19,7 +19,6 @@ package com.pacoworks.dereference.features.global;
 import android.app.Application;
 
 import com.codemonkeylabs.fpslibrary.TinyDancer;
-import com.pacoworks.dereference.core.functional.RxJavaFullStackTrace;
 import com.pacoworks.dereference.network.AgotApi;
 import com.pacoworks.dereference.network.AgotApiKt;
 import com.squareup.leakcanary.LeakCanary;
@@ -31,7 +30,6 @@ import kotlin.LazyKt;
 import kotlin.jvm.functions.Function0;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import rx.plugins.RxJavaHooks;
 import timber.log.Timber;
 
 /**
@@ -77,7 +75,6 @@ public class Injector {
         TinyDancer.create()
                 .show(application);
 
-        RxJavaHooks.setOnObservableCreate(RxJavaFullStackTrace.traceOriginalThread());
     }
 
     public AppState getState() {
