@@ -103,12 +103,13 @@ fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<Stri
                     } else {
                         Observable.empty()
                     }
-                }.flatMap { value ->
-            selected.first().map {
-                if (it.contains(value)) {
-                    it.minus(value)
-                } else {
-                    it.plus(value)
                 }
-            }
-        }.subscribe(selected)
+                .flatMap { value ->
+                    selected.first().map {
+                        if (it.contains(value)) {
+                            it.minus(value)
+                        } else {
+                            it.plus(value)
+                        }
+                    }
+                }.subscribe(selected)
