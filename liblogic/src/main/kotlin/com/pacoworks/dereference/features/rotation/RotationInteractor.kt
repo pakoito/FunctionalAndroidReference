@@ -60,9 +60,11 @@ fun subscribeRotationInteractor(lifecycle: Observable<ControllerLifecycle>, view
 fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Subscription =
         doSM(
                 { user },
+                /* We use switchMap because only valid inputs will update the state,
+                 * which means it may not be the first value out of the debounce */
                 { view.enterUser().debounce(1, TimeUnit.SECONDS) },
                 { oldUserInput, newUserInput ->
-                    if (oldUserInput.name != newUserInput && newUserInput.length > 0) {
+                    if (oldUserInput.name != newUserInput && newUserInput.isNotEmpty()) {
                         Observable.just(UserInput(newUserInput))
                     } else {
                         Observable.empty()
