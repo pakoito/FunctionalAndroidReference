@@ -111,7 +111,7 @@ fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder
                             .startWith(WaitingForRetry(COUNTDOWN))
                             /* Take until value is 0 */
                             .takeUntil { it.seconds <= 0 }
-                            /* The type checker assumes WaitingForRetry otherwise */
+                            /* We want the chain to continue as a Transaction */
                             .map { it as Transaction }
                             .concatWith(user.first().map { Loading(it) })
                             /* Stop with the retry upon exiting the screen */
