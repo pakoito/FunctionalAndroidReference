@@ -30,18 +30,20 @@ class CacheExampleSubscribeCacheTest {
 
     @Test
     fun unavailable_requestCharacter_serverSuccess_availableCharacter() {
-        val viewOutputView = MockCacheExampleOutputView()
-        val userId = "newChar"
-        val filterRelay = viewOutputView.filter
-        val characterCache = createStateHolder(mapOf(userId to createUnknownUnavailableCharacter(userId)))
+        val newId = "newChar"
+        val initialId = "initialId"
+        val filterValue = createStateHolder(initialId)
+        val characterCache = createStateHolder(
+                mapOf(initialId to createUnknownUnavailableCharacter(initialId),
+                        newId to createUnknownUnavailableCharacter(newId)))
         val currentCharacter = createStateHolder(createUnknownUnavailableCharacter(""))
         val state = CacheExampleState(characterCache = characterCache, currentCharacter = currentCharacter)
         /* Server returns correctly */
         val server: CacheRequest = { Observable.just(createKnownCharacter(it, it, listOf())) }
         /* Start subscription */
-        handleFilterChange(server, state, viewOutputView)
+        handleFilterChange(server, state, filterValue)
         /* Assert initial state as unavailable */
-        assertTrue(characterCache.toBlocking().first()[userId]!!
+        assertTrue(characterCache.toBlocking().first()[newId]!!
                 .join(
                         { unavailable ->
                             unavailable.reason.join(
@@ -50,29 +52,31 @@ class CacheExampleSubscribeCacheTest {
                                     { invalid -> false })
                         }, { available -> false }))
         /* Call for characterId */
-        filterRelay.call(userId)
+        filterValue.call(newId)
         /* Check state */
-        assertTrue(characterCache.toBlocking().first()[userId]!!.join({ unavailable -> false }, { available -> true }))
+        assertTrue(characterCache.toBlocking().first()[newId]!!.join({ unavailable -> false }, { available -> true }))
     }
 
     @Test
     fun unavailable_requestCharacter_serverFailure_errorCharacter() {
-        val viewOutputView = MockCacheExampleOutputView()
-        val userId = "newChar"
-        val filterRelay = viewOutputView.filter
-        val characterCache = createStateHolder(mapOf(userId to createUnknownUnavailableCharacter(userId)))
+        val newId = "newChar"
+        val initialId = "initialId"
+        val filterValue = createStateHolder(initialId)
+        val characterCache = createStateHolder(
+                mapOf(initialId to createUnknownUnavailableCharacter(initialId),
+                        newId to createUnknownUnavailableCharacter(newId)))
         val currentCharacter = createStateHolder(createUnknownUnavailableCharacter(""))
         val state = CacheExampleState(characterCache = characterCache, currentCharacter = currentCharacter)
         /* Server returns a problem */
         val server: CacheRequest = { Observable.just(createUnknownNetworkErrorCharacter("Explosion")) }
         /* Start subscription */
-        handleFilterChange(server, state, viewOutputView)
+        handleFilterChange(server, state, filterValue)
         /* Assert initial state as unavailable */
-        assertTrue(characterCache.toBlocking().first()[userId]!!.join({ unavailable -> true }, { available -> false }))
+        assertTrue(characterCache.toBlocking().first()[newId]!!.join({ unavailable -> true }, { available -> false }))
         /* Call for characterId */
-        filterRelay.call(userId)
+        filterValue.call(newId)
         /* Check state */
-        assertTrue(characterCache.toBlocking().first()[userId]!!
+        assertTrue(characterCache.toBlocking().first()[newId]!!
                 .join(
                         { unavailable ->
                             unavailable.reason.join(
@@ -84,22 +88,24 @@ class CacheExampleSubscribeCacheTest {
 
     @Test
     fun unavailable_requestCharacter_serverInvalidResult_invalidCharacter() {
-        val viewOutputView = MockCacheExampleOutputView()
-        val userId = "newChar"
-        val filterRelay = viewOutputView.filter
-        val characterCache = createStateHolder(mapOf(userId to createUnknownUnavailableCharacter(userId)))
+        val newId = "newChar"
+        val initialId = "initialId"
+        val filterValue = createStateHolder(initialId)
+        val characterCache = createStateHolder(
+                mapOf(initialId to createUnknownUnavailableCharacter(initialId),
+                        newId to createUnknownUnavailableCharacter(newId)))
         val currentCharacter = createStateHolder(createUnknownUnavailableCharacter(""))
         val state = CacheExampleState(characterCache = characterCache, currentCharacter = currentCharacter)
         /* Server returns incorrect character */
         val server: CacheRequest = { Observable.just(createUnknownIncorrectCharacter(it)) }
         /* Start subscription */
-        handleFilterChange(server, state, viewOutputView)
+        handleFilterChange(server, state, filterValue)
         /* Assert initial state as unavailable */
-        assertTrue(characterCache.toBlocking().first()[userId]!!.join({ unavailable -> true }, { available -> false }))
+        assertTrue(characterCache.toBlocking().first()[newId]!!.join({ unavailable -> true }, { available -> false }))
         /* Call for characterId */
-        filterRelay.call(userId)
+        filterValue.call(newId)
         /* Check state */
-        assertTrue(characterCache.toBlocking().first()[userId]!!
+        assertTrue(characterCache.toBlocking().first()[newId]!!
                 .join(
                         { unavailable ->
                             unavailable.reason.join(
@@ -111,22 +117,23 @@ class CacheExampleSubscribeCacheTest {
 
     @Test
     fun available_requestCharacter_noServerCall() {
-        val viewOutputView = MockCacheExampleOutputView()
-        val userId = "newChar"
-        val filterRelay = viewOutputView.filter
+        val newId = "newChar"
+        val initialId = "initialId"
+        val filterValue = createStateHolder(initialId)
         /* Character starts as available */
-        val characterCache = createStateHolder(mapOf(userId to createKnownCharacter(userId, userId, listOf())))
+        val characterCache = createStateHolder(mapOf(initialId to createKnownCharacter(initialId, initialId, listOf()),
+                newId to createKnownCharacter(newId, newId, listOf())))
         val currentCharacter = createStateHolder(createUnknownUnavailableCharacter(""))
         val state = CacheExampleState(characterCache = characterCache, currentCharacter = currentCharacter)
         /* Server fails to signal it's been called */
         val server: CacheRequest = { Observable.error(RuntimeException("Should not be called")) }
         /* Start subscription */
-        handleFilterChange(server, state, viewOutputView)
+        handleFilterChange(server, state, filterValue)
         /* Assert initial state as unavailable */
-        assertTrue(characterCache.toBlocking().first()[userId]!!.join({ unavailable -> false }, { available -> true }))
+        assertTrue(characterCache.toBlocking().first()[newId]!!.join({ unavailable -> false }, { available -> true }))
         /* Call for characterId */
-        filterRelay.call(userId)
+        filterValue.call(newId)
         /* Check state */
-        assertTrue(characterCache.toBlocking().first()[userId]!!.join({ unavailable -> false }, { available -> true }))
+        assertTrue(characterCache.toBlocking().first()[newId]!!.join({ unavailable -> false }, { available -> true }))
     }
 }
