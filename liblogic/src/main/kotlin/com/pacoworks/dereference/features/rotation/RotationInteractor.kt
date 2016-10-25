@@ -100,7 +100,7 @@ fun handleReload(user: StateHolder<UserInput>, transaction: StateHolder<Transact
                 /* For every user input */
                 { user },
                 /* If the transaction has already completed successfully */
-                { transaction.filter { it is Success }.first() },
+                { transaction.ofType(Success::class.java).first() },
                 { currentUser, trans ->
                     /* Skip the current value. New version will arrive later. */
                     user.skip(1).first()
@@ -114,7 +114,7 @@ fun handleReload(user: StateHolder<UserInput>, transaction: StateHolder<Transact
 fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ControllerLifecycle>): Subscription =
         transaction
                 /* If the transaction has failed */
-                .filter { it is Failure }
+                .ofType(Failure::class.java)
                 .flatMap {
                     /* Start a five seconds countdown */
                     Observable.interval(0, 1, TimeUnit.SECONDS)
