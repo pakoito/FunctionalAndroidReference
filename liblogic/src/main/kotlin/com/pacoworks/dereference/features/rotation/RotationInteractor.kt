@@ -63,6 +63,7 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
                 /* We use switchMap because only valid inputs will update the state,
                  * which means it may not be the first value out of the debounce */
                 { view.enterUser().debounce(1, TimeUnit.SECONDS) },
+                /* Update only if the new value is correct */
                 { oldUserInput, newUserInput ->
                     if (oldUserInput.name != newUserInput && newUserInput.isNotEmpty()) {
                         Observable.just(UserInput(newUserInput))
@@ -75,8 +76,10 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
 
 fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doSM(
+                /* If the transaction is idle */
                 { transaction.ofType(Idle::class.java) },
                 {
+                    /* Load the first non-empty value */
                     user.filter { it.name != "" }
                             .first()
                             .map { Loading(it) }
@@ -85,27 +88,35 @@ fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transactio
                 .subscribe(transaction)
 
 fun handleLoad(transaction: StateHolder<Transaction>, services: TransactionRequest): Subscription =
+        /* If the transaction is Loading */
         transaction.ofType(Loading::class.java)
+                /* Fetch the information from a service */
                 .switchMap { services.invoke(it.user.name) }
+                /* Apply the request result to the state */
                 .subscribe(transaction)
 
 fun handleReload(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doFM(
+                /* For every user input */
                 { user },
+                /* If the transaction has already completed successfully */
                 { transaction.filter { it is Success }.first() },
                 { currentUser, trans ->
                     /* Skip the current value. New version will arrive later. */
                     user.skip(1).first()
                             /* If the user hasn't changed since the previous reload */
                             .filter { it != currentUser }
+                            /* Load new value */
                             .map { Loading(it) }
                 }
         ).subscribe(transaction)
 
 fun handleRetryAfterError(user: StateHolder<UserInput>, transaction: StateHolder<Transaction>, lifecycle: Observable<ControllerLifecycle>): Subscription =
         transaction
+                /* If the transaction has failed */
                 .filter { it is Failure }
                 .flatMap {
+                    /* Start a five seconds countdown */
                     Observable.interval(0, 1, TimeUnit.SECONDS)
                             .map { WaitingForRetry((COUNTDOWN - it - 1).toInt()) }
                             .startWith(WaitingForRetry(COUNTDOWN))

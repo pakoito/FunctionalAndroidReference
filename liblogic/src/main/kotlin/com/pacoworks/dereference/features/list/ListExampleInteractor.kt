@@ -55,7 +55,9 @@ fun subscribeListExampleInteractor(viewOutput: ListExampleOutputView, state: Lis
 
 fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<None>): Subscription =
         doSM(
+                /* For the current list of elements */
                 { elementsState },
+                /* When the user clicks add */
                 { addClick.first() },
                 { elements, click ->
                     /* Insert random number at end of the list */
@@ -65,30 +67,44 @@ fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<Non
                 .subscribe(elementsState)
 
 fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode: StateHolder<EditMode>): Subscription =
+        /* When the user clicks on the list with a long press */
         listLongClicks
                 .flatMap { click ->
+                    /* And the mode is not edit */
                     editMode.first()
                             .filter { it.join({ normal -> true }, { delete -> false }) }
+                            /* Push edit mode with the position pressed */
                             .map { createEditModeDelete(click.value1) }
                 }.subscribe(editMode)
 
 fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<EditMode>): Subscription =
+        /* When the user clicks onthe delete button*/
         deleteClick
                 .flatMap {
+                    /* And the mode is edit ing */
                     editMode.first()
                             .filter { it.join({ normal -> false }, { delete -> true }) }
+                            /* Push exiting edit mode */
                             .map { createEditModeNormal() }
                 }.subscribe(editMode)
 
 fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>): Subscription =
+        /* When edit mode changes */
         editMode
-                .map { it.join({ normal -> setOf<String>() }, { delete -> setOf(delete.id) }) }
+                .map { it.join(
+                        /* If exiting delete mode, remove elements from selected */
+                        { normal -> setOf<String>() },
+                        /* If entering delete mode, add the long pressed value element to selected */
+                        { delete -> setOf(delete.id) }) }
                 .subscribe(selected)
 
 fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHolder<List<String>>, selected: StateHolder<Set<String>>): Subscription =
         doSM(
+                /* When the mode changes from delete to normal */
                 { editMode.filter { it.join({ normal -> true }, { delete -> false }) } },
+                /* Get all elements, and the set of selected ones */
                 { Observable.zip(elementsState, selected, RxTuples.toPair<List<String>, Set<String>>()).first() },
+                /* Delete selected elements */
                 { exitEditMode, statePair ->
                     Observable.from(statePair.value0).filter { !statePair.value1.contains(it) }.toList()
                 }
@@ -96,15 +112,19 @@ fun handleOnCommitDelete(editMode: StateHolder<EditMode>, elementsState: StateHo
                 .subscribe(elementsState)
 
 fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>, listClicks: Observable<Pair<Int, String>>): Subscription =
+        /* When the edit mode is delete */
         editMode.
                 switchMap {
                     if (it.join({ normal -> false }, { delete -> true })) {
+                        /* Pass through the delete clicks*/
                         listClicks.map { it.value1 }
                     } else {
+                        /* Else ignore them */
                         Observable.empty()
                     }
                 }
                 .flatMap { value ->
+                    /* Add or remove the clicked from the selected list */
                     selected.first().map {
                         if (it.contains(value)) {
                             it.minus(value)

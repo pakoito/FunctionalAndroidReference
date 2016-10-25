@@ -40,9 +40,13 @@ fun subscribePaginationExample(viewOutput: PaginationExampleOutputView, state: P
 
 fun handleLoading(viewOutput: PaginationExampleOutputView, state: PaginationExampleState, service: PaginationExampleService): Subscription =
         doSM(
+                /* For the current elements */
                 { state.elements },
+                /* Wait until end of page is reached */
                 { viewOutput.endOfPage().first() },
+                /* See what the latest page is */
                 { elements, click -> state.pages.first() },
+                /* Request new page */
                 { elements, click, page ->
                     service.invoke(page)
                             .map { elements.plus(it) }
