@@ -36,22 +36,28 @@ fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: Navi
         navigation
                 /* Skip the first value to avoid re-pushing the current value after rotation */
                 .skip(1)
+                /* If the screen is requested by a forward navigation */
                 .filter { it.value1 == Direction.FORWARD }
                 .map { it.value0 }
                 .observeOn(mainThreadScheduler)
+                /* Do not survive the Activity's lifecycle */
                 .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
+                /* Call the new screen */
                 .subscribe { navigatorView.goTo(it) }
 
 fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: NavigatorView, state: AppState): Subscription =
+        /* WHen the user presses back  */
         activityReactiveBuddy.back()
                 .map {
+                    /* Ask the navigator to go back */
                     navigatorView.goBack()
                             .join(
-                                    /* If back to screen, just forwards it */
+                                    /* If back to any screen, just forwards it */
                                     { screen -> Pair.with(screen, Direction.BACK) },
                                     /* If back to exit app, reset to initial state */
                                     { -> Pair.with(createHome(), Direction.FORWARD) }
                             )
                 }
+                /* Do not survive the Activity's lifecycle */
                 .takeUntil(activityReactiveBuddy.lifecycle().filter { it == ActivityLifecycle.Destroy })
                 .subscribe(state.navigation)

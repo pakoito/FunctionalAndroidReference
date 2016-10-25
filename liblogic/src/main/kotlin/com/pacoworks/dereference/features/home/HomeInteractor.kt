@@ -28,9 +28,10 @@ import rx.Subscription
 fun subscribeHomeInteractor(view: HomeViewOutput, navigation: Lazy<StateHolder<Pair<Screen, Direction>>>): Subscription =
         handleToScreenClicks(view, navigation)
 
-private fun handleToScreenClicks(view: HomeViewOutput, navigation: Lazy<StateHolder<Pair<Screen, Direction>>>): Subscription {
-    return view.buttonClick()
-            .map { Pair.with(it, Direction.FORWARD) }
-            /* Using method reference doesn't typecheck. Call it explicitly instead */
-            .subscribe { navigation.value.call(it) }
-}
+private fun handleToScreenClicks(view: HomeViewOutput, navigation: Lazy<StateHolder<Pair<Screen, Direction>>>): Subscription =
+        /* If the user clicked the element */
+        view.buttonClick()
+                /* Make it into a navigation operation moving the stack forward */
+                .map { Pair.with(it, Direction.FORWARD) }
+                /* Using method reference doesn't typecheck. Call it explicitly instead */
+                .subscribe { navigation.value.call(it) }
