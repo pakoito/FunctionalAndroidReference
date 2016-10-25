@@ -46,9 +46,12 @@ fun subscribeDragAndDropInteractor(viewOutput: DragAndDropOutputView, state: Lis
 
 fun handleSelected(listClicks: Observable<Pair<Int, String>>, selected: StateHolder<Set<String>>): Subscription =
         doSM(
+                /* For every value of selected */
                 { selected },
+                /* Wait for a user click on the list */
                 { listClicks.map { it.value1 }.first() },
                 { selected, item ->
+                    /* Add or remove the clicked element from the selected list */
                     Observable.just(
                             if (selected.contains(item)) {
                                 selected.minus(item)
@@ -62,10 +65,13 @@ fun handleSelected(listClicks: Observable<Pair<Int, String>>, selected: StateHol
 
 fun handleDragAndDrop(dragAndDropObservable: Observable<Pair<Int, Int>>, elements: StateHolder<List<String>>): Subscription =
         doFM(
+                /* For ever drag and drop operation */
                 { dragAndDropObservable },
                 { swap ->
+                    /* Get the latest elements */
                     elements
                             .first()
+                            /* Swap the elements from the drag and drop operation */
                             .map {
                                 it.toMutableList()
                                         .apply { Collections.swap(this, swap.value0, swap.value1) }

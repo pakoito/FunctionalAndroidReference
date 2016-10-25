@@ -40,18 +40,22 @@ fun bindCacheExample(viewInput: CacheExampleInputView, state: CacheExampleState)
  */
 fun subscribeCacheExampleInteractor(viewOutputView: CacheExampleOutputView, state: CacheExampleState, server: CacheRequest): Subscription =
         CompositeSubscription(
-                handleFilterChange(server, state, viewOutputView),
+                handleFilterChange(server, state, state.currentId),
                 handleSelectedState(viewOutputView, state.currentId))
 
-fun handleFilterChange(server: CacheRequest, state: CacheExampleState, viewOutputView: CacheExampleOutputView): Subscription =
+fun handleFilterChange(server: CacheRequest, state: CacheExampleState, currentId: StateHolder<String>): Subscription =
         doSM(
-                { viewOutputView.filterSelected().distinctUntilChanged() },
+                /* For every id selected */
+                { currentId.distinctUntilChanged() },
+                /* Get the current cache of characters */
                 { state.characterCache.first() },
                 { id, cache ->
                     cache[id]!!.let {
                         character ->
                         character.join(
+                                /* If the character is unavailable, request it to network */
                                 { unknown -> updateFromNetwork(unknown.id, cache, server, state.characterCache).startWith(character) },
+                                /* If the character is in the cache, immediately forward it */
                                 { present -> Observable.just(character) })
                     }
                 }
@@ -59,11 +63,12 @@ fun handleFilterChange(server: CacheRequest, state: CacheExampleState, viewOutpu
 
 private fun updateFromNetwork(id: String, cache: AgotCharacterCache, server: CacheRequest, characterCache: StateHolder<AgotCharacterCache>) =
         server.invoke(id)
-                /* Update cache */
+                /* Update cache with new value */
                 .map { result -> cache.plus(id to result) }
                 .doOnNext(characterCache)
                 /* Return new result from cache */
                 .map { it[id] }
 
 fun handleSelectedState(viewOutputView: CacheExampleOutputView, currentId: StateHolder<String>): Subscription =
+        /* When a new id is selected */
         viewOutputView.filterSelected().distinctUntilChanged().subscribe(currentId)
