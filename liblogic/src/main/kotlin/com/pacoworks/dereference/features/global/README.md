@@ -1,4 +1,6 @@
-# Home Screen
+# Navigation
+
+It contains the global app's navigation model, based off Conductor.
 
 ## Model
 

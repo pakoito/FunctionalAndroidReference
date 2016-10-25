@@ -1,5 +1,7 @@
 # Home Screen
 
+Home is a simple menu screen where each click is transformed into a navigation operation
+
 ## Model
 
 A screen is a union of all the screens available in the app

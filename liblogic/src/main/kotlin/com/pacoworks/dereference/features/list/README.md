@@ -1,6 +1,6 @@
 # List
 
-Rotation is an example of an infinite list in reactive style
+List is an example of add and delete operations in a list, where delete requires entering and exiting an edit mode
 
 ## Model
 

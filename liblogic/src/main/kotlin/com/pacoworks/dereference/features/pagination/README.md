@@ -1,6 +1,6 @@
 # Pagination
 
-Rotation is an example of an infinite list in reactive style
+Pagination is an example of an infinite list in reactive style
 
 ## Model
 
