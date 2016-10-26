@@ -74,16 +74,16 @@ public class HomeScreen extends BaseController implements HomeView {
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         LinearLayout elements = (LinearLayout) inflater.inflate(R.layout.screen_main, container, false);
-        elements.addView(createButton(inflater, screenSelectionPublishRelay, "RecyclerView with Delete mode", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createList())));
-        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Drag And Drop", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createDragAndDrop())));
-        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Rotation", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createRotation())));
-        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Cache", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createCache())));
-        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Pagination", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createPagination())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Add and long press delete on a list", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createList())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Drag and drop selected elements", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createDragAndDrop())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Infinite list with pagination", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createPagination())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Operations surviving rotation", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createRotation())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "In-memory cache", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createCache())));
         return elements;
     }
 
     private View createButton(LayoutInflater inflater, PublishRelay<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> func0) {
-        TextView txv = (TextView)inflater.inflate(R.layout.widget_text, null);
+        TextView txv = (TextView) inflater.inflate(R.layout.widget_text, null);
         txv.setText(name);
         RxView.clicks(txv).map(func0).subscribe(screenSelectionPublishRelay);
         return txv;
