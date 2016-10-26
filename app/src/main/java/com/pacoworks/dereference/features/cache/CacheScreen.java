@@ -16,7 +16,9 @@
 
 package com.pacoworks.dereference.features.cache;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxrelay.PublishRelay;
 import com.pacoworks.dereference.R;
+import com.pacoworks.dereference.features.cache.model.AgotCharacterKt;
 import com.pacoworks.dereference.features.cache.model.IncorrectInfo;
 import com.pacoworks.dereference.features.cache.model.KnownAgotCharacter;
 import com.pacoworks.dereference.features.cache.model.NetworkError;
@@ -36,7 +39,6 @@ import com.pacoworks.dereference.features.cache.model.UnknownAgotCharacter;
 import com.pacoworks.dereference.features.cache.services.CacheExampleAgotServiceKt;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
-import com.pacoworks.dereference.network.AgotApiKt;
 import com.pacoworks.rxsealedunions.Union2;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,10 +71,16 @@ public class CacheScreen extends BaseController implements CacheExampleView {
         CacheExampleInteractorKt.subscribeCacheExampleInteractor(this, cacheExampleState, new Function1<String, Observable<Union2<UnknownAgotCharacter, KnownAgotCharacter>>>() {
             @Override
             public Observable<Union2<UnknownAgotCharacter, KnownAgotCharacter>> invoke(String charId) {
-                return CacheExampleAgotServiceKt.characterInfo(
-                        charId,
-                        AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()),
-                        Schedulers.newThread());
+                /* FIXME getActivity() throws an NPE if called before the controller is attached */
+                try {
+                    final Activity activity = getActivity();
+                    return CacheExampleAgotServiceKt.characterInfo(
+                            charId,
+                            DereferenceApplication.get(activity).getInjector().getAgotApi(),
+                            Schedulers.newThread());
+                } catch (Exception ignore) {
+                    return Observable.just(AgotCharacterKt.createUnknownUnavailableCharacter(charId));
+                }
             }
         });
     }
@@ -82,7 +90,7 @@ public class CacheScreen extends BaseController implements CacheExampleView {
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         final View inflate = inflater.inflate(R.layout.screen_cache, container, false);
         spin = (Spinner) inflate.findViewById(R.id.screen_cached_spinner);
-        spin.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1));
+        spin.setAdapter(new ArrayAdapter<String>(context, R.layout.widget_text));
         text = (TextView) inflate.findViewById(R.id.screen_cached_text);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -108,31 +116,50 @@ public class CacheScreen extends BaseController implements CacheExampleView {
         info.continued(new Action1<UnknownAgotCharacter>() {
             @Override
             public void call(UnknownAgotCharacter unknownAgotCharacter) {
-                text.setText(unknownAgotCharacter.getId() +
-                        " not found because " +
+                text.setText("[" + unknownAgotCharacter.getId() + "] not found because " +
                         unknownAgotCharacter.getReason()
                                 .join(new Func1<Unavailable, String>() {
                                     @Override
                                     public String call(Unavailable unavailable) {
-                                        return "it hasn't been fetched yet.";
+                                        return "it is being fetched";
                                     }
                                 }, new Func1<NetworkError, String>() {
                                     @Override
                                     public String call(NetworkError networkError) {
-                                        return "there was a network problem.";
+                                        return "there was a network problem";
                                     }
                                 }, new Func1<IncorrectInfo, String>() {
                                     @Override
                                     public String call(IncorrectInfo incorrectInfo) {
-                                        return " the character response was malformed.";
+                                        return "the character response was malformed";
                                     }
                                 }));
+                text.setTextColor(unknownAgotCharacter.getReason().join(new Func1<Unavailable, Integer>() {
+                    @Override
+                    public Integer call(Unavailable unavailable) {
+                        return Color.YELLOW;
+                    }
+                }, new Func1<NetworkError, Integer>() {
+                    @Override
+                    public Integer call(NetworkError networkError) {
+                        return Color.RED;
+                    }
+                }, new Func1<IncorrectInfo, Integer>() {
+                    @Override
+                    public Integer call(IncorrectInfo incorrectInfo) {
+                        return Color.RED;
+                    }
+                }));
+
 
             }
         }, new Action1<KnownAgotCharacter>() {
             @Override
             public void call(KnownAgotCharacter knownAgotCharacter) {
-                text.setText(String.format(Locale.US, "This is %s", knownAgotCharacter.toString()));
+                text.setTextColor(Color.WHITE);
+                text.setText(String.format(Locale.US, "This is%n%n%s %s",
+                        knownAgotCharacter.getTitles().isEmpty() ? "" : knownAgotCharacter.getTitles().get(0),
+                        knownAgotCharacter.getName()));
             }
         });
     }

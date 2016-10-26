@@ -31,7 +31,6 @@ import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
 import com.pacoworks.dereference.features.rotation.model.Transaction;
 import com.pacoworks.dereference.features.rotation.services.RotationAgotServiceKt;
-import com.pacoworks.dereference.network.AgotApiKt;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,7 +55,7 @@ public class RotationScreen extends BaseController implements RotationView {
                 return RotationAgotServiceKt
                         .requestCharacterInfo(
                                 user,
-                                AgotApiKt.createAgotApi(DereferenceApplication.get(getActivity()).getInjector().getHttpClient()),
+                                DereferenceApplication.get(getActivity()).getInjector().getAgotApi(),
                                 Schedulers.newThread());
             }
         });
