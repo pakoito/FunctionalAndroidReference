@@ -91,7 +91,7 @@ public class HomeScreen extends BaseController implements HomeView {
 
     @Override
     protected void attachBinders() {
-
+        // No UI binding, this screen is pure logic
     }
 
     @NotNull
