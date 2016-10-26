@@ -75,11 +75,19 @@ public class HomeScreen extends BaseController implements HomeView {
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         LinearLayout elements = (LinearLayout) inflater.inflate(R.layout.screen_main, container, false);
         elements.addView(createButton(inflater, screenSelectionPublishRelay, "Add and long press delete on a list", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createList())));
+        elements.addView(createDivider(inflater, container));
         elements.addView(createButton(inflater, screenSelectionPublishRelay, "Drag and drop selected elements", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createDragAndDrop())));
+        elements.addView(createDivider(inflater, container));
         elements.addView(createButton(inflater, screenSelectionPublishRelay, "Infinite list with pagination", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createPagination())));
+        elements.addView(createDivider(inflater, container));
         elements.addView(createButton(inflater, screenSelectionPublishRelay, "Operations surviving rotation", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createRotation())));
+        elements.addView(createDivider(inflater, container));
         elements.addView(createButton(inflater, screenSelectionPublishRelay, "In-memory cache", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createCache())));
         return elements;
+    }
+
+    private View createDivider(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.widget_divider, container, false);
     }
 
     private View createButton(LayoutInflater inflater, PublishRelay<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> func0) {
