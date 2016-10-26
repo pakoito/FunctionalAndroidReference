@@ -36,7 +36,7 @@ interface RotationViewInput : BoundView {
 
     fun setWaiting(seconds: Int): Unit
 
-    fun showRepos(value: String): Unit
+    fun showCharacter(value: String): Unit
 }
 
 /**

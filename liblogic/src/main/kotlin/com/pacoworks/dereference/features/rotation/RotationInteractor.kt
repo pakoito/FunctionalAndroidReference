@@ -40,7 +40,7 @@ fun bindRotationInteractor(view: RotationViewInput, state: RotationState) {
             is Loading -> view.setLoading(it.user.name)
             is Failure -> view.showError(it.reason)
             is WaitingForRetry -> view.setWaiting(it.seconds)
-            is Success -> view.showRepos(it.charInfo.name)
+            is Success -> view.showCharacter("This is ${it.charInfo.name}")
         }
     })
 }
@@ -65,7 +65,7 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
                 { view.enterUser().debounce(1, TimeUnit.SECONDS) },
                 /* Update only if the new value is correct */
                 { oldUserInput, newUserInput ->
-                    if (oldUserInput.name != newUserInput && newUserInput.isNotEmpty()) {
+                    if (oldUserInput.name != newUserInput && newUserInput.isNotEmpty() && isValidNumber(newUserInput)) {
                         Observable.just(UserInput(newUserInput))
                     } else {
                         Observable.empty()
@@ -73,6 +73,15 @@ fun handleUserInput(view: RotationViewOutput, user: StateHolder<UserInput>): Sub
                 }
         )
                 .subscribe(user)
+
+fun isValidNumber(newUserInput: String): Boolean {
+    try {
+        val parseInt = Integer.parseInt(newUserInput)
+        return parseInt >= 10 && parseInt <= 200
+    } catch (e: Exception) {
+        return false
+    }
+}
 
 fun handleStart(user: Observable<UserInput>, transaction: StateHolder<Transaction>): Subscription =
         doSM(

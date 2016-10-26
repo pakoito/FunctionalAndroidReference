@@ -47,7 +47,7 @@ class MockRotationViewInput : RotationViewInput {
     override fun setWaiting(seconds: Int) =
             mockView<Int>(waitingCount).invoke(seconds)
 
-    override fun showRepos(value: String) =
+    override fun showCharacter(value: String) =
             mockView<String>(successCount).invoke(value)
 
     override fun <T> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =

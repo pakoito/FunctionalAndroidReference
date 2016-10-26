@@ -24,9 +24,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxrelay.PublishRelay;
+import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.DereferenceApplication;
 import com.pacoworks.dereference.features.rotation.model.Transaction;
@@ -44,7 +46,11 @@ import rx.schedulers.Schedulers;
 public class RotationScreen extends BaseController implements RotationView {
 
     private final PublishRelay<String> userPublishRelay = PublishRelay.create();
+
     private final RotationState state;
+
+    private TextView textView;
+    private EditText inputView;
 
     public RotationScreen() {
         super();
@@ -64,9 +70,9 @@ public class RotationScreen extends BaseController implements RotationView {
     @NonNull
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
-        final EditText textView = new EditText(context);
-        textView.setHint("Character Id [10-200]");
-        textView.addTextChangedListener(new TextWatcher() {
+        final View view = inflater.inflate(R.layout.screen_rotation, container, false);
+        inputView = (EditText) view.findViewById(R.id.screen_rotation_edit);
+        inputView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -82,7 +88,8 @@ public class RotationScreen extends BaseController implements RotationView {
 
             }
         });
-        return textView;
+        textView = (TextView) view.findViewById(R.id.screen_rotation_text);
+        return view;
     }
 
     @Override
@@ -90,35 +97,34 @@ public class RotationScreen extends BaseController implements RotationView {
         RotationInteractorKt.bindRotationInteractor(this, state);
     }
 
-    public void setTitle(@NonNull String title) {
-        getActivity().setTitle(title);
+    public void setText(@NonNull String text) {
+        textView.setText(text);
     }
 
     @Override
     public void setLoading(@NotNull String user) {
-        setTitle("Loading " + user);
-        final EditText view = (EditText) getView();
-        view.setEnabled(false);
-        view.setText("");
+        setText("Loading " + user);
+        inputView.setEnabled(false);
+        inputView.setText("");
     }
 
     @Override
     public void showError(@NotNull String reason) {
-        setTitle("Error");
+        setText("Error");
         Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
-        getView().setEnabled(false);
+        inputView.setEnabled(false);
     }
 
     @Override
     public void setWaiting(int seconds) {
-        setTitle("Reloading in " + seconds);
-        getView().setEnabled(false);
+        setText("Reloading in " + seconds);
+        inputView.setEnabled(false);
     }
 
     @Override
-    public void showRepos(@NotNull String value) {
-        setTitle("Hello " + value);
-        getView().setEnabled(true);
+    public void showCharacter(@NotNull String value) {
+        setText(value);
+        inputView.setEnabled(true);
     }
 
     @NotNull
