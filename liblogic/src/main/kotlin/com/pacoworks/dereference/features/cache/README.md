@@ -6,6 +6,8 @@ It is recommended to be used along the Debug Drawer network module to check oper
 
 The way it works is by selecting characters on a list of ids, and the information for that character will be displayed as soon as it's available
 
+If the information has been retrieved before it'll be taken from memory, else it'll start a network request
+
 ## Model
 
 AgotCharacter is a union representing a character we don't know about, or a character who's information is already available and cached
