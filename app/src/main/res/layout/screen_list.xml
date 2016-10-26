@@ -24,20 +24,27 @@
         android:id="@+id/screen_list_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="52dp"
         android:padding="8dp"
-        android:text="Add"/>
+        android:text="Add"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/screen_list_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="52dp"
         android:padding="8dp"
-        android:text="Delete"/>
+        android:text="Delete"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/screen_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"/>
 
 </LinearLayout>

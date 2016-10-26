@@ -27,16 +27,17 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxrelay.PublishRelay;
 import com.jakewharton.rxrelay.SerializedRelay;
+import com.pacoworks.dereference.R;
+import com.pacoworks.dereference.core.functional.Mapper;
+import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.global.CacheExample;
+import com.pacoworks.dereference.features.global.DereferenceApplication;
 import com.pacoworks.dereference.features.global.Direction;
 import com.pacoworks.dereference.features.global.DragAndDropExample;
 import com.pacoworks.dereference.features.global.Home;
 import com.pacoworks.dereference.features.global.ListExample;
 import com.pacoworks.dereference.features.global.PaginationExample;
 import com.pacoworks.dereference.features.global.RotationExample;
-import com.pacoworks.dereference.core.functional.Mapper;
-import com.pacoworks.dereference.features.global.BaseController;
-import com.pacoworks.dereference.features.global.DereferenceApplication;
 import com.pacoworks.dereference.features.global.ScreensKt;
 import com.pacoworks.rxsealedunions.Union6;
 
@@ -72,21 +73,19 @@ public class HomeScreen extends BaseController implements HomeView {
     @NonNull
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
-        LinearLayout elements = new LinearLayout(context);
-        elements.setOrientation(LinearLayout.VERTICAL);
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "RecyclerView with Delete mode", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createList())));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Drag And Drop", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createDragAndDrop())));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Rotation", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createRotation())));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Cache", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createCache())));
-        elements.addView(createButton(container.getContext(), screenSelectionPublishRelay, "Pagination", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createPagination())));
+        LinearLayout elements = (LinearLayout) inflater.inflate(R.layout.screen_main, container, false);
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "RecyclerView with Delete mode", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createList())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Drag And Drop", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createDragAndDrop())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Rotation", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createRotation())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Cache", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createCache())));
+        elements.addView(createButton(inflater, screenSelectionPublishRelay, "Pagination", Mapper.<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>>just(ScreensKt.createPagination())));
         return elements;
     }
 
-    private View createButton(Context context, PublishRelay<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> func0) {
-        TextView txv = new TextView(context);
+    private View createButton(LayoutInflater inflater, PublishRelay<Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> screenSelectionPublishRelay, String name, Func1<? super Object, Union6<Home, RotationExample, ListExample, CacheExample, DragAndDropExample, PaginationExample>> func0) {
+        TextView txv = (TextView)inflater.inflate(R.layout.widget_text, null);
         txv.setText(name);
         RxView.clicks(txv).map(func0).subscribe(screenSelectionPublishRelay);
-        txv.setPadding(0, 10, 0, 10);
         return txv;
     }
 

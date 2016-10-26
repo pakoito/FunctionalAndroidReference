@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jakewharton.rxrelay.PublishRelay;
+import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.features.global.BaseController;
 import com.pacoworks.dereference.features.list.ListExampleAdapter;
 import com.pacoworks.dereference.features.list.ListExampleState;
@@ -62,7 +63,8 @@ public class DragAndDropScreen extends BaseController implements DragAndDropView
     @NonNull
     @Override
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
-        recyclerView = new RecyclerView(context);
+        View screen = inflater.inflate(R.layout.screen_drag, container, false);
+        recyclerView = (RecyclerView) screen.findViewById(R.id.screen_list_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
         final ListExampleAdapter adapter = new ListExampleAdapter();
         recyclerView.setAdapter(adapter);
@@ -71,7 +73,7 @@ public class DragAndDropScreen extends BaseController implements DragAndDropView
         final ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         callback.getDNDObservable().subscribe(dragAndDropPRelay);
         touchHelper.attachToRecyclerView(recyclerView);
-        return recyclerView;
+        return screen;
     }
 
     @Override

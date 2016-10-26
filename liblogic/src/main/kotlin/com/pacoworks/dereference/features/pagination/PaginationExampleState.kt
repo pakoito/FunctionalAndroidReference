@@ -24,6 +24,6 @@ import rx.Observable
  * Data class containing all [StateHolder] objects used to represent state in this screen
  */
 data class PaginationExampleState(
-        val elements: StateHolder<List<String>> = createStateHolder<List<String>>(Observable.range(0, 10).map { it.toString() }.toList().toBlocking().first()),
-        val pages: StateHolder<Int> = createStateHolder(0)
+        val elements: StateHolder<List<String>> = createStateHolder<List<String>>(Observable.range(0, 30).map { it.toString() }.toList().toBlocking().first()),
+        val pages: StateHolder<Int> = createStateHolder(2)
 )

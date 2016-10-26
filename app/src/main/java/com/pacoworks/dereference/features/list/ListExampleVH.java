@@ -19,8 +19,9 @@ package com.pacoworks.dereference.features.list;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 
+import com.pacoworks.dereference.R;
 import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper.ReactiveDNDViewHolder;
 
 /**
@@ -28,15 +29,13 @@ import com.pacoworks.dereference.widgets.ReactiveDNDTouchHelper.ReactiveDNDViewH
  */
 public class ListExampleVH extends RecyclerView.ViewHolder implements ReactiveDNDViewHolder {
     public ListExampleVH(Context context) {
-        super(new TextView(context));
-        TextView txv = (TextView) itemView;
-        txv.setPadding(100, 100, 100, 100);
+        super(LayoutInflater.from(context).inflate(R.layout.widget_text, null));
     }
 
     @Override
     public void onDragStarted() {
         ViewCompat.animate(itemView).cancel();
-        ViewCompat.animate(itemView).alpha(0.4f).scaleX(2f).scaleY(2f);
+        ViewCompat.animate(itemView).alpha(0.6f).scaleX(1.3f).scaleY(1.3f);
     }
 
     @Override

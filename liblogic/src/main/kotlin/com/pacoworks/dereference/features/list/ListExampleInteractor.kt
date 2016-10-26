@@ -61,7 +61,7 @@ fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<Non
                 { addClick.first() },
                 { elements, click ->
                     /* Insert random number at end of the list */
-                    Observable.just(elements.plus((Random().nextInt() + elements.size).toString()))
+                    Observable.just(elements.plus((Math.abs(Random().nextInt()) + elements.size).toString()))
                 }
         )
                 .subscribe(elementsState)

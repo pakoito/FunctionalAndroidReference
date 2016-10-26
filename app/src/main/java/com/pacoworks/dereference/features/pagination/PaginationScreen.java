@@ -41,6 +41,8 @@ import rx.Observable;
  * Controller implementing PaginationExampleView
  */
 public class PaginationScreen extends BaseController implements PaginationExampleView {
+    private static final int THRESHOLD = 5;
+
     private final PublishRelay<None> endOfPagePRelay = PublishRelay.create();
 
     private final PaginationExampleState state;
@@ -66,15 +68,22 @@ public class PaginationScreen extends BaseController implements PaginationExampl
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(
                 new RecyclerView.OnScrollListener() {
+
+                    private int previousTotalItemCount = 0;
+
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        if (dy > 0) {
-                            int visibleItemCount = layoutManager.getChildCount();
-                            int totalItemCount = layoutManager.getItemCount();
-                            int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
-                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                endOfPagePRelay.call(None.VOID);
-                            }
+                        int visibleItemCount = layoutManager.getChildCount();
+                        int totalItemCount = layoutManager.getItemCount();
+                        int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+                        if (totalItemCount < previousTotalItemCount) {
+                            this.previousTotalItemCount = totalItemCount;
+                        }
+                        if (totalItemCount > previousTotalItemCount) {
+                            previousTotalItemCount = totalItemCount;
+                        }
+                        if ((pastVisiblesItems + visibleItemCount + THRESHOLD) >= totalItemCount) {
+                            endOfPagePRelay.call(None.VOID);
                         }
                     }
                 }
@@ -93,7 +102,6 @@ public class PaginationScreen extends BaseController implements PaginationExampl
     public void updateElements(@NotNull List<String> elements) {
         final ListExampleAdapter castedAdapter = getCastedAdapter();
         castedAdapter.swap(elements);
-        recyclerView.scrollToPosition(elements.size() - 1);
     }
 
     private ListExampleAdapter getCastedAdapter() {
