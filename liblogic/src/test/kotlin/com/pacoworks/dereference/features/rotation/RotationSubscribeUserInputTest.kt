@@ -33,7 +33,7 @@ class RotationSubscribeUserInputTest {
         handleUserInput(view, userState)
         userState.subscribe(testSubscriber)
         testSubscriber.assertValueCount(1)
-        val validInput = "Hello"
+        val validInput = "35"
         view.userInputPRelay.call(validInput)
         /* Block until new state is debounced */
         userState.skip(1).toBlocking().first()
@@ -51,7 +51,7 @@ class RotationSubscribeUserInputTest {
         handleUserInput(view, userState)
         userState.subscribe(testSubscriber)
         testSubscriber.assertValueCount(1)
-        val validInput = "World"
+        val validInput = "72"
         view.userInputPRelay.call(validInput)
         /* Block until new state is debounced */
         userState.skip(1).toBlocking().first()
@@ -70,7 +70,7 @@ class RotationSubscribeUserInputTest {
         /* Timeout on no new values */
         userState.timeout(3, TimeUnit.SECONDS).subscribe(testSubscriber)
         testSubscriber.assertValueCount(1)
-        val invalidInput = ""
+        val invalidInput = "Error"
         view.userInputPRelay.call(invalidInput)
         /* Wait for result not to come */
         testSubscriber.awaitTerminalEvent()
