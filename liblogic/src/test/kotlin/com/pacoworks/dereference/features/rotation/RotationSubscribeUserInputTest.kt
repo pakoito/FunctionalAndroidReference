@@ -62,7 +62,7 @@ class RotationSubscribeUserInputTest {
 
     @Test
     fun validInput_invalidInput_OldValue() {
-        val initialValue = UserInput("Hello")
+        val initialValue = UserInput("32")
         val userState = createStateHolder(initialValue)
         val testSubscriber = TestSubscriber<UserInput>()
         val view = MockRotationViewOutput()
