@@ -21,6 +21,7 @@ import com.pacoworks.dereference.core.functional.None
 import com.pacoworks.dereference.features.list.model.EditMode
 import com.pacoworks.dereference.features.list.model.createEditModeDelete
 import com.pacoworks.dereference.features.list.model.createEditModeNormal
+import com.pacoworks.rxcomprehensions.RxComprehensions.doFM
 import com.pacoworks.rxcomprehensions.RxComprehensions.doSM
 import com.pacoworks.rxtuples.RxTuples
 import org.javatuples.Pair
@@ -67,26 +68,33 @@ fun handleAdd(elementsState: StateHolder<List<String>>, addClick: Observable<Non
                 .subscribe(elementsState)
 
 fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode: StateHolder<EditMode>): Subscription =
-        /* When the user clicks on the list with a long press */
-        listLongClicks
-                .flatMap { click ->
+        doFM(
+                /* When the user clicks on the list with a long press */
+                { listLongClicks },
+                { editMode.first() },
+                { click, editMode ->
                     /* And the mode is not edit */
-                    editMode.first()
-                            .filter { it.join({ normal -> true }, { delete -> false }) }
-                            /* Push edit mode with the position pressed */
-                            .map { createEditModeDelete(click.value1) }
-                }.subscribe(editMode)
+                    editMode.join(
+                        /* Push edit mode with the position pressed */
+                        { normal -> Observable.just(createEditModeDelete(click.value1)) },
+                        /* Else ignore */
+                        { delete -> Observable.empty<EditMode>() }) }
+        ).subscribe(editMode)
 
 fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<EditMode>): Subscription =
-        /* When the user clicks onthe delete button*/
-        deleteClick
-                .flatMap {
-                    /* And the mode is edit ing */
-                    editMode.first()
-                            .filter { it.join({ normal -> false }, { delete -> true }) }
+        doFM(
+                /* When the user clicks onthe delete button*/
+                { deleteClick },
+                { editMode.first() },
+                { click, editMode ->
+                    /* And the mode is editing */
+                    editMode.join(
+                            /* Ignore not editing */
+                            { normal -> Observable.empty<EditMode>() },
                             /* Push exiting edit mode */
-                            .map { createEditModeNormal() }
-                }.subscribe(editMode)
+                            { delete -> Observable.just(createEditModeNormal()) })
+                }
+        ).subscribe(editMode)
 
 fun handleOnSwitchEditState(editMode: StateHolder<EditMode>, selected: StateHolder<Set<String>>): Subscription =
         /* When edit mode changes */
@@ -115,13 +123,11 @@ fun handleSelect(editMode: StateHolder<EditMode>, selected: StateHolder<Set<Stri
         /* When the edit mode is delete */
         editMode.
                 switchMap {
-                    if (it.join({ normal -> false }, { delete -> true })) {
-                        /* Pass through the delete clicks*/
-                        listClicks.map { it.value1 }
-                    } else {
-                        /* Else ignore them */
-                        Observable.empty()
-                    }
+                    it.join(
+                            /* Ignore clicks if not editing */
+                            { normal -> Observable.empty<String>() },
+                            /* Else pass them through */
+                            { delete -> listClicks.map { it.value1 } })
                 }
                 .flatMap { value ->
                     /* Add or remove the clicked from the selected list */
