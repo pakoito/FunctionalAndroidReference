@@ -71,9 +71,9 @@ fun handleEnterEditState(listLongClicks: Observable<Pair<Int, String>>, editMode
         doFM(
                 /* When the user clicks on the list with a long press */
                 { listLongClicks },
+                /* And the mode is not edit */
                 { editMode.first() },
                 { click, editMode ->
-                    /* And the mode is not edit */
                     editMode.join(
                         /* Push edit mode with the position pressed */
                         { normal -> Observable.just(createEditModeDelete(click.value1)) },
@@ -85,9 +85,9 @@ fun handleExitEditState(deleteClick: Observable<None>, editMode: StateHolder<Edi
         doFM(
                 /* When the user clicks onthe delete button*/
                 { deleteClick },
+                /* And the mode is editing */
                 { editMode.first() },
                 { click, editMode ->
-                    /* And the mode is editing */
                     editMode.join(
                             /* Ignore not editing */
                             { normal -> Observable.empty<EditMode>() },
