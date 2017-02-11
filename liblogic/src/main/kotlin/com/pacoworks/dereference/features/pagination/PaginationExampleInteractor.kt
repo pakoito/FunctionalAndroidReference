@@ -27,7 +27,7 @@ import rx.subscriptions.CompositeSubscription
  * @see [com.pacoworks.dereference.architecture.ui.bind]
  */
 fun bindPaginationExample(viewInput: PaginationExampleInputView, state: PaginationExampleState) {
-    viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
+    viewInput.createBinder<List<String>>().call(state.elements, { viewInput.updateElements(it) })
 }
 
 /**

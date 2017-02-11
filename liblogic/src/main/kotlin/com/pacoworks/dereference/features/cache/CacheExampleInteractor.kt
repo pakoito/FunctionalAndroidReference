@@ -30,9 +30,9 @@ import rx.subscriptions.CompositeSubscription
  * @see [com.pacoworks.dereference.architecture.ui.bind]
  */
 fun bindCacheExample(viewInput: CacheExampleInputView, state: CacheExampleState) {
-    viewInput.createBinder<AgotCharacter>().call(state.currentCharacter, viewInput::showCharacterInfo)
-    viewInput.createBinder<List<String>>().call(state.ids, viewInput::filterList)
-    viewInput.createBinder<String>().call(state.currentId, viewInput::currentFilter)
+    viewInput.createBinder<AgotCharacter>().call(state.currentCharacter, { viewInput.showCharacterInfo(it) })
+    viewInput.createBinder<List<String>>().call(state.ids, { viewInput.filterList(it) })
+    viewInput.createBinder<String>().call(state.currentId, { viewInput.currentFilter(it) })
 }
 
 /**

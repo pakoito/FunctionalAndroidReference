@@ -32,8 +32,8 @@ import java.util.*
  * @see [com.pacoworks.dereference.architecture.ui.bind]
  */
 fun bindDragAndDropExample(viewInput: DragAndDropInputView, state: ListExampleState) {
-    viewInput.createBinder<List<String>>().call(state.elements, viewInput::updateElements)
-    viewInput.createBinder<Set<String>>().call(state.selected, viewInput::updateSelected)
+    viewInput.createBinder<List<String>>().call(state.elements, { viewInput.updateElements(it) })
+    viewInput.createBinder<Set<String>>().call(state.selected, { viewInput.updateSelected(it) })
 }
 
 /**
