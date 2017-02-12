@@ -21,7 +21,11 @@ import com.pacoworks.dereference.architecture.ui.createStateHolder
 
 object ReplUtils {
     fun <T> c(value: T, name: String = "StateHolder"): StateHolder<T> =
-            createStateHolder(value).apply { subscribe { println("$name updated: ${it.toString()} \n") } }
+            createStateHolder(value)
+                    .apply {
+                        this.zipWith(this.skip(1), { one, two -> one to two })
+                                .subscribe { (one, two) -> println("$name updated!\nFROM:\n${one.toString()}\nINTO:\n${two.toString()}\n") }
+                    }
 
     fun <T> u(state: StateHolder<T>, value: T): Unit =
             state.call(value)
