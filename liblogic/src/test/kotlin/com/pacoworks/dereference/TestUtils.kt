@@ -17,6 +17,7 @@
 package com.pacoworks.dereference
 
 import com.pacoworks.dereference.architecture.ui.StateHolder
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 import rx.functions.Action2
 import rx.schedulers.Schedulers
 import java.util.concurrent.atomic.AtomicLong
@@ -31,8 +32,11 @@ fun <T> mockView(callCount: AtomicLong = AtomicLong(0), value: AtomicReference<T
             callCount.andIncrement
         }
 
-fun p(state: StateHolder<*>): Unit =
-        println(state.toBlocking().first().toString())
+fun <T> c(value: T): StateHolder<T> =
+        createStateHolder(value)
 
 fun <T> u(state: StateHolder<T>, value: T): Unit =
         state.call(value)
+
+fun p(state: StateHolder<*>): Unit =
+        println(state.toBlocking().first().toString())
