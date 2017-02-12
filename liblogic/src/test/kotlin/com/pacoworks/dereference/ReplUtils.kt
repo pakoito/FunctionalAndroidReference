@@ -23,7 +23,7 @@ object ReplUtils {
     fun <T: Any> c(value: T, name: String = "StateHolder"): StateHolder<T> =
             createStateHolder(value)
                     .apply {
-                        this.zipWith(this.skip(1), { one, two -> one to two })
+                        zipWith(skip(1), { one, two -> one to two })
                                 .subscribe { (one, two) -> println("$name updated!\nFROM:\n$one\nINTO:\n$two\n") }
                     }
 
