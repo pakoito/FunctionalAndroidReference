@@ -16,13 +16,13 @@
 
 package com.pacoworks.dereference
 
-import com.jakewharton.rxrelay.SerializedRelay
+import com.pacoworks.dereference.architecture.ui.StateHolder
 import rx.functions.Action2
 import rx.schedulers.Schedulers
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
-fun <T> bindAsTest(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
+fun <T> bindAsTest(): Action2<StateHolder<T>, (T) -> Unit> =
         Action2 { state, view -> state.observeOn(Schedulers.immediate()).subscribe(view) }
 
 fun <T> mockView(callCount: AtomicLong = AtomicLong(0), value: AtomicReference<T> = AtomicReference()): (T) -> Unit =
@@ -30,3 +30,6 @@ fun <T> mockView(callCount: AtomicLong = AtomicLong(0), value: AtomicReference<T
             value.set(it)
             callCount.andIncrement
         }
+
+fun p(state: StateHolder<*>): Unit =
+        println(state.toBlocking().first().toString())
