@@ -33,3 +33,6 @@ fun <T> mockView(callCount: AtomicLong = AtomicLong(0), value: AtomicReference<T
 
 fun p(state: StateHolder<*>): Unit =
         println(state.toBlocking().first().toString())
+
+fun <T> u(state: StateHolder<T>, value: T): Unit =
+        state.call(value)
