@@ -30,6 +30,9 @@ object ReplUtils {
     fun <T> u(state: StateHolder<T>, value: T): Unit =
             state.call(value)
 
+    infix fun <T> T.into(state: StateHolder<T>): Unit =
+            u(state, this)
+
     fun p(state: StateHolder<*>): Unit =
             println(state.toBlocking().first().toString())
 }
