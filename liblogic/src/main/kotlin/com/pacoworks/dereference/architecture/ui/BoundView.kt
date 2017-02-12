@@ -26,5 +26,5 @@ interface BoundView {
      * Creates a view-state binding function for the current screen
      * @return binder function
      */
-    fun <T> createBinder(): Action2<StateHolder<T>, (T) -> Unit>
+    fun <T: Any> createBinder(): Action2<StateHolder<T>, (T) -> Unit>
 }

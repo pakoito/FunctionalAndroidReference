@@ -25,11 +25,10 @@ import rx.functions.Action2
 import java.util.concurrent.atomic.AtomicLong
 
 class MockRotationViewOutput : RotationViewOutput {
-    val userInputPRelay = PublishRelay.create<String>()
+    val userInputPRelay: PublishRelay<String> = PublishRelay.create<String>()
 
     override fun enterUser(): Observable<String> =
             userInputPRelay
-
 }
 
 class MockRotationViewInput : RotationViewInput {
@@ -50,6 +49,6 @@ class MockRotationViewInput : RotationViewInput {
     override fun showCharacter(value: String) =
             mockView<String>(successCount).invoke(value)
 
-    override fun <T> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
+    override fun <T: Any> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
             bindAsTest()
 }

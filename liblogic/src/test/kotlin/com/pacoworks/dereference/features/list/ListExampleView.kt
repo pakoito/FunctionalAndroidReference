@@ -41,7 +41,7 @@ class MockListInputExampleView : ListExampleInputView {
     override fun updateElements(elements: List<String>) =
             mockView<List<String>>(elementsCount).invoke(elements)
 
-    override fun <T> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
+    override fun <T: Any> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
             bindAsTest()
 
 }

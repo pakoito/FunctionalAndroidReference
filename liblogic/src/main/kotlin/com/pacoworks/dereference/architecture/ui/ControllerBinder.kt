@@ -31,13 +31,13 @@ typealias StateHolder<T> = SerializedRelay<T, T>
 /**
  * Creates a new [StateHolder]
  */
-fun <T> createStateHolder(value: T): StateHolder<T> =
+fun <T: Any> createStateHolder(value: T): StateHolder<T> =
         SerializedRelay(BehaviorRelay.create<T>(value))
 
 /**
  * Binds a view to a [StateHolder] respecting the [com.pacoworks.dereference.features.global.BaseController] lifecycle, and the Android requirement to only modify views on the main thread
  */
-fun <T> bind(lifecycleObservable: Observable<ControllerLifecycle>, mainThreadScheduler: Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
+fun <T: Any> bind(lifecycleObservable: Observable<ControllerLifecycle>, mainThreadScheduler: Scheduler, state: StateHolder<T>, doView: (T) -> Unit): Subscription =
         lifecycleObservable
                 .filter { it == ControllerLifecycle.Attach }
                 /* Stop the previous state emissions and switch to the new one */

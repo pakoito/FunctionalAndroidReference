@@ -52,6 +52,6 @@ class MockCacheExampleInputView : CacheExampleInputView {
     override fun currentFilter(id: String) =
             mockView<String>(currentFilterCount).invoke(id)
 
-    override fun <T> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
+    override fun <T: Any> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
             bindAsTest()
 }

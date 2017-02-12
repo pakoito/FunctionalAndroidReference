@@ -57,7 +57,7 @@ class MockDragAndDropViewInput : DragAndDropInputView {
     override fun updateSelected(selected: Set<String>) =
             mockView<Set<String>>(updateSelectedCount).invoke(selected)
 
-    override fun <T> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
+    override fun <T: Any> createBinder(): Action2<SerializedRelay<T, T>, (T) -> Unit> =
             bindAsTest()
 
 }
