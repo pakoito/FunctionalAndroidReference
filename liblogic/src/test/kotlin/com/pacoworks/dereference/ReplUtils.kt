@@ -1,5 +1,5 @@
 /*
- * Copyright (c) pakoito 2016
+ * Copyright (c) pakoito 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@
 package com.pacoworks.dereference
 
 import com.pacoworks.dereference.architecture.ui.StateHolder
-import rx.functions.Action2
-import rx.schedulers.Schedulers
-import java.util.concurrent.atomic.AtomicLong
-import java.util.concurrent.atomic.AtomicReference
+import com.pacoworks.dereference.architecture.ui.createStateHolder
 
-fun <T> bindAsTest(): Action2<StateHolder<T>, (T) -> Unit> =
-        Action2 { state, view -> state.observeOn(Schedulers.immediate()).subscribe(view) }
+object ReplUtils {
+    fun <T> c(value: T, name: String = "StateHolder"): StateHolder<T> =
+            createStateHolder(value).apply { subscribe { println("$name updated: ${it.toString()} \n") } }
 
-fun <T> mockView(callCount: AtomicLong = AtomicLong(0), value: AtomicReference<T> = AtomicReference()): (T) -> Unit =
-        {
-            value.set(it)
-            callCount.andIncrement
-        }
+    fun <T> u(state: StateHolder<T>, value: T): Unit =
+            state.call(value)
+
+    fun p(state: StateHolder<*>): Unit =
+            println(state.toBlocking().first().toString())
+}
