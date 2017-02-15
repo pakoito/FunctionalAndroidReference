@@ -16,6 +16,7 @@
 
 package com.pacoworks.dereference
 
+import com.jakewharton.rxrelay.Relay
 import com.pacoworks.dereference.architecture.ui.StateHolder
 import com.pacoworks.dereference.architecture.ui.createStateHolder
 
@@ -27,12 +28,12 @@ object ReplUtils {
                                 .subscribe { (one, two) -> println("$name updated!\nFROM:\n$one\nINTO:\n$two\n") }
                     }
 
-    fun <T: Any> u(state: StateHolder<T>, value: T): Unit =
+    fun <T: Any, U: Relay<T, T>> u(state: U, value: T): Unit =
             state.call(value)
 
-    infix fun <T: Any> T.into(state: StateHolder<T>): Unit =
+    infix fun <T: Any, U: Relay<T, T>> T.into(state: U): Unit =
             u(state, this)
 
-    fun p(state: StateHolder<*>): Unit =
+    fun <T: Any, U: Relay<T, T>> p(state: U): Unit =
             println(state.toBlocking().first().toString())
 }
