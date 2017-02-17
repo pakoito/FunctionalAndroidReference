@@ -19,7 +19,7 @@ apply plugin: 'kotlin'
 apply plugin: 'jacoco'
 
 buildscript {
-    ext.kotlin_version = '1.1.0-beta-38'
+    ext.kotlin_version = '1.1.0-rc-91'
     repositories {
         maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
         jcenter()
