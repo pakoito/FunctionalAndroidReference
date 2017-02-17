@@ -44,7 +44,7 @@ internal class MockClient : Interceptor {
             val response = event
             return response.request(request).protocol(Protocol.HTTP_1_1).build()
         }
-        throw IllegalStateException("Unknown event " + event.javaClass)
+        throw IllegalStateException("Unknown event " + event::class.java)
     }
 
     fun enqueueResponse(response: Response.Builder) {
