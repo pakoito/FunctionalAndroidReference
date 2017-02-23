@@ -42,7 +42,7 @@ class NavigationInteractorBackTest {
         /* See initial screen */
         testSubscriber.assertValueCount(1)
         /* Back pressed */
-        back.call(None.VOID)
+        back.call(None)
         /* Assert that we return to HomeScreen */
         testSubscriber.assertValueCount(2)
         val startScreen = Pair.with(createHome(), Direction.FORWARD)
@@ -69,7 +69,7 @@ class NavigationInteractorBackTest {
         /* See initial screen */
         testSubscriber.assertValueCount(1)
         /* Back pressed */
-        back.call(None.VOID)
+        back.call(None)
         testSubscriber.assertValueCount(2)
         /* Assert that we return to previous screen */
         val startScreen = Pair.with(previousScreen, Direction.BACK)

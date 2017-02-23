@@ -36,7 +36,7 @@ class ListSubscribeAddTest {
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)
         /* Click to add element */
-        addClick.call(None.VOID)
+        addClick.call(None)
         /* See new element added */
         testSubscriber.assertValueCount(2)
         /* Assert that 1 element was added to the list. Element is random, so we only check for existence. */
@@ -57,7 +57,7 @@ class ListSubscribeAddTest {
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)
         /* Click to add element */
-        addClick.call(None.VOID)
+        addClick.call(None)
         /* See new element added */
         testSubscriber.assertValueCount(2)
         /* Assert that 1 element was added to the list. Element is random, so we only check for existence. */

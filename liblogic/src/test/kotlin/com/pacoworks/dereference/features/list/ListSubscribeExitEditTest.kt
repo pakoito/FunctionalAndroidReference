@@ -40,7 +40,7 @@ class ListSubscribeExitEditTest {
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)
         /* Select position */
-        deleteClicks.call(None.VOID)
+        deleteClicks.call(None)
         /* Assert transition to edit complete*/
         testSubscriber.assertValueCount(2)
         val endState = createEditModeNormal()
@@ -60,7 +60,7 @@ class ListSubscribeExitEditTest {
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)
         /* Select position */
-        deleteClicks.call(None.VOID)
+        deleteClicks.call(None)
         /* Assert no transition was done because the state is already delete */
         testSubscriber.assertValueCount(1)
         testSubscriber.assertValue(initialState)

@@ -44,7 +44,7 @@ class PaginationExampleSubscriptionTest {
         elementsSubscriber.assertValueCount(1)
         elementsSubscriber.assertValue(initialList)
         /* View reaches end of page */
-        mockPaginationView.endOfPagePRelay.call(None.VOID)
+        mockPaginationView.endOfPagePRelay.call(None)
         /* New elements loaded */
         pagesSubscriber.assertValueCount(2)
         pagesSubscriber.assertValues(0, 1)
@@ -74,7 +74,7 @@ class PaginationExampleSubscriptionTest {
         elementsSubscriber.assertValueCount(1)
         elementsSubscriber.assertValue(initialList)
         /* View reaches end of page */
-        mockPaginationView.endOfPagePRelay.call(None.VOID)
+        mockPaginationView.endOfPagePRelay.call(None)
         /* New elements loaded */
         pagesSubscriber.assertValueCount(2)
         pagesSubscriber.assertValues(0, 1)

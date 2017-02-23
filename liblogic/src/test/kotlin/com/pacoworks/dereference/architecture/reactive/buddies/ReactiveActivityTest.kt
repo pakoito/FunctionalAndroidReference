@@ -94,7 +94,7 @@ class ReactiveActivityTest {
         reactiveActivity.onBackPressed()
         /* Assert back seen */
         testSubscriber.assertValueCount(1)
-        testSubscriber.assertValue(None.VOID)
+        testSubscriber.assertValue(None)
         testSubscriber.assertNoTerminalEvent()
     }
 
