@@ -79,9 +79,9 @@ public class ListScreen extends BaseController implements ListExampleView {
     protected View createView(Context context, LayoutInflater inflater, ViewGroup container) {
         final View inflate = inflater.inflate(R.layout.screen_list, container, false);
         addButton = (TextView) inflate.findViewById(R.id.screen_list_add);
-        RxView.clicks(addButton).map(Mapper.<None>just(None.VOID)).subscribe(addPRelay);
+        RxView.clicks(addButton).map(Mapper.<None>just(None.INSTANCE)).subscribe(addPRelay);
         deleteButton = (TextView) inflate.findViewById(R.id.screen_list_delete);
-        RxView.clicks(deleteButton).map(Mapper.<None>just(None.VOID)).subscribe(deletePRelay);
+        RxView.clicks(deleteButton).map(Mapper.<None>just(None.INSTANCE)).subscribe(deletePRelay);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.screen_list_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(context, SPAN_COUNT));
         final ListExampleAdapter adapter = new ListExampleAdapter();

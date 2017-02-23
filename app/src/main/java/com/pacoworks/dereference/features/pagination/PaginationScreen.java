@@ -83,7 +83,7 @@ public class PaginationScreen extends BaseController implements PaginationExampl
                             previousTotalItemCount = totalItemCount;
                         }
                         if ((pastVisiblesItems + visibleItemCount + THRESHOLD) >= totalItemCount) {
-                            endOfPagePRelay.call(None.VOID);
+                            endOfPagePRelay.call(None.INSTANCE);
                         }
                     }
                 }

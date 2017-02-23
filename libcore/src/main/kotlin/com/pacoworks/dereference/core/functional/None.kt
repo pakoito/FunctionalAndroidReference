@@ -18,7 +18,9 @@ package com.pacoworks.dereference.core.functional
 
 /**
  * Ugly singleton class. Used to replace [Void] when doing Java interop, as nulls won't be available in RxJava 2.
+ *
+ * NOTE: Consider using [Unit] instead
  */
-enum class None {
-    VOID
+object None {
+    override fun toString() = "None"
 }

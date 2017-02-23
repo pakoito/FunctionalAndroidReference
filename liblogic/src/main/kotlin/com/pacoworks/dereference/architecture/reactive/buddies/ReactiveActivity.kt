@@ -92,7 +92,7 @@ class ReactiveActivity {
     /**
      * To be called when the user presses the back key
      */
-    fun onBackPressed() = onBackRelay.call(None.VOID)
+    fun onBackPressed() = onBackRelay.call(None)
 
     /**
      * Creates a proxy object [ActivityReactiveBuddy] to access framework events, like lifecycle.
