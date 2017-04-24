@@ -46,7 +46,7 @@ fun pushScreen(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: Navi
                 .subscribe { navigatorView.goTo(it) }
 
 fun backPressed(activityReactiveBuddy: ActivityReactiveBuddy, navigatorView: NavigatorView, state: AppState): Subscription =
-        /* WHen the user presses back  */
+        /* When the user presses back  */
         activityReactiveBuddy.back()
                 .map {
                     /* Ask the navigator to go back */
