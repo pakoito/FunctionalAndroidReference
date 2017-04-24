@@ -94,7 +94,7 @@ Avoid DI frameworks like Dagger, and hand-roll injection instead.
 
 Avoid code generation outside Kotlin helpers.
 
-##License
+## License
 
 Copyright (c) pakoito 2016
 
