@@ -2,7 +2,7 @@
 
 Cache is an example of representing an in-memory cache using unions
 
-It is recommended to be used along the Debug Drawer network module to check operations do not happen on the network
+It is recommended to be used along the Debug Drawer network module to check operations do not happen on the main thread
 
 The way it works is by selecting characters on a list of ids, and the information for that character will be displayed as soon as it's available
 
