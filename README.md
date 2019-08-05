@@ -2,7 +2,7 @@
 
 FunctionalAndroidReference is a showcase project of Functional Reactive Programming on Android, using RxJava.
 
-It's a companion app to the presentation ["Fully Reactive Apps"](https://speakerdeck.com/pakoito/fully-reactive-apps) at Droidcon UK 2016.
+It's a companion app to the presentation ["Fully Reactive Apps"](https://speakerdeck.com/pakoito/fully-reactive-apps-extended) at Droidcon UK 2016.
 
 [![Build Status](https://travis-ci.org/pakoito/FunctionalAndroidReference.svg?branch=master)](https://travis-ci.org/pakoito/FunctionalAndroidReference) [![codecov](https://codecov.io/gh/pakoito/FunctionalAndroidReference/branch/master/graph/badge.svg)](https://codecov.io/gh/pakoito/FunctionalAndroidReference)
 
